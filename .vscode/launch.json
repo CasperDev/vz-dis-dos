@@ -1,0 +1,42 @@
+
+{
+    "version": "2.0.0",
+    "configurations": [
+    {
+        "type": "dezog",
+        "request": "launch",
+        "name": "Internal Simulator",
+        "remoteType": "zsim",
+        "zsim": {
+            //"visualMemory": "ZX48"
+            //"Z80N": true,
+        },
+        "history": {
+            "reverseDebugInstructionCount": 1000000,
+            "spotCount": 10,
+            "codeCoverageEnabled": true
+        },
+        "startAutomatically": false,
+        "commandsAfterLaunch": [
+        ],
+        "disassemblerArgs": {
+            "esxdosRst": false
+        },
+        "rootFolder": "${workspaceFolder}",
+        "topOfStack": "0x0000",
+        //"load": "z80-sample-program.sna",
+        "loadObjs": [ {
+            "path": "out\\vzdos.bin",
+            "start": "0x4000",
+        }],
+        "smallValuesMaximum": 513,
+        "tmpDir": ".tmp",
+        "execAddress": "0x44fd",
+        "sjasmplus": [{
+            "path": "out/vzdos.sld"
+        }]
+        
+
+    }
+    ]
+}

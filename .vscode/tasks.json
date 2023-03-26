@@ -1,0 +1,52 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "echoCommand": true,
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "sjasmplus.exe",
+            "args": [
+                "--raw=out\\vzdos.bin",
+                "--sld=out\\vzdos.sld",
+                "--lst=vzdos.list",
+                "--lstlab",
+                "--sym=vzdos.labels",
+                "--fullpath",
+                "vzdos.asm"
+            ],
+            "problemMatcher": [
+                "$problem-matcher-sjasmplus"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Test",
+            "dependsOn": "build",
+            "type": "shell",
+            "command": "fc",
+            "args": [
+                "/b",
+                "${workspaceFolder}\\bin\\vzdos.rom",
+                "${workspaceFolder}\\out\\vzdos.bin",
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        }
+    ],
+    "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+    }
+}
