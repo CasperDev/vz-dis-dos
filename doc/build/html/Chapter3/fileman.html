@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>File management functions &mdash; Laser310/VZ300 DOS 1.2 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Storage and processing of data" href="storage.html" />
+    <link rel="prev" title="General Instructions" href="general.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Laser310/VZ300 DOS 1.2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Chapter0/index.html">0. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter1/index.html">1. The LASER 110, 210 and 310 Disk System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter2/index.html">2. DOS Operations</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. The individual DOS commands</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="general.html">General Instructions</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">File management functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dir-display-of-the-table-of-contents">DIR - Display of the table of contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#save-saving-a-basic-program-to-floppy-disk">SAVE - Saving a BASIC program to floppy disk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-loading-a-basic-program-from-diskette">LOAD - Loading a BASIC program from diskette</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-load-and-start-a-basic-program">RUN - Load and start a BASIC program</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bsave-saving-a-machine-program-on-diskette">BSAVE - Saving a machine program on diskette</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bload-loading-a-machine-program-from-diskette">BLOAD - Loading a machine program from diskette</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#brun-loading-and-starting-a-machine-program">BRUN - Loading and starting a machine program</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ren-renaming-files-and-programs">REN - Renaming files and programs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dcopy-copy-a-program">DCOPY - Copy a program</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#era-delete-a-file-or-program-on-the-floppy-disk">ERA - Delete a file or program on the floppy disk</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="storage.html">Storage and processing of data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter4/index.html">4. Error Messages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter5/index.html">5. Programming tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter6/index.html">6. Application example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter7/index.html">7. Technical Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter8/index.html">8. Communication between the DOS and the Floppy Disk Controller</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Laser310/VZ300 DOS 1.2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">3. The individual DOS commands</a></li>
+      <li class="breadcrumb-item active">File management functions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Chapter3/fileman.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="file-management-functions">
+<h1>File management functions<a class="headerlink" href="#file-management-functions" title="Permalink to this heading"></a></h1>
+<section id="dir-display-of-the-table-of-contents">
+<h2>DIR - Display of the table of contents<a class="headerlink" href="#dir-display-of-the-table-of-contents" title="Permalink to this heading"></a></h2>
+<div class="admonition-syntax admonition">
+<p class="admonition-title">Syntax:</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">DIR</span>
+</pre></div>
+</div>
+<p>Allowed as direct command and in program mode.</p>
+</div>
+<p>The DIR command displays a directory of all programs and files stored on the
+diskette on the screen.</p>
+<p>The listing includes file type and file name.</p>
+<div class="admonition-possible-file-types admonition">
+<p class="admonition-title">Possible file types:</p>
+<p><code class="docutils literal notranslate"><span class="pre">T</span></code> = BASIC - program (text file)</p>
+<p><code class="docutils literal notranslate"><span class="pre">B</span></code> = machine program (binary file)</p>
+<p><code class="docutils literal notranslate"><span class="pre">D</span></code> = data file</p>
+</div>
+<div class="hint admonition">
+<p class="admonition-title">Example:</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">DIR</span>
+<span class="nl">B:</span><span class="vg">SCHACH</span>
+<span class="nl">B:</span><span class="vg">KALACH</span>
+<span class="nl">T:</span><span class="vg">AB</span><span class="o">.</span><span class="vg">LAND</span>
+<span class="nl">T:</span><span class="vg">ANSCHR</span>
+<span class="nl">D:</span><span class="vg">KARTEI</span>
+<span class="vg">READY</span>
+</pre></div>
+</div>
+<p>The disk contains:</p>
+<ul class="simple">
+<li><p>two machine programs, SCHACH and KALAH,</p></li>
+<li><p>two BASIC programs, AB.LAND and ANSCHR and</p></li>
+<li><p>a data file called KARTEI.</p></li>
+</ul>
+</div>
+<p>The listing can be stopped by pressing the space bar (SPACE) and continued
+with the same key.</p>
+<div class="error admonition">
+<p class="admonition-title">Possible Errors:</p>
+<p><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> The table of contents of the diskette
+could not be read properly.</p>
+</div>
+</section>
+<section id="save-saving-a-basic-program-to-floppy-disk">
+<h2>SAVE - Saving a BASIC program to floppy disk<a class="headerlink" href="#save-saving-a-basic-program-to-floppy-disk" title="Permalink to this heading"></a></h2>
+<div class="admonition-syntax admonition">
+<p class="admonition-title">Syntax:</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">SAVE</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="s2">&quot;name&quot;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="vg">program</span><span class="w"> </span><span class="vg">name</span><span class="w"> </span><span class="vg">with</span><span class="w"> </span><span class="vg">a</span><span class="w"> </span><span class="vg">maximum</span><span class="w"> </span><span class="vg">of</span><span class="w"> </span><span class="il">8</span><span class="w"> </span><span class="vg">characters</span><span class="p">,</span>
+<span class="w">         </span><span class="vg">enclosed</span><span class="w"> </span><span class="vg">in</span><span class="w"> </span><span class="vg">quotation</span><span class="w"> </span><span class="vg">marks</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Allowed as direct command and in program mode.</p>
+</div>
+<p>A BASIC program in memory is saved on the floppy disk under the file name
+“name”.</p>
+<p>The program is given the type designation <code class="docutils literal notranslate"><span class="pre">&quot;T&quot;</span></code> (text file).</p>
+<p>In direct mode, the completion of the storage process is indicated with
+READY.</p>
+<p>In program mode, the program is continued with the command following
+“SAVE”.</p>
+<div class="hint admonition">
+<p class="admonition-title">Example:</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">SAVE</span><span class="w"> </span><span class="s2">&quot;KARTEI&quot;</span>
+</pre></div>
+</div>
+<p>transfers a BASIC program in memory to the floppy disk under the
+name “KARTEI”.</p>
+</div>
+<div class="error admonition">
+<p class="admonition-title">Possible Errors:</p>
+<p><code class="docutils literal notranslate"><span class="pre">?SYNTAX</span> <span class="pre">ERROR</span></code></p>
+<ul class="simple">
+<li><p>no file name specified</p></li>
+<li><p>Filename not in quotes</p></li>
+<li><p>No end of line (RETURN) or command separator <code class="docutils literal notranslate"><span class="pre">&quot;:&quot;</span></code> after the file name.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">WRITE</span> <span class="pre">PROTECTED</span></code> The disk’s write-protect notch is
+taped over.</p>
+<p><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">ALREADY</span> <span class="pre">EXISTS</span></code> A file with the same name already exists on
+the diskette.</p>
+<p><code class="docutils literal notranslate"><span class="pre">?DIRECTORY</span> <span class="pre">FULL</span></code> There is no more space in the table of
+contents (maximum 120 entries).</p>
+<p><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">FULL</span></code> There are not enough free sectors on the
+diskette for the program.</p>
+<p><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> An error occurred while writing or reading
+the floppy disk..</p>
+</div>
+<p>The writing process can be aborted at any time by pressing the BREAK key.
+However, depending on when the key is pressed, the entry in the table of contents is
+not always deleted (error in DOS).</p>
+<p>In order to ensure problem-free diskette management, you should therefore check
+the table of contents with DIR in such a case and, if necessary, delete the file
+manually with ERA.</p>
+</section>
+<section id="load-loading-a-basic-program-from-diskette">
+<h2>LOAD - Loading a BASIC program from diskette<a class="headerlink" href="#load-loading-a-basic-program-from-diskette" title="Permalink to this heading"></a></h2>
+<div class="admonition-syntax admonition">
+<p class="admonition-title">Syntax:</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">LOAD</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="s2">&quot;name&quot;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="vg">program</span><span class="w"> </span><span class="vg">name</span><span class="w"> </span><span class="vg">with</span><span class="w"> </span><span class="vg">a</span><span class="w"> </span><span class="vg">maximum</span><span class="w"> </span><span class="vg">of</span><span class="w"> </span><span class="il">8</span><span class="w"> </span><span class="vg">characters</span><span class="p">,</span>
+<span class="w">         </span><span class="vg">enclosed</span><span class="w"> </span><span class="vg">in</span><span class="w"> </span><span class="vg">quotation</span><span class="w"> </span><span class="vg">marks</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Allowed as direct command and in program mode.</p>
+</div>
+<p>A BASIC program saved on the diskette with the file name “name” is loaded
+into memory.</p>
+<p>The completion of the storage process is indicated with READY.</p>
+<div class="hint admonition">
+<p class="admonition-title">Example:</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">LOAD</span><span class="w"> </span><span class="s2">&quot;KFZ&quot;</span>
+</pre></div>
+</div>
+<p>Transfers the BASIC program KFZ from the diskette to the memory.</p>
+</div>
+<p>You can then look at a BASIC program loaded in this way with LIST and modify it if
+necessary.</p>
+<div class="warning admonition">
+<p class="admonition-title">Warning:</p>
+<p>Before writing a modified program back to the diskette, you must either first delete
+the program on it with “ERA” or give the modified program a different name.</p>
+</div>
+<div class="hint admonition">
+<p class="admonition-title">Example:</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">LOAD</span><span class="w"> </span><span class="s2">&quot;XYZ&quot;</span>
+<span class="o">&gt;</span><span class="vg">READY</span>
+<span class="k">LIST</span>
+<span class="o">...</span>
+<span class="o">...</span><span class="w">             </span><span class="vg">modify</span>
+<span class="o">...</span>
+<span class="vg">ERA</span><span class="w"> </span><span class="s2">&quot;XYZ&quot;</span>
+<span class="o">&gt;</span><span class="vg">READY</span>
+<span class="vg">SAVE</span><span class="w"> </span><span class="s2">&quot;XYZ&quot;</span>
+</pre></div>
+</div>
+</div>
+<p>After the program has been read in, direct mode (BASIC warm start) is always
+accessed, regardless of whether the call was made directly or from within a program.</p>
+<p>The reading process can be aborted at any time by pressing the BREAK key.</p>
+<div class="error admonition">
+<p class="admonition-title">Possible Errors:</p>
+<p><code class="docutils literal notranslate"><span class="pre">?SYNTAX</span> <span class="pre">ERROR</span></code></p>
+<ul class="simple">
+<li><p>no file name specified</p></li>
+<li><p>Filename not in quotes</p></li>
+<li><p>No end of line (RETURN) or command separator <code class="docutils literal notranslate"><span class="pre">&quot;:&quot;</span></code> after the file name.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">NOT</span> <span class="pre">FOUND</span></code> No program with the specified name could
+be found on the diskette..</p>
+<p><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">TYPE</span> <span class="pre">MISMATCH</span></code> A file with the same name was found on the
+diskette, but this is not a BASIC program
+(file type = <code class="docutils literal notranslate"><span class="pre">T</span></code>).</p>
+<p><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> An error occurred while reading from the
+floppy disk. (faulty disk or centering problems)</p>
+</div>
+</section>
+<section id="run-load-and-start-a-basic-program">
+<h2>RUN - Load and start a BASIC program<a class="headerlink" href="#run-load-and-start-a-basic-program" title="Permalink to this heading"></a></h2>
+<div class="admonition-syntax admonition">
+<p class="admonition-title">Syntax:</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="kr">RUN</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="s2">&quot;name&quot;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="vg">program</span><span class="w"> </span><span class="vg">name</span><span class="w"> </span><span class="vg">with</span><span class="w"> </span><span class="vg">a</span><span class="w"> </span><span class="vg">maximum</span><span class="w"> </span><span class="vg">of</span><span class="w"> </span><span class="il">8</span><span class="w"> </span><span class="vg">characters</span><span class="p">,</span>
+<span class="w">         </span><span class="vg">enclosed</span><span class="w"> </span><span class="vg">in</span><span class="w"> </span><span class="vg">quotation</span><span class="w"> </span><span class="vg">marks</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Allowed as direct command and in program mode.</p>
+</div>
+<p>A BASIC program saved under “name” on the diskette is loaded into memory
+and executed.</p>
+<div class="hint admonition">
+<p class="admonition-title">Example:</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="kr">RUN</span><span class="w"> </span><span class="s2">&quot;GRAFIK&quot;</span>
+</pre></div>
+</div>
+<p>The BASIC program “GRAFIK” is loaded and executed.</p>
+</div>
+<div class="error admonition">
+<p class="admonition-title">Possible Errors:</p>
+<p><code class="docutils literal notranslate"><span class="pre">?SYNTAX</span> <span class="pre">ERROR</span></code></p>
+<ul class="simple">
+<li><p>no file name specified</p></li>
+<li><p>Filename not in quotes</p></li>
+<li><p>No end of line (RETURN) or command separator <code class="docutils literal notranslate"><span class="pre">&quot;:&quot;</span></code> after the file name.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">NOT</span> <span class="pre">FOUND</span></code> No program with the specified name could
+be found on the diskette..</p>
+<p><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">TYPE</span> <span class="pre">MISMATCH</span></code> A file with the same name was found on the
+diskette, but this is not a BASIC program
+(file type = <code class="docutils literal notranslate"><span class="pre">T</span></code>).</p>
+<p><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> An error occurred while reading from the
+floppy disk. (faulty disk or centering problems)</p>
+</div>
+</section>
+<section id="bsave-saving-a-machine-program-on-diskette">
+<h2>BSAVE - Saving a machine program on diskette<a class="headerlink" href="#bsave-saving-a-machine-program-on-diskette" title="Permalink to this heading"></a></h2>
+<div class="admonition-syntax admonition">
+<p class="admonition-title">Syntax:</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="kr">BSAVE</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="p">,</span><span class="vg">aaaa</span><span class="p">,</span><span class="vg">eeee</span>
+<span class="s2">&quot;name&quot;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="vg">program</span><span class="w"> </span><span class="vg">name</span><span class="w"> </span><span class="vg">with</span><span class="w"> </span><span class="vg">a</span><span class="w"> </span><span class="vg">maximum</span><span class="w"> </span><span class="vg">of</span><span class="w"> </span><span class="il">8</span><span class="w"> </span><span class="vg">characters</span><span class="p">,</span>
+<span class="w">         </span><span class="vg">enclosed</span><span class="w"> </span><span class="vg">in</span><span class="w"> </span><span class="vg">quotation</span><span class="w"> </span><span class="vg">marks</span><span class="o">.</span>
+<span class="vg">aaaa</span><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="vg">Program</span><span class="w"> </span><span class="vg">start</span><span class="w"> </span><span class="vg">address</span><span class="p">,</span><span class="w"> </span><span class="il">4</span><span class="w"> </span><span class="vg">digits</span><span class="p">;</span>
+<span class="w">         </span><span class="vg">in</span><span class="w"> </span><span class="vg">hexadecimal</span><span class="w"> </span><span class="vg">notation</span><span class="o">.</span>
+<span class="vg">eeee</span><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="vg">Program</span><span class="w"> </span><span class="vg">end</span><span class="w"> </span><span class="vg">address</span><span class="p">,</span><span class="w"> </span><span class="il">4</span><span class="w"> </span><span class="vg">digits</span><span class="p">;</span>
+<span class="w">         </span><span class="vg">in</span><span class="w"> </span><span class="vg">hexadecimal</span><span class="w"> </span><span class="vg">notation</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Allowed as direct command and in program mode.</p>
+</div>
+<p>A machine program in memory is written to the floppy disk from address
+“aaaa” to address “eeee” with the file name “name”.</p>
+<p>It receives the type designation <code class="docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> (binary file) in the table of contents.
+In direct mode, the completion of the storage process is indicated with
+READY. In program mode, the program is continued with the command
+following BSAVE.</p>
+<p>Instead of a machine program, this command can also be used to transfer any
+memory area to the diskette and then load it again with BLOAD.</p>
+<p>Only BRUN requires an executable machine program as this is started
+immediately after loading.</p>
+<div class="hint admonition">
+<p class="admonition-title">Example:</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="kr">BSAVE</span><span class="w"> </span><span class="s2">&quot;BOWLING&quot;</span><span class="p">,</span><span class="il">8000</span><span class="p">,</span><span class="il">94</span><span class="vg">FF</span>
+</pre></div>
+</div>
+<p>The “BOWLING” machine program is transferred to the diskette from
+address 8000H to address 94FFH.</p>
+</div>
+<div class="error admonition">
+<p class="admonition-title">Possible Errors:</p>
+<p><code class="docutils literal notranslate"><span class="pre">?SYNTAX</span> <span class="pre">ERROR</span></code></p>
+<ul class="simple">
+<li><p>no file name specified</p></li>
+<li><p>Filename not in quotes</p></li>
+<li><p>Start and/or end address missing</p></li>
+<li><p>Start or end address not 4 digits hexadecimal (0~F)</p></li>
+<li><p>parameters not separated by comma,</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">WRITE</span> <span class="pre">PROTECTED</span></code> The disk’s write-protect notch is taped over.</p>
+<p><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">ALREADY</span> <span class="pre">EXISTS</span></code> A file with the same name already exists on
+the diskette.</p>
+<p><code class="docutils literal notranslate"><span class="pre">?DIRECTORY</span> <span class="pre">FULL</span></code> There is no more space in the table of
+contents (maximum 128 entries).</p>
+<p><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">FULL</span></code> There are not enough free sectors on the
+diskette for the program.</p>
+<p><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> An error occurred while reading from the
+floppy disk. (faulty disk or centering problems)</p>
+</div>
+<p>The writing process can be aborted at any time by pressing the BREAK button.
+However, depending on when the key is pressed, the entry in the table of contents is
+not always deleted (error in DOS).</p>
+<p>In order to ensure problem-free diskette management, you should therefore check
+the table of contents with DIR in such a case and, if necessary, delete the file
+manually with ERA.</p>
+</section>
+<section id="bload-loading-a-machine-program-from-diskette">
+<h2>BLOAD - Loading a machine program from diskette<a class="headerlink" href="#bload-loading-a-machine-program-from-diskette" title="Permalink to this heading"></a></h2>
+<div class="admonition-syntax admonition">
+<p class="admonition-title">Syntax:</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="kr">BLOAD</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="s2">&quot;name&quot;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="vg">program</span><span class="w"> </span><span class="vg">name</span><span class="w"> </span><span class="vg">with</span><span class="w"> </span><span class="vg">a</span><span class="w"> </span><span class="vg">maximum</span><span class="w"> </span><span class="vg">of</span><span class="w"> </span><span class="il">8</span><span class="w"> </span><span class="vg">characters</span><span class="p">,</span>
+<span class="w">         </span><span class="vg">enclosed</span><span class="w"> </span><span class="vg">in</span><span class="w"> </span><span class="vg">quotation</span><span class="w"> </span><span class="vg">marks</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Allowed as direct command and in program mode.</p>
+</div>
+<p>A machine program stored on the diskette with the file name “name” is loaded
+into the memory.</p>
+<p>With a direct command, the end of the loading process is indicated with
+READY, in program mode the program is continued with the command
+following BLOAD.</p>
+<div class="hint admonition">
+<p class="admonition-title">Example:</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="kr">BLOAD</span><span class="w"> </span><span class="s2">&quot;UPR01&quot;</span>
+
+<span class="vg">Machine</span><span class="w"> </span><span class="vg">program</span><span class="w"> </span><span class="vg">UPR01</span><span class="w"> </span><span class="vg">is</span><span class="w"> </span><span class="vg">loaded</span><span class="w"> </span><span class="vg">from</span><span class="w"> </span><span class="vg">the</span><span class="w"> </span><span class="vg">diskette</span><span class="o">.</span>
+</pre></div>
+</div>
+</div>
+<p>The command is particularly suitable for loading machine program routines
+saved with BSAVE from a BASIC program and calling them as subroutines via
+USR.</p>
+<div class="hint admonition">
+<p class="admonition-title">Example:</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="nl">220</span><span class="w"> </span><span class="kr">BLOAD</span><span class="w"> </span><span class="s2">&quot;UPR01&quot;</span><span class="o">:</span><span class="w"> </span><span class="c1">&#39;LOAD SUBPROGRAM</span>
+<span class="nl">230</span><span class="w"> </span><span class="kr">POKE</span><span class="w"> </span><span class="il">30862</span><span class="p">,</span><span class="il">0</span><span class="o">:</span><span class="w"> </span><span class="c1">&#39;LSB START ADDRESS = 00</span>
+<span class="nl">240</span><span class="w"> </span><span class="kr">POKE</span><span class="w"> </span><span class="il">30863</span><span class="p">,</span><span class="il">176</span><span class="o">:</span><span class="w"> </span><span class="c1">&#39;MSB START ADDRESS = B0</span>
+<span class="nl">250</span><span class="w"> </span><span class="vg">A</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="vg">USR</span><span class="p">(</span><span class="il">0</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="c1">&#39;CALL SUBROUTINE</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>The subprogram UPR01 is to be loaded from diskette
+and called at address В000.</p>
+</div>
+<div class="error admonition">
+<p class="admonition-title">Possible Errors:</p>
+<p><code class="docutils literal notranslate"><span class="pre">?SYNTAX</span> <span class="pre">ERROR</span></code></p>
+<ul class="simple">
+<li><p>no file name specified</p></li>
+<li><p>Filename not in quotes</p></li>
+<li><p>No end of line (RETURN) or command separator <code class="docutils literal notranslate"><span class="pre">&quot;:&quot;</span></code> after the file name.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">NOT</span> <span class="pre">FOUND</span></code> No program with the specified name could
+be found on the diskette.</p>
+<p><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">TYPE</span> <span class="pre">MISMATCH</span></code> A file with the same name was found on the
+diskette, but this is not a machine program
+(file type = <code class="docutils literal notranslate"><span class="pre">B</span></code>).</p>
+<p><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> An error occurred while reading from the
+floppy disk. (faulty disk or centering problems)</p>
+</div>
+</section>
+<section id="brun-loading-and-starting-a-machine-program">
+<h2>BRUN - Loading and starting a machine program<a class="headerlink" href="#brun-loading-and-starting-a-machine-program" title="Permalink to this heading"></a></h2>
+<div class="admonition-syntax admonition">
+<p class="admonition-title">Syntax:</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">BRUN</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="s2">&quot;name&quot;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="vg">program</span><span class="w"> </span><span class="vg">name</span><span class="w"> </span><span class="vg">with</span><span class="w"> </span><span class="vg">a</span><span class="w"> </span><span class="vg">maximum</span><span class="w"> </span><span class="vg">of</span><span class="w"> </span><span class="il">8</span><span class="w"> </span><span class="vg">characters</span><span class="p">,</span>
+<span class="w">         </span><span class="vg">enclosed</span><span class="w"> </span><span class="vg">in</span><span class="w"> </span><span class="vg">quotation</span><span class="w"> </span><span class="vg">marks</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Allowed as direct command and in program mode.</p>
+</div>
+<p>A machine program stored on the floppy disk under the file name “name” is
+loaded into memory and executed.</p>
+<p>The program starts exclusively at the program start address (see BSAVE).</p>
+<div class="hint admonition">
+<p class="admonition-title">Example:</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">BRUN</span><span class="w"> </span><span class="s2">&quot;FIFFI&quot;</span>
+</pre></div>
+</div>
+<p>The “FIFFI” machine program is loaded and started.</p>
+</div>
+<div class="error admonition">
+<p class="admonition-title">Possible Errors:</p>
+<p><code class="docutils literal notranslate"><span class="pre">?SYNTAX</span> <span class="pre">ERROR</span></code></p>
+<ul class="simple">
+<li><p>no file name specified</p></li>
+<li><p>Filename not in quotes</p></li>
+<li><p>No end of line (RETURN) or command
+separator <code class="docutils literal notranslate"><span class="pre">&quot;:&quot;</span></code> after the file name.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">NOT</span> <span class="pre">FOUND</span></code> No program with the specified name could
+be found on the diskette.</p>
+<p><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">TYPE</span> <span class="pre">MISMATCH</span></code> A file with the same name was found on the
+diskette, but this is not a machine program
+(file type = <code class="docutils literal notranslate"><span class="pre">B</span></code>).</p>
+<p><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> An error occurred while reading from the
+floppy disk. (faulty disk or centering problems)</p>
+</div>
+</section>
+<section id="ren-renaming-files-and-programs">
+<h2>REN - Renaming files and programs<a class="headerlink" href="#ren-renaming-files-and-programs" title="Permalink to this heading"></a></h2>
+<div class="admonition-syntax admonition">
+<p class="admonition-title">Syntax:</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">REN</span><span class="w"> </span><span class="s2">&quot;name1&quot;</span><span class="p">,</span><span class="s2">&quot;name2&quot;</span>
+<span class="s2">&quot;name1&quot;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="vg">File</span><span class="o">/</span><span class="vg">program</span><span class="w"> </span><span class="vg">name</span><span class="p">,</span><span class="w"> </span><span class="vg">old</span><span class="p">,</span><span class="w"> </span><span class="vg">max</span><span class="o">.</span><span class="w"> </span><span class="il">8</span><span class="w"> </span><span class="vg">characters</span><span class="p">,</span>
+<span class="w">          </span><span class="vg">enclosed</span><span class="w"> </span><span class="vg">in</span><span class="w"> </span><span class="vg">quotation</span><span class="w"> </span><span class="vg">marks</span><span class="o">.</span>
+<span class="s2">&quot;name2&quot;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="vg">File</span><span class="o">/</span><span class="vg">program</span><span class="w"> </span><span class="vg">name</span><span class="p">,</span><span class="w"> </span><span class="vg">new</span><span class="p">,</span><span class="w"> </span><span class="vg">max</span><span class="o">.</span><span class="w"> </span><span class="il">8</span><span class="w"> </span><span class="vg">characters</span><span class="p">,</span>
+<span class="w">          </span><span class="vg">enclosed</span><span class="w"> </span><span class="vg">in</span><span class="w"> </span><span class="vg">quotation</span><span class="w"> </span><span class="vg">marks</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Allowed as direct command and in program mode.</p>
+</div>
+<p>A program or file on the disk under the name “name1” is renamed “name2”.</p>
+<div class="hint admonition">
+<p class="admonition-title">Example:</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">REN</span><span class="w"> </span><span class="s2">&quot;OTTO&quot;</span><span class="p">,</span><span class="s2">&quot;ANTON&quot;</span>
+</pre></div>
+</div>
+<p>The “OTTO” file is renamed to “ANTON”.</p>
+</div>
+<div class="error admonition">
+<p class="admonition-title">Possible Errors:</p>
+<p><code class="docutils literal notranslate"><span class="pre">?SYNTAX</span> <span class="pre">ERROR</span></code></p>
+<ul class="simple">
+<li><p>“name1” and/or “name2” are missing.</p></li>
+<li><p>“name1” or “name2 not in quotes</p></li>
+<li><p>names not separated by commas</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">WRITE</span> <span class="pre">PROTECTED</span></code> The disk’s write-protect notch is taped over.</p>
+<p><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">NOT</span> <span class="pre">FOUND</span></code> The file named “name1” is not on the disk.</p>
+<p><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">ALREADY</span> <span class="pre">EXISTS</span></code> The file named “name2” already exists on
+the diskette.</p>
+<p><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> An error occurred while reading from the
+floppy disk. (faulty disk or centering problems)</p>
+</div>
+</section>
+<section id="dcopy-copy-a-program">
+<h2>DCOPY - Copy a program<a class="headerlink" href="#dcopy-copy-a-program" title="Permalink to this heading"></a></h2>
+<div class="admonition-syntax admonition">
+<p class="admonition-title">Syntax:</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">DCOPY</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="s2">&quot;name&quot;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="vg">program</span><span class="w"> </span><span class="vg">name</span><span class="w"> </span><span class="vg">with</span><span class="w"> </span><span class="vg">a</span><span class="w"> </span><span class="vg">maximum</span><span class="w"> </span><span class="vg">of</span><span class="w"> </span><span class="il">8</span><span class="w"> </span><span class="vg">characters</span><span class="p">,</span>
+<span class="w">         </span><span class="vg">enclosed</span><span class="w"> </span><span class="vg">in</span><span class="w"> </span><span class="vg">quotation</span><span class="w"> </span><span class="vg">marks</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Only permitted as a direct command,.</p>
+</div>
+<p>The DCOPY command with specification of a program name causes this
+program to be copied from one diskette to another.</p>
+<p>After entering the command, you will first be prompted to specify the source
+and target drives.</p>
+<div class="hint highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">SOURCE</span><span class="w"> </span><span class="vg">DISK</span><span class="w"> </span><span class="p">(</span><span class="il">1</span><span class="o">/</span><span class="il">2</span><span class="p">)</span><span class="o">?</span>
+<span class="vg">DESTINATION</span><span class="w"> </span><span class="vg">DISK</span><span class="w"> </span><span class="p">(</span><span class="il">1</span><span class="o">/</span><span class="il">2</span><span class="p">)</span><span class="o">?</span>
+</pre></div>
+</div>
+<p>Answer each of these two questions by pressing the ‘1’ or ‘2’ key.</p>
+<p>If you only have one drive, answer ‘1’ to each question.</p>
+<p>You can abort command execution with CTRL/BREAK.</p>
+<p>After selecting the drive, the copying process begins. The copying takes place
+by calling the LOAD and SAVE routines, as they are also used with LOAD and
+BLOAD, or with SAVE and BSAVE.</p>
+<p>For this reason, it is not possible to copy a single data file (file type = D) with
+the DCOPY command, as this is structured differently.
+If you are copying to only one drive (SOURCE DISK = DESTINATION DISK),
+you will be prompted before loading</p>
+<div class="hint highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">INSERT</span><span class="w"> </span><span class="vg">SOURCE</span><span class="w"> </span><span class="vg">DISKETTE</span>
+<span class="p">(</span><span class="vg">PRESS</span><span class="w"> </span><span class="vg">SPACE</span><span class="w"> </span><span class="vg">WHEN</span><span class="w"> </span><span class="vg">READY</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and before writing the prompt</p>
+<div class="hint highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">INSERT</span><span class="w"> </span><span class="vg">DESTINATION</span><span class="w"> </span><span class="vg">DISKETTE</span>
+<span class="p">(</span><span class="vg">PRESS</span><span class="w"> </span><span class="vg">SPACE</span><span class="w"> </span><span class="vg">WHEN</span><span class="w"> </span><span class="vg">READY</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you have inserted the correct diskette, press the spacebar to continue the
+function.</p>
+<p>You can interrupt the copying process at any time with the BREAK button. If
+you do this during the writing process, please note the information on SAVE
+and BSAVE.</p>
+<p>When copying is complete, the message READY appears.</p>
+<div class="hint admonition">
+<p class="admonition-title">Example: (system outputs are marked with ‘&gt;’)</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="vg">READY</span>
+<span class="vg">DCOPY</span><span class="w"> </span><span class="s2">&quot;EMIL&quot;</span>
+<span class="o">&gt;</span><span class="vg">SOURCE</span><span class="w"> </span><span class="vg">DISK</span><span class="w"> </span><span class="p">(</span><span class="il">1</span><span class="o">/</span><span class="il">2</span><span class="p">)</span><span class="o">?</span>
+<span class="nl">1</span><span class="w"></span>
+<span class="o">&gt;</span><span class="vg">DESTINATION</span><span class="w"> </span><span class="vg">DISK</span><span class="w"> </span><span class="p">(</span><span class="il">1</span><span class="o">/</span><span class="il">2</span><span class="p">)</span><span class="o">?</span>
+<span class="nl">1</span><span class="w"></span>
+<span class="o">&gt;</span><span class="vg">INSERT</span><span class="w"> </span><span class="vg">SOURCE</span><span class="w"> </span><span class="vg">DISKETTE</span>
+<span class="o">&gt;</span><span class="p">(</span><span class="vg">PRESS</span><span class="w"> </span><span class="vg">SPACE</span><span class="w"> </span><span class="vg">WHEN</span><span class="w"> </span><span class="vg">READY</span><span class="p">)</span>
+<span class="vg">spacebar</span>
+<span class="o">...</span>
+<span class="o">...</span><span class="w">      </span><span class="vg">loading</span><span class="w"> </span><span class="vg">process</span>
+<span class="o">...</span>
+<span class="o">&gt;</span><span class="vg">INSERT</span><span class="w"> </span><span class="vg">DESTINATION</span><span class="w"> </span><span class="vg">DISKETTE</span>
+<span class="o">&gt;</span><span class="p">(</span><span class="vg">PRESS</span><span class="w"> </span><span class="vg">SPACE</span><span class="w"> </span><span class="vg">WHEN</span><span class="w"> </span><span class="vg">READY</span><span class="p">)</span>
+<span class="vg">spacebar</span>
+<span class="o">...</span>
+<span class="o">...</span><span class="w">      </span><span class="vg">saving</span><span class="w"> </span><span class="vg">process</span>
+<span class="o">...</span>
+<span class="o">&gt;</span><span class="vg">READY</span>
+</pre></div>
+</div>
+<p>The program to be copied overwrites its original memory area in RAM.</p>
+</div>
+<p>After copying is complete, drive 1 is always selected, regardless of a previous DRIVE
+command.</p>
+<div class="error admonition">
+<p class="admonition-title">Possible Errors:</p>
+<p><code class="docutils literal notranslate"><span class="pre">?ILLEGAL</span> <span class="pre">DIRECT</span></code> An attempt was made to call the DCOPY
+command from a program.</p>
+<p><code class="docutils literal notranslate"><span class="pre">?SYNTAX</span> <span class="pre">ERROR</span></code></p>
+<ul class="simple">
+<li><p>no file name specified</p></li>
+<li><p>Filename not in quotes</p></li>
+<li><p>No end of line (RETURN) or command
+separator <code class="docutils literal notranslate"><span class="pre">&quot;:&quot;</span></code> after the file name.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">NOT</span> <span class="pre">FOUND</span></code> No program with the specified name could
+be found on the diskette..</p>
+<p><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">TYPE</span> <span class="pre">MISMATCH</span></code> An attempt was made to copy a data file.</p>
+<p><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">WRITE</span> <span class="pre">PROTECTED</span></code> The target disk’s write-protect notch is taped
+over.</p>
+<p><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">ALREADY</span> <span class="pre">EXISTS</span></code> A program named “name” already exists on
+the target disk.</p>
+<p><code class="docutils literal notranslate"><span class="pre">?DIRECTORY</span> <span class="pre">FULL</span></code> The table of contents of the destination disk
+is full. The program can no longer be
+entered (max. 128 files/programs).</p>
+<p><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">FULL</span></code> There is no more space on the destination
+disk.</p>
+<p><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> An error occurred while reading from the
+floppy disk. (faulty disk or centering problems)</p>
+</div>
+</section>
+<section id="era-delete-a-file-or-program-on-the-floppy-disk">
+<h2>ERA - Delete a file or program on the floppy disk<a class="headerlink" href="#era-delete-a-file-or-program-on-the-floppy-disk" title="Permalink to this heading"></a></h2>
+<div class="admonition-syntax admonition">
+<p class="admonition-title">Syntax:</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">ERA</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="s2">&quot;name&quot;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="vg">File</span><span class="o">/</span><span class="vg">program</span><span class="w"> </span><span class="vg">name</span><span class="p">,</span><span class="w"> </span><span class="vg">max</span><span class="o">.</span><span class="w"> </span><span class="il">8</span><span class="w"> </span><span class="vg">characters</span><span class="p">,</span>
+<span class="w">         </span><span class="vg">enclosed</span><span class="w"> </span><span class="vg">in</span><span class="w"> </span><span class="vg">quotation</span><span class="w"> </span><span class="vg">marks</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Allowed as direct command and in program mode.</p>
+</div>
+<p>A program or data file designated by “name” is deleted from the diskette.
+To do this, the entry in the table of contents is deleted and all sectors occupied
+by this file are released.</p>
+<div class="hint admonition">
+<p class="admonition-title">Example:</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">ERA</span><span class="w"> </span><span class="s2">&quot;DAT1&quot;</span>
+</pre></div>
+</div>
+<p>The file named “DAT1” will be deleted.</p>
+</div>
+<div class="error admonition">
+<p class="admonition-title">Possible Errors:</p>
+<p><code class="docutils literal notranslate"><span class="pre">?SYNTAX</span> <span class="pre">ERROR</span></code></p>
+<ul class="simple">
+<li><p>no file name specified</p></li>
+<li><p>Filename not in quotes</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">WRITE</span> <span class="pre">PROTECTED</span></code> The target disk’s write-protect notch is taped
+over.</p>
+<p><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">NOT</span> <span class="pre">FOUND</span></code> No program with the specified name could
+be found on the diskette..</p>
+<p><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> An error occurred while reading from the
+floppy disk. (faulty disk or centering problems)</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="general.html" class="btn btn-neutral float-left" title="General Instructions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="storage.html" class="btn btn-neutral float-right" title="Storage and processing of data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Gerhard Wolf (translated by Casper).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
