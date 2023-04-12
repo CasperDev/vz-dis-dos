@@ -40,9 +40,8 @@ accessing this drive.
 .. admonition:: Example:
 	:class: hint
 
-	.. code:: z80
+	.. code:: Z80
 		
-		loop:
 		...
 		...
 		DI 				; disable interrupts

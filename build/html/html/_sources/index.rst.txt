@@ -19,7 +19,6 @@ Laser 310/VZ300 DOS 1.2
    :maxdepth: 3
    :caption: Table of Contents:
    
-   test
    Chapter0/index
    Chapter1/index
    Chapter2/index

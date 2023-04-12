@@ -43,7 +43,6 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../test.html">Siała baba mak</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Chapter0/index.html">0. Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Chapter1/index.html">1. The LASER 110, 210 and 310 Disk System</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Chapter2/index.html">2. DOS Operations</a></li>
@@ -129,13 +128,12 @@ LED on the front of the drive lights up.</p>
 accessing this drive.</p>
 <div class="hint admonition">
 <p class="admonition-title">Example:</p>
-<div class="highlight-z80 notranslate"><div class="highlight"><pre><span></span><span class="nl">loop:</span>
-<span class="na">...</span>
+<div class="highlight-Z80 notranslate"><div class="highlight"><pre><span></span><span class="na">...</span>
 <span class="na">...</span>
 <span class="nf">DI</span>              <span class="c1">; disable interrupts</span>
-<span class="nf">LD</span> <span class="no">A</span><span class="p">,</span><span class="mi">80</span><span class="no">H</span>        <span class="c1">; select Drive 2</span>
+<span class="nf">LD</span> <span class="no">A</span><span class="p">,</span><span class="mi">80H</span>        <span class="c1">; select Drive 2</span>
 <span class="nf">LD</span> <span class="p">(</span><span class="no">IY</span><span class="p">+</span><span class="mi">11</span><span class="p">),</span><span class="no">A</span>    <span class="c1">; test</span>
-<span class="nf">CALL</span> <span class="mi">4008</span><span class="no">H</span>      <span class="c1">; turn on the drive</span>
+<span class="nf">CALL</span> <span class="mi">4008H</span>      <span class="c1">; turn on the drive</span>
 <span class="nf">LD</span> <span class="no">BC</span><span class="p">,</span><span class="mi">50</span>        <span class="c1">; 50 ms delay</span>
 <span class="nf">CALL</span> <span class="mi">0x4038</span>
 <span class="nf">CALL</span> <span class="no">loop</span>
@@ -144,7 +142,7 @@ accessing this drive.</p>
 </pre></div>
 </div>
 </div>
-<p class="linemarker linemarker-60">Drive 2 turns on, then the program waits 50ms for stabilization.</p>
+<p class="linemarker linemarker-59">Drive 2 turns on, then the program waits 50ms for stabilization.</p>
 </section>
 
 

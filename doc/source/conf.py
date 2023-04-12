@@ -34,22 +34,63 @@ master_doc = 'index'
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 
-from pygments.lexer import RegexLexer
-from pygments import token
+from pygments.lexer import RegexLexer, include
+from pygments.token import Text, Name, Number, String, Comment, Punctuation
 from sphinx.highlighting import lexers
 
-class MyLangLexer(RegexLexer):
-    name = 'MYLANG'
+class Z80Lexer(RegexLexer):
+    name = 'Z80'
+    aliases = ['z80', 'asm']
+    filenames = ['*.z80', '.asm']
 
+    string = r'"(\\"|[^"])*"'
+    char = r'[\w$.@-]'
+    identifier = r'(?:[a-zA-Z$_]' + char + '*|\.' + char + '+)'
+    number = r'(?:0[xX][a-fA-F0-9]+|[a-fA-F0-9]+[hH]|\$[a-fA-F0-9]+|\d+)'
+    register = r'\b(?i:[abcdefhlir]|ix|iy|af\'?|bc|de|hl|pc|sp|ix[luh]|iy[luh]|[lh]x|x[lh]|[lh]y|y[lh])\b'
+    opcode_jmp = r'(?i:(j[pr]|call|ret)+(\s+n[zc]+|\s+[zc]|\s+p[eo]|\s+[pm])?)'
     tokens = {
         'root': [
-            (r'MyKeyword', token.Keyword),
-            (r'[a-zA-Z]', token.Name),
-            (r'\s', token.Text)
-        ]
+            include('whitespace'),
+            (identifier + ':', Name.Label),
+            (number + ':', Name.Label),
+            (r'\.' + identifier, Name.Attribute, 'directive-args'),
+            (identifier, Name.Function, 'instruction-args'),
+            (r'[\r\n]+', Text)
+        ],
+        'directive-args': [
+            (identifier, Name.Constant),
+            (string, String),
+            (number, Number.Integer),
+            (r'[\r\n]+', Text, '#pop'),
+            include('punctuation'),
+            include('whitespace')
+        ],
+        'instruction-args': [
+            (identifier, Name.Constant),
+            (number, Number.Integer),
+            # Registers
+            (register, Name.Variable),
+            (r"'(.|\\')'?", String.Char),
+            (r'[\r\n]+', Text, '#pop'),
+            include('punctuation'),
+            include('whitespace')
+        ],
+        'whitespace': [
+            (r'[ \t]', Text),
+            (r'//[\w\W]*?(?=\n)', Comment.Single),
+            (r'/[*][\w\W]*?[*]/', Comment.Multiline),
+            (r'[;@].*?(?=\n)', Comment.Single)
+        ],
+        'punctuation': [
+            (r'[-*,.()\[\]!:{}^=#\+\\]+', Punctuation)
+        ],
+        'eol': [
+            (r'[\r\n]+', Text)
+        ],
     }
 
-lexers['MYLANG'] = MyLangLexer(startinline=True)
+lexers['Z80'] = Z80Lexer(startinline=True)
 
 
     

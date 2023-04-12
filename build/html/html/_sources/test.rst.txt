@@ -3,7 +3,7 @@
 Siała baba mak
 ==============
 
-.. code:: z80
+.. code:: Z80
 
 	no keyword
 	op A,1

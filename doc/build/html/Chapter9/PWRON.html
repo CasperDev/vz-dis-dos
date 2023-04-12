@@ -128,13 +128,12 @@ LED on the front of the drive lights up.</p>
 accessing this drive.</p>
 <div class="hint admonition">
 <p class="admonition-title">Example:</p>
-<div class="highlight-z80 notranslate"><div class="highlight"><pre><span></span><span class="nl">loop:</span>
-<span class="na">...</span>
+<div class="highlight-Z80 notranslate"><div class="highlight"><pre><span></span><span class="na">...</span>
 <span class="na">...</span>
 <span class="nf">DI</span>              <span class="c1">; disable interrupts</span>
-<span class="nf">LD</span> <span class="no">A</span><span class="p">,</span><span class="mi">80</span><span class="no">H</span>        <span class="c1">; select Drive 2</span>
+<span class="nf">LD</span> <span class="no">A</span><span class="p">,</span><span class="mi">80H</span>        <span class="c1">; select Drive 2</span>
 <span class="nf">LD</span> <span class="p">(</span><span class="no">IY</span><span class="p">+</span><span class="mi">11</span><span class="p">),</span><span class="no">A</span>    <span class="c1">; test</span>
-<span class="nf">CALL</span> <span class="mi">4008</span><span class="no">H</span>      <span class="c1">; turn on the drive</span>
+<span class="nf">CALL</span> <span class="mi">4008H</span>      <span class="c1">; turn on the drive</span>
 <span class="nf">LD</span> <span class="no">BC</span><span class="p">,</span><span class="mi">50</span>        <span class="c1">; 50 ms delay</span>
 <span class="nf">CALL</span> <span class="mi">0x4038</span>
 <span class="nf">CALL</span> <span class="no">loop</span>
