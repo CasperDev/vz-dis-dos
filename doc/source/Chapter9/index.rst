@@ -125,4 +125,11 @@ write-protected; otherwise, write operations are still performed.
 .. toctree:: 
 
 	PWRON
-	
+	PWROFF
+	ERROR
+	RDMAP
+	CLEAR
+	SVMAP
+	INIT
+	CSI
+

@@ -19,6 +19,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="PWROFF - Turn off a drive" href="PWROFF.html" />
     <link rel="prev" title="9. The most important DOS routines and their application іп machine programs." href="index.html" /> 
 </head>
 
@@ -55,6 +56,13 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">9. The most important DOS routines and their application іп machine programs.</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#call-and-overview">Call and Overview</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">PWRON - Turn on a drive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PWROFF.html">PWROFF - Turn off a drive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ERROR.html">ERROR - Error handling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RDMAP.html">RDMAP - Load allocation Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CLEAR.html">CLEAR - Deleting a sector on the floppy disk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SVMAP.html">SVMAP - Save allocation Map to disk.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="INIT.html">INIT - Initialize disk.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CSI.html">CSI - Interpret command parameters.</a></li>
 </ul>
 </li>
 </ul>
@@ -135,14 +143,13 @@ accessing this drive.</p>
 <span class="nf">LD</span> <span class="p">(</span><span class="no">IY</span><span class="p">+</span><span class="mi">11</span><span class="p">),</span><span class="no">A</span>    <span class="c1">; test</span>
 <span class="nf">CALL</span> <span class="mi">4008H</span>      <span class="c1">; turn on the drive</span>
 <span class="nf">LD</span> <span class="no">BC</span><span class="p">,</span><span class="mi">50</span>        <span class="c1">; 50 ms delay</span>
-<span class="nf">CALL</span> <span class="mi">0x4038</span>
-<span class="nf">CALL</span> <span class="no">loop</span>
+<span class="nf">CALL</span> <span class="mi">4038H</span>
 <span class="na">...</span>
 <span class="na">...</span>
 </pre></div>
 </div>
 </div>
-<p class="linemarker linemarker-59">Drive 2 turns on, then the program waits 50ms for stabilization.</p>
+<p class="linemarker linemarker-58">Drive 2 turns on, then the program waits 50ms for stabilization.</p>
 </section>
 
 
@@ -150,6 +157,7 @@ accessing this drive.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="9. The most important DOS routines and their application іп machine programs." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="PWROFF.html" class="btn btn-neutral float-right" title="PWROFF - Turn off a drive" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

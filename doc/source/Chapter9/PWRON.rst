@@ -49,8 +49,7 @@ accessing this drive.
 		LD (IY+11),A	; test 
 		CALL 4008H 		; turn on the drive
 		LD BC,50 		; 50 ms delay
-		CALL 0x4038
-		CALL loop
+		CALL 4038H
 		...
 		...
 		
