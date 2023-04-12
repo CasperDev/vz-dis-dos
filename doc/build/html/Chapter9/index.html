@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>9. The most important DOS routines and their application іп machine programs. &mdash; Laser310/VZ300 DOS 1.2 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="PWRON - Turn on a drive" href="PWRON.html" />
+    <link rel="prev" title="8. Communication between the DOS and the Floppy Disk Controller" href="../Chapter8/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Laser310/VZ300 DOS 1.2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Chapter0/index.html">0. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter1/index.html">1. The LASER 110, 210 and 310 Disk System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter2/index.html">2. DOS Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter3/index.html">3. The individual DOS commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter4/index.html">4. Error Messages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter5/index.html">5. Programming tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter6/index.html">6. Application example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter7/index.html">7. Technical Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter8/index.html">8. Communication between the DOS and the Floppy Disk Controller</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">9. The most important DOS routines and their application іп machine programs.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#call-and-overview">Call and Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="PWRON.html">PWRON - Turn on a drive</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Laser310/VZ300 DOS 1.2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">9. The most important DOS routines and their application іп machine programs.</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Chapter9/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="the-most-important-dos-routines-and-their-application-machine-programs">
+<h1>9. The most important DOS routines and their application іп machine programs.<a class="headerlink" href="#the-most-important-dos-routines-and-their-application-machine-programs" title="Permalink to this heading"></a></h1>
+<section id="call-and-overview">
+<h2>Call and Overview<a class="headerlink" href="#call-and-overview" title="Permalink to this heading"></a></h2>
+<p>As already mentioned several times, the DOS occupies the address space 4000H to
+5FFFH. It is in ROM chips built into the floppy disk controller. The floppy disk
+controller is connected to the system bus of the computer.</p>
+<p>The presence of a floppy disk controller is determined when the computer is
+switched on by checking a specific byte sequence (AA 55 E7 18). If this byte
+sequence is found, the subsequent initialization routine is called automatically, which
+among other things attaches a BASIC vector so that the special DOS commands can
+be recognized and executed.</p>
+<p>This is the RESTART 10 vector at address 7803H in the BASIC communications
+area. If this vector is called up by BASIC within the command analysis (at address
+1D5AH), the DOS first checks whether a special DOS command is present. If no, the
+program continues with the normal BASIC command execution. If a DOS command
+is recognized, the necessary execution routines are called in DOS.</p>
+<p>The DOS vector area at the end of the memory is also built up by the DOS
+initialization routine and filled with initial values.</p>
+<p>You can also check within a machine program whether a floppy disk controller is
+connected to the system bus by checking the corresponding byte sequence at
+address 4000H.</p>
+<p>The DOS itself consists of a number of self-contained routines. A large part of it can
+also be called from machine programs, so that individual diskette and data handling
+can be programmed and executed there.</p>
+<p>You could use it to edit the existing file system of DOS, but you could also create
+completely new structures and forms of processing, such as the previously
+mentioned files with direct access, which are not supported by DOS.</p>
+<p>Jumping to the individual routines directly at their start addresses would be one of
+the possible uses. However, you would then fix the programs to a D0S version, since
+each time the DOS changes, some of these addresses are also shifted.</p>
+<p>A more elegant solution is to use a jump table at the beginning of the DOS, which
+was created by the manufacturer for this purpose and allows the most important
+subroutines to be called.</p>
+<p>It is called using the Z80 command</p>
+<div class="hint highlight-asm notranslate"><div class="highlight"><pre><span></span><span class="nf">CALL</span><span class="w"> </span><span class="no">xxxxH</span>
+</pre></div>
+</div>
+<p>The following subroutines can be reached via this jump table:</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>Name</p></td>
+<td><p>Call</p></td>
+<td><p>Function</p></td>
+</tr>
+<tr class="row-even"><td><p>PWRON</p></td>
+<td><p>CALL 4008H</p></td>
+<td><p>Turn on the drive</p></td>
+</tr>
+<tr class="row-odd"><td><p>PWROFF</p></td>
+<td><p>CALL 400BH</p></td>
+<td><p>Turn off the drive</p></td>
+</tr>
+<tr class="row-even"><td><p>ERROR</p></td>
+<td><p>CALL 400EH</p></td>
+<td><p>DOS error handling</p></td>
+</tr>
+<tr class="row-odd"><td><p>RDMAP</p></td>
+<td><p>CALL 4011H</p></td>
+<td><p>Load sector occupancy Map</p></td>
+</tr>
+<tr class="row-even"><td><p>CLEAR</p></td>
+<td><p>CALL 4014H</p></td>
+<td><p>Delete sector</p></td>
+</tr>
+<tr class="row-odd"><td><p>SVMAP</p></td>
+<td><p>CALL 4017H</p></td>
+<td><p>Write allocation Map sector</p></td>
+</tr>
+<tr class="row-even"><td><p>INIT</p></td>
+<td><p>CALL 401AH</p></td>
+<td><p>Initialize disk</p></td>
+</tr>
+<tr class="row-odd"><td><p>CSI</p></td>
+<td><p>CALL 401DH</p></td>
+<td><p>Interpret command parameters</p></td>
+</tr>
+<tr class="row-even"><td><p>HEX</p></td>
+<td><p>CALL 4020H</p></td>
+<td><p>Conversion ASCII to HEX</p></td>
+</tr>
+<tr class="row-odd"><td><p>IDAM</p></td>
+<td><p>CALL 4023H</p></td>
+<td><p>Look for the address mark on the diskette</p></td>
+</tr>
+<tr class="row-even"><td><p>CREATE</p></td>
+<td><p>CALL 4026H</p></td>
+<td><p>Write an entry in the table of contents</p></td>
+</tr>
+<tr class="row-odd"><td><p>MAP</p></td>
+<td><p>CALL 4029H</p></td>
+<td><p>Detect a free sector</p></td>
+</tr>
+<tr class="row-even"><td><p>SEARCH</p></td>
+<td><p>CALL 402CH</p></td>
+<td><p>Find file in table of contents</p></td>
+</tr>
+<tr class="row-odd"><td><p>FIND</p></td>
+<td><p>CALL 402FH</p></td>
+<td><p>Look for free space in the table of contents</p></td>
+</tr>
+<tr class="row-even"><td><p>WRITE</p></td>
+<td><p>CALL 4032H</p></td>
+<td><p>Write sector to disk</p></td>
+</tr>
+<tr class="row-odd"><td><p>READ</p></td>
+<td><p>CALL 4035H</p></td>
+<td><p>Read sector from disk</p></td>
+</tr>
+<tr class="row-even"><td><p>DLY</p></td>
+<td><p>CALL 4038H</p></td>
+<td><p>n milliseconds delay</p></td>
+</tr>
+<tr class="row-odd"><td><p>STPIN</p></td>
+<td><p>CALL 403BH</p></td>
+<td><p>Advance head n tracks inward</p></td>
+</tr>
+<tr class="row-even"><td><p>STPOUT</p></td>
+<td><p>CALL 403EH</p></td>
+<td><p>Advance head n tracks outward</p></td>
+</tr>
+<tr class="row-odd"><td><p>LOAD</p></td>
+<td><p>CALL 4041H</p></td>
+<td><p>Load a program</p></td>
+</tr>
+<tr class="row-even"><td><p>SAVE</p></td>
+<td><p>CALL 4044H</p></td>
+<td><p>Save a program</p></td>
+</tr>
+</tbody>
+</table>
+<p>However, before you call one of these subroutines, very specific input parameters
+often have to be set, e.g. entry of the file name in the DOS vector, drive selection in
+the DK field, etc…</p>
+<p>It is also important to know which results such a subroutine returns where and which
+possible error codes are reported.</p>
+<p>You should also know which registers are changed in the subroutines
+so you can save them beforehand.</p>
+<p>The following pages describe each of these subroutines with their input and output
+values, registers used and error codes. In addition, there is a function description
+and an application/call example.</p>
+<p>Two additional functions that you cannot access via the jump table but can easily be
+programmed yourself are also listed. These are the drive selection and checking the
+write protection of the floppy disk.</p>
+<p>Be careful not to change register IY in your program. The start address of the DOS
+vectors is entered there during the initialization, which not only the DOS, but also you
+constantly need when using the routines mentioned above.</p>
+<p>Some routines return error codes in register A. In any case, you should check
+whether your call was successful or not.</p>
+<p>All data that is moved between the computer and the floppy disk uses the data buffer
+in the DOS work area as temporary storage. Remember that each time a sector is
+read or written, its content is modified.</p>
+<p>The operating system generates an interrupt every 20 ms, which is normally used to
+update the screen content and evaluate the keyboard.</p>
+<p>However, these interruptions are not desirable for disk accesses, where very precise
+time intervals are important; they would make error-free access impossible.</p>
+<p>For this reason you must switch off the interrupts with DI (disable interrupts) and
+then switch them on again with EI (enable interrupts) before each diskette access.</p>
+<p>In many cases, you must also check whether the diskette to be edited is
+write-protected; otherwise, write operations are still performed.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="PWRON.html">PWRON - Turn on a drive</a></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../Chapter8/index.html" class="btn btn-neutral float-left" title="8. Communication between the DOS and the Floppy Disk Controller" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="PWRON.html" class="btn btn-neutral float-right" title="PWRON - Turn on a drive" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1984, Gerhard Wolf (translation 2023, Casper).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

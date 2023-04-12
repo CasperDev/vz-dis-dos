@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The floppy disk &mdash; Laser310/VZ300 DOS 1.2 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="The Floppy Disk Controller" href="fdc.html" />
+    <link rel="prev" title="Basics of floppy disk storage" href="floppystorage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Laser310/VZ300 DOS 1.2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../test.html">Siała baba mak</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter0/index.html">0. Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">1. The LASER 110, 210 and 310 Disk System</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="components.html">Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="floppystorage.html">Basics of floppy disk storage</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">The floppy disk</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#construction">Construction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#insert-the-disk">Insert the disk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#a-floppy-disk-has-two-sides">A floppy disk has two sides</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#handling-of-floppy-disks">Handling of floppy disks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#record-structure">Record structure</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="fdc.html">The Floppy Disk Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html">Installation of the floppy disk system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="systeminit.html">System initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="techspec.html">Technical specifications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter2/index.html">2. DOS Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter3/index.html">3. The individual DOS commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter4/index.html">4. Error Messages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter5/index.html">5. Programming tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter6/index.html">6. Application example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter7/index.html">7. Technical Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter8/index.html">8. Communication between the DOS and the Floppy Disk Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter9/index.html">9. The most important DOS routines and their application іп machine programs.</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Laser310/VZ300 DOS 1.2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">1. The LASER 110, 210 and 310 Disk System</a></li>
+      <li class="breadcrumb-item active">The floppy disk</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Chapter1/thefloppydisk.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="the-floppy-disk">
+<h1>The floppy disk<a class="headerlink" href="#the-floppy-disk" title="Permalink to this heading"></a></h1>
+<section id="construction">
+<h2>Construction<a class="headerlink" href="#construction" title="Permalink to this heading"></a></h2>
+<p class="linemarker linemarker-9">Due to the fact that the disk is pressed against the read/write head, it is evident that
+no solid disk can be used as the base material. A flexible, dimensionally stable
+plastic material (usually a mylar sheet) is used that is coated with iron oxide. This is
+where the English name “floppy disk” comes from.</p>
+<p class="linemarker linemarker-14">For better handling and to protect the coating, the disc is packed in a rigid sleeve
+with a felt-like lining.</p>
+<p class="linemarker linemarker-17">The lining fulfills three essential tasks:</p>
+<ul class="simple">
+<li><p class="linemarker linemarker-19">Reducing friction between disk and case</p></li>
+<li><p class="linemarker linemarker-20">Dissipate static charges caused by rotation</p></li>
+<li><p class="linemarker linemarker-21">Absorption of dust and dirt particles that have penetrated to protect the coating</p></li>
+</ul>
+<p class="linemarker linemarker-23">The diskette stays in this sleeve at all times, which has three openings for handling:</p>
+<ul class="simple">
+<li><p class="linemarker linemarker-25">a large hole in the middle for the drive mechanism</p></li>
+<li><p class="linemarker linemarker-26">an oval cutout through which the head on the coating can access</p></li>
+<li><p class="linemarker linemarker-27">a small opening as an index hole, which is used by many drives to physically identify the start of a track (not on the LASER DD20).</p></li>
+</ul>
+<p class="linemarker linemarker-29">There is a small rectangular recess on the back of the case. This is device
+write-protection that you can use to protect the contents of a floppy disk.
+If this gap is covered with one of the adhesive strips supplied with the floppy disk
+packaging, writing to this floppy disk is blocked. (Figure 1.4).</p>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../_images/Figure1_4.jpg"><img alt="../_images/Figure1_4.jpg" src="../_images/Figure1_4.jpg" style="width: 640px;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 1.4 Floppy disk</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p class="linemarker linemarker-40">The actual data carrier only consists of a very thin coating of iron oxides and is
+specially treated in order to be able to remain in contact with the read/write head for
+a reasonable length of time. Nevertheless, this layer is abraded over time with
+constant head contact. A running time of 50 - 60 hours can serve as a guide. This
+results in a fairly long service life, since the disk only runs for read/write access and
+the head is not always on the same track.</p>
+<p class="linemarker linemarker-47">Because of this abrasion, malicious gossip also refers to diskette processing as
+“cutting data technology”.</p>
+</section>
+<section id="insert-the-disk">
+<h2>Insert the disk<a class="headerlink" href="#insert-the-disk" title="Permalink to this heading"></a></h2>
+<p class="linemarker linemarker-56">To insert a floppy disk, the locking lever on the drive opening is set horizontally. The
+floppy disk is now pushed into the drive until it stops, with the oval head cutout to the
+front and normally with the label facing up.</p>
+<p class="linemarker linemarker-60">Turning the locking handle to the vertical position presses the drive hole on the
+floppy disk centered on the drive cone of the drive and presses the floppy disk
+against the read/write head.</p>
+<p class="linemarker linemarker-64">Normally this is sufficient and the read/write operations can begin.
+However, as previously mentioned, difficulties can arise when the disk is crookedly
+clipped onto the cone, and unfortunately this often happens with the LASER DD20.
+You should therefore make the following points a rule:</p>
+<ul class="simple">
+<li><p class="linemarker linemarker-69">Use only floppy disks with a reinforcement ring around the drive shaft. This prevents premature wear on the drive hole due to crooked pinching on the cone.</p></li>
+<li><p class="linemarker linemarker-70">Before inserting the disk, center it by hand as best you can in the case.</p></li>
+<li><p class="linemarker linemarker-71">Before writing anything to an initialized floppy disk, test it with the DIR command.</p></li>
+<li><p class="linemarker linemarker-72">After reinitialization, remove the diskette, reinsert it and also test with the DIR command.</p></li>
+</ul>
+<p class="linemarker linemarker-74">If, despite this, the Drive keeps trying to reposition the head during a read process
+(you can hear this from the slightly louder clicking noises), open the locking lever
+briefly with the motor running and close it again immediately. As a rule, the disk pulls
+cleanly onto the cone when the engine is running.</p>
+</section>
+<section id="a-floppy-disk-has-two-sides">
+<h2>A floppy disk has two sides<a class="headerlink" href="#a-floppy-disk-has-two-sides" title="Permalink to this heading"></a></h2>
+<p class="linemarker linemarker-84">Which diskettes do you now obtain for the <strong>LASER DD20</strong>?</p>
+<p class="linemarker linemarker-86">As mentioned, this is a 5 1/4 inch drive, so you will also need 5 1/4 inch floppy disks.
+But there are also many different types, hard sectored or soft sectored, one-sided or
+double-sided, with single density or with double density,</p>
+<p class="linemarker linemarker-90">To sum it up! You will need 5 1/4 inch, soft sectored, single sided, single density
+floppy disks. These bear the designation “SSSD”; this stands for “single sided, single
+density”.</p>
+<p class="linemarker linemarker-94">You can also use double-density floppy disks (SSDD). These have been tested a
+little more thoroughly, are a bit more expensive, but are not absolutely necessary for
+the recording process used with the LASER DD20.</p>
+<p class="linemarker linemarker-98">If you look closely at such a “single-sided” diskette, you will notice that both sides are
+coated and that the oval opening for the head is also present on both sides of the
+case.
+| This means that in principle you can write to both sides of the disk.</p>
+<p class="linemarker linemarker-103">However, the LASER DD20 drive is only equipped with one read/write head. So you
+had to turn the disk to bring it to the other side. If you do this and now try to write
+something on this side, you will get the message “?DISK WRITE PROTECTED”.
+This is due to the lack of a write protect notch on the other side of the case.
+Remember that a floppy disk is write-protected when you tape over the write-protect
+notch.</p>
+<p class="linemarker linemarker-110">No write-protect notch” obviously has the same effect.</p>
+<p class="linemarker linemarker-112">In order to be able to use the second side, only a second write protection notch is
+required, which you can easily attach to the case with a hole punch. Use another
+disk as a template. Don’t worry about damaging the disk itself, it doesn’t reach that
+far into the corners of the case (Figure 1.5).</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/Figure1_5.jpg"><img alt="../_images/Figure1_5.jpg" src="../_images/Figure1_5.jpg" style="width: 640px;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 1.5 Double-sided use of the floppy disk</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p class="linemarker linemarker-123">You have now created 80,000 bytes of additional storage space per diskette.
+However, you should turn the disk over if you want to read or write to the back.</p>
+</section>
+<section id="handling-of-floppy-disks">
+<h2>Handling of floppy disks<a class="headerlink" href="#handling-of-floppy-disks" title="Permalink to this heading"></a></h2>
+<p class="linemarker linemarker-132">In order to protect your data on the floppy disks from destruction as much as
+possible, you should absolutely observe the following rules:</p>
+<ul class="simple">
+<li><p class="linemarker linemarker-135">Always keep floppy disks in their protective cases when they are outside the drive.</p></li>
+<li><p class="linemarker linemarker-136">Make sure there is no disk in the drive when turning the power on or off.</p></li>
+<li><p class="linemarker linemarker-137">Never bring your floppy disks close to strong magnetic fields (transformers,motors, magnets, televisions/monitors, radios, etc.); the magnetic fields emitted there could destroy the data content.</p></li>
+<li><p class="linemarker linemarker-138">Only touch the disk by the sleeve. Avoid touching the magnetizable coating. Also try to clean the coating. Scratches are quick in the surface and you can then forget about the disk.</p></li>
+<li><p class="linemarker linemarker-139">Never expose a floppy disk to direct sunlight or excessive heat.</p></li>
+<li><p class="linemarker linemarker-140">Avoid contaminating the coating with cigarette ash, dust or other things.</p></li>
+<li><p class="linemarker linemarker-141">Only use a fiber pen if you want to write on the label on the case. Ballpoint pens or pencils could damage the coating through the case.</p></li>
+<li><p class="linemarker linemarker-142">Whenever possible, store floppy disks upright (like vinyl records) so that there is no pressure on the sides.</p></li>
+</ul>
+<p class="linemarker linemarker-144">Tips on disk labeling.</p>
+<p class="linemarker linemarker-146">Each floppy disk has a label permanently affixed to its case. You should only use this
+for important information that does not change during the life of a floppy disk. For
+example, it is very helpful to give the diskettes a consecutive number for archiving.
+This would have its best place there. Other useful data include your name and the
+date the disk was first used.</p>
+<p class="linemarker linemarker-152">For information on contents, it is best to use the adhesive labels enclosed with each
+pack of disks, which you can also easily change once in a while. If you do not use
+them to seal any important openings, you can use the entire surface of the case for
+this purpose.</p>
+</section>
+<section id="record-structure">
+<h2>Record structure<a class="headerlink" href="#record-structure" title="Permalink to this heading"></a></h2>
+<p class="linemarker linemarker-160">What determines the amount of data that can be stored on a floppy disk? Each
+system has its own disk storage capacity; with the 5 1/4 inch floppy disks this is
+possible up to 1/2 million bytes (characters) per disk side. With the LASER DD20 it is
+slightly more than 80000 bytes.</p>
+<p class="linemarker linemarker-165">Two key factors affect storage capacity. This is the number of increments with which
+the head moves over the floppy disk and which is equal to the number of data tracks
+to be written on the floppy disk. There are currently Known to vary between 35 and
+89 on different systems.</p>
+<p class="linemarker linemarker-170">The LASER DD20 has 40 tracks.</p>
+<p class="linemarker linemarker-172">The second factor is the way each bit is written to disk. A distinction is made here
+between “single density” (FM) and “double density” (MFM). Double recording density
+also results in approximately twice the capacity. As already mentioned, the LASER
+DD20 records with single density.</p>
+<p class="linemarker linemarker-177">However, the storage capacity could be almost twice as large if the data were written
+to the floppy disk exactly as they are in the memory without any further measures
+being taken. With this you get a lot of data on the diskette, but you can’t do much
+with it anymore. How could you find out a specific piece of information in a jumble of
+bits without having to go through everything from the beginning.</p>
+<p class="linemarker linemarker-183">The benefits of disk storage are realized only when the records are organized in a
+meaningful way by breaking them into small manageable chunks that have a known
+location on the disk. This is the only way to take advantage of direct access. This
+means nothing other than that you have to format the recordings.</p>
+<p class="linemarker linemarker-188">Such formatting is achieved by dividing the recording on the disk within the 40
+different tracks into 16 equal sections (sectors), like a pie. Each of these sectors is
+separately addressable and can be treated individually.</p>
+<p class="linemarker linemarker-192">Each track consists of 16 sectors, in each of which 128 data bytes can be
+accommodated (Figure 1.6). For the LASER DD20 this means a precise storage
+capacity of</p>
+<blockquote>
+<div><p class="linemarker linemarker-196">48 tracks x 16 sectors x 128 bytes = 81920 bytes</p>
+</div></blockquote>
+<p class="linemarker linemarker-198">per disc side.</p>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../_images/Figure1_6.jpg"><img alt="../_images/Figure1_6.jpg" src="../_images/Figure1_6.jpg" style="width: 640px;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 1.6 Arrangement of tracks and sectors on a floppy disk</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p class="linemarker linemarker-206">However, this is not all that needs to be stored on a formatted floppy disk
+Among other things, to be able to access a sector directly without any major fuss,
+mап must know when the information you are looking for is passing under your
+head.</p>
+<p class="linemarker linemarker-211">For this purpose, each sector receives a header, a so-called address field, in which
+the sector number and, in order to recognize head alignment errors, also the track
+number are noted.</p>
+<p class="linemarker linemarker-215">To detect recording errors within a sector, a checksum field is added at the end of the
+sector.</p>
+<p class="linemarker linemarker-218">But this alone is not enough. The head is rarely at the point where a new byte begins
+on the track. As a rule, it will start reading in the middle of a byte. However, since the
+data is stored consecutively bit by bit without gaps, it is impossible to identify the
+beginning of a byte. That is, first of all, a start of recording is found. One speaks here
+of a synchronization of the head.</p>
+<p class="linemarker linemarker-224">For this purpose, specially defined bit sequences and recording marks are written
+onto the diskette, which have an easily recognizable pattern.
+There are two different types of these marks. One precedes each sector address
+field, which is the “address mark”; a second precedes ‘each data field of a sector, the
+“data mark”.</p>
+<p class="linemarker linemarker-230">Each of these markers are preceded by sync bytes, and the markers are
+immediately followed by the data. This allows one to clearly distinguish whether one
+is in front of a data record or in front of an address field.</p>
+<p class="linemarker linemarker-234">Further space is lost on the floppy disk due to “recording gaps” located behind each
+data field of a sector. These gaps are urgently needed in order to be able to
+compensate for fluctuations in the rotational speed within certain limits (Figure 1.7).
+Such a basic structure of the diskette must first be created before any data is written
+to it. This process is called “initialization”; a separate command is available for this.
+During initialization, the subdivision into sectors is carried out and all address and
+data marks are written.</p>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../_images/Figure1_7.jpg"><img alt="../_images/Figure1_7.jpg" src="../_images/Figure1_7.jpg" style="width: 640px;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 1.7 Data structure on a floppy disk</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p class="linemarker linemarker-248">Figure 1.6 shows that the sectors are not numbered consecutively from 1 to 16, but
+in jumps on the diskette. With this little trick, it is possible to read several sectors in a
+row during one revolution of the diskette and thus speed up access considerably.</p>
+<p class="linemarker linemarker-252">After these explanations it should be understandable how the computer can find
+every single sector on the diskette.</p>
+<p class="linemarker linemarker-255">However, you usually don’t want to know anything about individual sectors, you are
+looking for a specific program on the diskette or a file that you have created there. As
+a rule, you will also have more than one program or file stored on a diskette. How do
+you get such a complete record without having to keep track of sectors yourself?</p>
+<p class="linemarker linemarker-260">A whole track of the floppy disk was sacrificed for this purpose. On track 0, the
+outermost track, there is a table of contents on the diskette, in which it is recorded
+which programs and files are stored on the diskette and where they can be found.
+With the DOS command “DIR” you can display this table of contents on the screen.</p>
+<p class="linemarker linemarker-265">The last sector of this track 0 still has a special use. It notes whether each sector of
+the diskette is free or contains valid data.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="floppystorage.html" class="btn btn-neutral float-left" title="Basics of floppy disk storage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="fdc.html" class="btn btn-neutral float-right" title="The Floppy Disk Controller" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1984, Gerhard Wolf (translation 2023, Casper).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
