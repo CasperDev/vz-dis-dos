@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 2. DOS Operations
 =================
@@ -8,3 +9,15 @@
    structure
    useofdos
    commands
+=======
+
+2. DOS Operations
+=================
+
+.. toctree::
+   :maxdepth: 2
+   
+   structure
+   useofdos
+   commands
+>>>>>>> 1c2cccb34fc978694e80aff861a1e8543213b9b8

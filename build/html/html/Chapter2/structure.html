@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
@@ -138,4 +139,150 @@ disk.</p>
   </script> 
 
 </body>
+=======
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Structure of the LASER-DOS &mdash; Laser310/VZ300 DOS 1.2 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Use of DOS commands" href="useofdos.html" />
+    <link rel="prev" title="2. DOS Operations" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Laser310/VZ300 DOS 1.2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Chapter0/index.html">0. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter1/index.html">1. The LASER 110, 210 and 310 Disk System</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. DOS Operations</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Structure of the LASER-DOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="useofdos.html">Use of DOS commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commands.html">Commands - Overview</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter3/index.html">3. The individual DOS commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter4/index.html">4. Error Messages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter5/index.html">5. Programming tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter6/index.html">6. Application example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter7/index.html">7. Technical Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter8/index.html">8. Communication between the DOS and the Floppy Disk Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter9/index.html">9. The most important DOS routines and their application іп machine programs.</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Laser310/VZ300 DOS 1.2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">2. DOS Operations</a></li>
+      <li class="breadcrumb-item active">Structure of the LASER-DOS</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Chapter2/structure.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="structure-of-the-laser-dos">
+<h1>Structure of the LASER-DOS<a class="headerlink" href="#structure-of-the-laser-dos" title="Permalink to this heading"></a></h1>
+<p class="linemarker linemarker-7">The LASER floppy disk operating system, DOS for short (Disk Operating System), is
+an additional program package of approx. 8 KB that has been accommodated in
+ROM modules in the housing of the Floppy Ddisk Controller.</p>
+<p class="linemarker linemarker-11">It includes the memory area from address 16384 (4000Н) to address 24575
+(5FFFH), which is kept free in the LASER computers for such expansion purposes
+(Figure 2.1).</p>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../_images/Figure2_1.jpg"><img alt="../_images/Figure2_1.jpg" src="../_images/Figure2_1.jpg" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 2.1 The memory allocation of the LASER 110, 210, 310 and the VZ200</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p class="linemarker linemarker-23">When the computer is switched on, the existence of the floppy disk operating system
+is automatically recognized by the initialization routine of the standard ROM and
+initialized, i.e. embedded in the BASIC interpreter’s sequence routines.</p>
+<p class="linemarker linemarker-27">The floppy disk operating system has its own command interpreter, which
+independently recognizes the 17 additional input commands and initiates its own
+execution routines.</p>
+<p class="linemarker linemarker-31">The additional commands are exclusively floppy disk operations that enable you to
+save and retrieve programs and also to manage your own data stocks on the floppy
+disk.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="2. DOS Operations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="useofdos.html" class="btn btn-neutral float-right" title="Use of DOS commands" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1984, Gerhard Wolf (translation 2023, Casper).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+>>>>>>> 1c2cccb34fc978694e80aff861a1e8543213b9b8
 </html>

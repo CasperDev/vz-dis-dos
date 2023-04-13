@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>File management functions &mdash; Laser310/VZ300 DOS 1.2 1.0 documentation</title>
@@ -11,10 +11,9 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
@@ -29,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> Laser310/VZ300 DOS 1.2
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Laser310/VZ300 DOS 1.2
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -67,6 +70,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../Chapter6/index.html">6. Application example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Chapter7/index.html">7. Technical Information</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Chapter8/index.html">8. Communication between the DOS and the Floppy Disk Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter9/index.html">9. The most important DOS routines and their application іп machine programs.</a></li>
 </ul>
 
         </div>
@@ -82,7 +86,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">3. The individual DOS commands</a></li>
       <li class="breadcrumb-item active">File management functions</li>
       <li class="wy-breadcrumbs-aside">
@@ -226,7 +230,7 @@ the program on it with “ERA” or give the modified program a different name.<
 <span class="o">&gt;</span><span class="vg">READY</span>
 <span class="k">LIST</span>
 <span class="o">...</span>
-<span class="o">...</span><span class="w">             </span><span class="vg">modify</span>
+<span class="o">...</span><span class="w">     </span><span class="vg">modify</span>
 <span class="o">...</span>
 <span class="vg">ERA</span><span class="w"> </span><span class="s2">&quot;XYZ&quot;</span>
 <span class="o">&gt;</span><span class="vg">READY</span>
@@ -533,9 +537,9 @@ and BSAVE.</p>
 <div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="vg">READY</span>
 <span class="vg">DCOPY</span><span class="w"> </span><span class="s2">&quot;EMIL&quot;</span>
 <span class="o">&gt;</span><span class="vg">SOURCE</span><span class="w"> </span><span class="vg">DISK</span><span class="w"> </span><span class="p">(</span><span class="il">1</span><span class="o">/</span><span class="il">2</span><span class="p">)</span><span class="o">?</span>
-<span class="nl">1</span><span class="w"></span>
+<span class="nl">1</span>
 <span class="o">&gt;</span><span class="vg">DESTINATION</span><span class="w"> </span><span class="vg">DISK</span><span class="w"> </span><span class="p">(</span><span class="il">1</span><span class="o">/</span><span class="il">2</span><span class="p">)</span><span class="o">?</span>
-<span class="nl">1</span><span class="w"></span>
+<span class="nl">1</span>
 <span class="o">&gt;</span><span class="vg">INSERT</span><span class="w"> </span><span class="vg">SOURCE</span><span class="w"> </span><span class="vg">DISKETTE</span>
 <span class="o">&gt;</span><span class="p">(</span><span class="vg">PRESS</span><span class="w"> </span><span class="vg">SPACE</span><span class="w"> </span><span class="vg">WHEN</span><span class="w"> </span><span class="vg">READY</span><span class="p">)</span>
 <span class="vg">spacebar</span>
@@ -631,7 +635,7 @@ floppy disk. (faulty disk or centering problems)</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, Gerhard Wolf (translated by Casper).</p>
+    <p>&#169; Copyright 1984, Gerhard Wolf (translation 2023, Casper).</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

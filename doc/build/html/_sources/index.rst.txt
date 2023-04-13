@@ -28,6 +28,7 @@ Laser 310/VZ300 DOS 1.2
    Chapter6/index
    Chapter7/index
    Chapter8/index
+   Chapter9/index
 
 
 Indices and tables

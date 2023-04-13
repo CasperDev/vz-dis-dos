@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ERROR - Error handling &mdash; Laser310/VZ300 DOS 1.2 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="RDMAP - Load allocation Map" href="RDMAP.html" />
+    <link rel="prev" title="PWROFF - Turn off a drive" href="PWROFF.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Laser310/VZ300 DOS 1.2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Chapter0/index.html">0. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter1/index.html">1. The LASER 110, 210 and 310 Disk System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter2/index.html">2. DOS Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter3/index.html">3. The individual DOS commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter4/index.html">4. Error Messages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter5/index.html">5. Programming tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter6/index.html">6. Application example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter7/index.html">7. Technical Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter8/index.html">8. Communication between the DOS and the Floppy Disk Controller</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">9. The most important DOS routines and their application іп machine programs.</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#call-and-overview">Call and Overview</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="PWRON.html">PWRON - Turn on a drive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PWROFF.html">PWROFF - Turn off a drive</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ERROR - Error handling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RDMAP.html">RDMAP - Load allocation Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CLEAR.html">CLEAR - Deleting a sector on the floppy disk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SVMAP.html">SVMAP - Save allocation Map to disk.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="INIT.html">INIT - Initialize disk.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CSI.html">CSI - Interpret command parameters.</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Laser310/VZ300 DOS 1.2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">9. The most important DOS routines and their application іп machine programs.</a></li>
+      <li class="breadcrumb-item active">ERROR - Error handling</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Chapter9/ERROR.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="error-error-handling">
+<h1>ERROR - Error handling<a class="headerlink" href="#error-error-handling" title="Permalink to this heading"></a></h1>
+<div class="admonition-syntax admonition">
+<p class="admonition-title">Syntax:</p>
+<div class="highlight-Z80 notranslate"><div class="highlight"><pre><span></span><span class="nf">CALL</span> <span class="mi">400EH</span>
+
+<span class="nf">or</span>
+
+<span class="nf">JP</span> <span class="mi">400EH</span>
+</pre></div>
+</div>
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-Input">
+<span id="cmdoption-arg-input"></span><span class="sig-name descname"><span class="pre">Input:</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-arg-Input" title="Permalink to this definition"></a></dt>
+<dd><p>A = Error code (0 - 17)</p>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-Exit">
+<span id="cmdoption-arg-exit"></span><span class="sig-name descname"><span class="pre">Exit:</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-arg-Exit" title="Permalink to this definition"></a></dt>
+<dd><p>Jump to the BASIC interpreter</p>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-Registers">
+<span id="cmdoption-arg-registers"></span><span class="sig-name descname"><span class="pre">Registers</span></span><span class="sig-prename descclassname"> <span class="pre">used:</span></span><a class="headerlink" href="#cmdoption-arg-Registers" title="Permalink to this definition"></a></dt>
+<dd><p>AF, BC. DE, HL</p>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-Error">
+<span id="cmdoption-arg-error"></span><span class="sig-name descname"><span class="pre">Error</span></span><span class="sig-prename descclassname"> <span class="pre">handling:</span></span><a class="headerlink" href="#cmdoption-arg-Error" title="Permalink to this definition"></a></dt>
+<dd><p>none</p>
+</dd></dl>
+
+</div>
+<p>A powered-on drive is powered off. The drive motor stops and the LED on the
+front of the drive goes out.</p>
+<p>An error message is output according to the error code transferred in the A
+register. A possibly switched on drive is switched off (with error code &gt; 1).</p>
+<p>This routine differs from the other routines insofar as it jumps to the BASIC
+interpreter instead of to the calling program.</p>
+<p>The stack pointer is set to the BASIC stack.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>Reg A</p></td>
+<td><p>Generated message</p></td>
+<td><p>Further process</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>none</p></td>
+<td><p>to the BASIC interpreter (1B9AH)</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>?SYNTAX ERROR</p></td>
+<td><p>Release and further expiry about 1997H</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>?FILE ALREADY EXISTS</p></td>
+<td><p>to the BASIC interpreter (1B9AH)</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>?DIRECTORY FULL</p></td>
+<td><p>to the BASIC interpreter (1B9AH)</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>?DISK WRITE PROTECTED</p></td>
+<td><p>to the BASIC interpreter (1B9AH)</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>?FILE NOT OPEN</p></td>
+<td><p>to the BASIC interpreter (1B9AH)</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>?DISK I/O ERROR</p></td>
+<td><p>to the BASIC interpreter (1B9AH)</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>?DISK FULL</p></td>
+<td><p>to the BASIC interpreter (1B9AH)</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>?FILE ALREADY OPEN</p></td>
+<td><p>to the BASIC interpreter (1B9AH)</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>?SECTOR NOT FOUND</p></td>
+<td><p>to the BASIC interpreter (1B9AH)</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>?CHECKSUM ERROR</p></td>
+<td><p>to the BASIC interpreter (1B9AH)</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>?UNSUPPORTED DEVICE</p></td>
+<td><p>to the BASIC interpreter (1B9AH)</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>?FILE TYPE MISMATCH</p></td>
+<td><p>to the BASIC interpreter (1B9AH)</p></td>
+</tr>
+<tr class="row-odd"><td><p>13</p></td>
+<td><p>?FILE NOT FOUND</p></td>
+<td><p>to the BASIC interpreter (1B9AH)</p></td>
+</tr>
+<tr class="row-even"><td><p>14</p></td>
+<td><p>?DISK BUFFER FULL</p></td>
+<td><p>to the BASIC interpreter (1B9AH)</p></td>
+</tr>
+<tr class="row-odd"><td><p>15</p></td>
+<td><p>?ILLEGAL READ</p></td>
+<td><p>to the BASIC interpreter (1B9AH)</p></td>
+</tr>
+<tr class="row-even"><td><p>16</p></td>
+<td><p>?ILLEGAL WRITE</p></td>
+<td><p>to the BASIC interpreter (1B9AH)</p></td>
+</tr>
+<tr class="row-odd"><td><p>17</p></td>
+<td><p>?BREAK</p></td>
+<td><p>to the BREAK routine (1DA0H) in BASIC</p></td>
+</tr>
+</tbody>
+</table>
+<div class="hint admonition">
+<p class="admonition-title">Example:</p>
+<div class="highlight-Z80 notranslate"><div class="highlight"><pre><span></span><span class="na">...</span>
+<span class="nf">LD</span> <span class="no">A</span><span class="p">,</span><span class="mi">7</span>          <span class="c1">; Error code 7</span>
+<span class="nf">CALL</span> <span class="mi">400EH</span>      <span class="c1">; Output message &quot;DISK FULL&quot;</span>
+</pre></div>
+</div>
+<p>The message “?DISK FULL” is output and then BASIC responds with
+READY.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note:</p>
+<p>Using the line number field in the BASIC communication area (78A2H), the
+ERROR routine distinguishes whether it is a direct command or a program
+command.</p>
+<p>If field 78A2H/78A3H contains a value not equal to X’FFFF’, this is interpreted
+as a line number and this is output after the error message (error codes 1-16).</p>
+</div>
+<p>This function can perhaps also be useful when testing machine programs by
+setting specific values in 78A2H/78A3H which, if an error occurs, give you an
+indication of the corresponding point in the program.</p>
+<div class="hint admonition">
+<p class="admonition-title">Example:</p>
+<div class="highlight-Z80 notranslate"><div class="highlight"><pre><span></span><span class="na">...</span>
+<span class="nf">OR</span> <span class="no">A</span>            <span class="c1">; check if error occurred</span>
+<span class="nf">JR</span> <span class="no">Z</span><span class="p">,</span><span class="no">XY</span>         <span class="c1">; no, go on!</span>
+<span class="nf">LD</span> <span class="no">HL</span><span class="p">,</span><span class="mi">10</span>        <span class="c1">; set row identifier</span>
+<span class="nf">JP</span> <span class="mi">400EH</span>        <span class="c1">; call error routine</span>
+<span class="nl">XY:</span> <span class="na">...</span>
+</pre></div>
+</div>
+<p>If A contains a value not equal to 0, the corresponding error message
+is output with information about the location of the occurrence.
+e.g. A= 3, then “?DIRECTORY FULL IN 10”.</p>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="PWROFF.html" class="btn btn-neutral float-left" title="PWROFF - Turn off a drive" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="RDMAP.html" class="btn btn-neutral float-right" title="RDMAP - Load allocation Map" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1984, Gerhard Wolf (translation 2023, Casper).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

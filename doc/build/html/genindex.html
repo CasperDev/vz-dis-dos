@@ -10,10 +10,9 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -26,11 +25,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> Laser310/VZ300 DOS 1.2
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Laser310/VZ300 DOS 1.2
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -47,6 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="Chapter6/index.html">6. Application example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Chapter7/index.html">7. Technical Information</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Chapter8/index.html">8. Communication between the DOS and the Floppy Disk Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Chapter9/index.html">9. The most important DOS routines and their application іп machine programs.</a></li>
 </ul>
 
         </div>
@@ -62,7 +66,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Index</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -147,15 +151,25 @@
 </li>
         <li><a href="Chapter2/commands.html#cmdoption-arg-ERA">ERA</a>
 </li>
+        <li><a href="Chapter9/CLEAR.html#cmdoption-arg-Error">Error</a>, <a href="Chapter9/CSI.html#cmdoption-arg-Error">[1]</a>, <a href="Chapter9/ERROR.html#cmdoption-arg-Error">[2]</a>, <a href="Chapter9/INIT.html#cmdoption-arg-Error">[3]</a>, <a href="Chapter9/PWROFF.html#cmdoption-arg-Error">[4]</a>, <a href="Chapter9/PWRON.html#cmdoption-arg-Error">[5]</a>, <a href="Chapter9/RDMAP.html#cmdoption-arg-Error">[6]</a>, <a href="Chapter9/SVMAP.html#cmdoption-arg-Error">[7]</a>
+</li>
+        <li><a href="Chapter9/CLEAR.html#cmdoption-arg-Exit">Exit:</a>, <a href="Chapter9/CSI.html#cmdoption-arg-Exit">[1]</a>, <a href="Chapter9/ERROR.html#cmdoption-arg-Exit">[2]</a>, <a href="Chapter9/INIT.html#cmdoption-arg-Exit">[3]</a>, <a href="Chapter9/PWROFF.html#cmdoption-arg-Exit">[4]</a>, <a href="Chapter9/PWRON.html#cmdoption-arg-Exit">[5]</a>, <a href="Chapter9/RDMAP.html#cmdoption-arg-Exit">[6]</a>, <a href="Chapter9/SVMAP.html#cmdoption-arg-Exit">[7]</a>
+</li>
         <li><a href="Chapter2/commands.html#cmdoption-arg-IN">IN#</a>
 </li>
         <li><a href="Chapter2/commands.html#cmdoption-arg-INIT">INIT</a>
+</li>
+        <li><a href="Chapter9/PWRON.html#cmdoption-arg-Input">Input</a>
+</li>
+        <li><a href="Chapter9/CLEAR.html#cmdoption-arg-Input">Input:</a>, <a href="Chapter9/CSI.html#cmdoption-arg-Input">[1]</a>, <a href="Chapter9/ERROR.html#cmdoption-arg-Input">[2]</a>, <a href="Chapter9/INIT.html#cmdoption-arg-Input">[3]</a>, <a href="Chapter9/PWROFF.html#cmdoption-arg-Input">[4]</a>, <a href="Chapter9/RDMAP.html#cmdoption-arg-Input">[5]</a>, <a href="Chapter9/SVMAP.html#cmdoption-arg-Input">[6]</a>
 </li>
         <li><a href="Chapter2/commands.html#cmdoption-arg-LOAD">LOAD</a>
 </li>
         <li><a href="Chapter2/commands.html#cmdoption-arg-OPEN">OPEN</a>
 </li>
         <li><a href="Chapter2/commands.html#cmdoption-arg-PR">PR#</a>
+</li>
+        <li><a href="Chapter9/CLEAR.html#cmdoption-arg-Registers">Registers</a>, <a href="Chapter9/CSI.html#cmdoption-arg-Registers">[1]</a>, <a href="Chapter9/ERROR.html#cmdoption-arg-Registers">[2]</a>, <a href="Chapter9/INIT.html#cmdoption-arg-Registers">[3]</a>, <a href="Chapter9/PWROFF.html#cmdoption-arg-Registers">[4]</a>, <a href="Chapter9/PWRON.html#cmdoption-arg-Registers">[5]</a>, <a href="Chapter9/RDMAP.html#cmdoption-arg-Registers">[6]</a>, <a href="Chapter9/SVMAP.html#cmdoption-arg-Registers">[7]</a>
 </li>
         <li><a href="Chapter2/commands.html#cmdoption-arg-REN">REN</a>
 </li>
@@ -208,6 +222,22 @@
         <li><a href="Chapter2/commands.html#cmdoption-arg-ERA">command line option</a>
 </li>
       </ul></li>
+      <li>
+    Error
+
+      <ul>
+        <li><a href="Chapter9/CLEAR.html#cmdoption-arg-Error">command line option</a>, <a href="Chapter9/CSI.html#cmdoption-arg-Error">[1]</a>, <a href="Chapter9/ERROR.html#cmdoption-arg-Error">[2]</a>, <a href="Chapter9/INIT.html#cmdoption-arg-Error">[3]</a>, <a href="Chapter9/PWROFF.html#cmdoption-arg-Error">[4]</a>, <a href="Chapter9/PWRON.html#cmdoption-arg-Error">[5]</a>, <a href="Chapter9/RDMAP.html#cmdoption-arg-Error">[6]</a>, <a href="Chapter9/SVMAP.html#cmdoption-arg-Error">[7]</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    Exit:
+
+      <ul>
+        <li><a href="Chapter9/CLEAR.html#cmdoption-arg-Exit">command line option</a>, <a href="Chapter9/CSI.html#cmdoption-arg-Exit">[1]</a>, <a href="Chapter9/ERROR.html#cmdoption-arg-Exit">[2]</a>, <a href="Chapter9/INIT.html#cmdoption-arg-Exit">[3]</a>, <a href="Chapter9/PWROFF.html#cmdoption-arg-Exit">[4]</a>, <a href="Chapter9/PWRON.html#cmdoption-arg-Exit">[5]</a>, <a href="Chapter9/RDMAP.html#cmdoption-arg-Exit">[6]</a>, <a href="Chapter9/SVMAP.html#cmdoption-arg-Exit">[7]</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -221,13 +251,27 @@
         <li><a href="Chapter2/commands.html#cmdoption-arg-IN">command line option</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     INIT
 
       <ul>
         <li><a href="Chapter2/commands.html#cmdoption-arg-INIT">command line option</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    Input
+
+      <ul>
+        <li><a href="Chapter9/PWRON.html#cmdoption-arg-Input">command line option</a>
+</li>
+      </ul></li>
+      <li>
+    Input:
+
+      <ul>
+        <li><a href="Chapter9/CLEAR.html#cmdoption-arg-Input">command line option</a>, <a href="Chapter9/CSI.html#cmdoption-arg-Input">[1]</a>, <a href="Chapter9/ERROR.html#cmdoption-arg-Input">[2]</a>, <a href="Chapter9/INIT.html#cmdoption-arg-Input">[3]</a>, <a href="Chapter9/PWROFF.html#cmdoption-arg-Input">[4]</a>, <a href="Chapter9/RDMAP.html#cmdoption-arg-Input">[5]</a>, <a href="Chapter9/SVMAP.html#cmdoption-arg-Input">[6]</a>
 </li>
       </ul></li>
   </ul></td>
@@ -275,6 +319,13 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    Registers
+
+      <ul>
+        <li><a href="Chapter9/CLEAR.html#cmdoption-arg-Registers">command line option</a>, <a href="Chapter9/CSI.html#cmdoption-arg-Registers">[1]</a>, <a href="Chapter9/ERROR.html#cmdoption-arg-Registers">[2]</a>, <a href="Chapter9/INIT.html#cmdoption-arg-Registers">[3]</a>, <a href="Chapter9/PWROFF.html#cmdoption-arg-Registers">[4]</a>, <a href="Chapter9/PWRON.html#cmdoption-arg-Registers">[5]</a>, <a href="Chapter9/RDMAP.html#cmdoption-arg-Registers">[6]</a>, <a href="Chapter9/SVMAP.html#cmdoption-arg-Registers">[7]</a>
+</li>
+      </ul></li>
       <li>
     REN
 
@@ -325,7 +376,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2023, Gerhard Wolf (translated by Casper).</p>
+    <p>&#169; Copyright 1984, Gerhard Wolf (translation 2023, Casper).</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
