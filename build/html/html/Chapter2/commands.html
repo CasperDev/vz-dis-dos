@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Commands - Overview &mdash; Laser310/VZ300 DOS 1.2 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. The individual DOS commands" href="../Chapter3/index.html" />
+    <link rel="prev" title="Use of DOS commands" href="useofdos.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Laser310/VZ300 DOS 1.2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Chapter0/index.html">0. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter1/index.html">1. The LASER 110, 210 and 310 Disk System</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. DOS Operations</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="structure.html">Structure of the LASER-DOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="useofdos.html">Use of DOS commands</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Commands - Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#general-instructions">General Instructions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file-management-features">File Management Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#storage-and-processing-of-data">Storage and processing of data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter3/index.html">3. The individual DOS commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter4/index.html">4. Error Messages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter5/index.html">5. Programming tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter6/index.html">6. Application example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter7/index.html">7. Technical Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter8/index.html">8. Communication between the DOS and the Floppy Disk Controller</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Laser310/VZ300 DOS 1.2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">2. DOS Operations</a></li>
+      <li class="breadcrumb-item active">Commands - Overview</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Chapter2/commands.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="commands-overview">
+<h1>Commands - Overview<a class="headerlink" href="#commands-overview" title="Permalink to this heading"></a></h1>
+<p class="linemarker linemarker-6">The 17 additional disk commands can be functionally divided into three groups.</p>
+<section id="general-instructions">
+<h2>General Instructions<a class="headerlink" href="#general-instructions" title="Permalink to this heading"></a></h2>
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-INIT">
+<span id="cmdoption-arg-init"></span><span class="sig-name descname"><span class="pre">INIT</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-arg-INIT" title="Permalink to this definition"></a></dt>
+<dd><p class="linemarker linemarker-13">Initialize a floppy disk.</p>
+<p class="linemarker linemarker-15">This command puts the basic structure on the diskette,
+i.e. it is divided into tracks and sectors.</p>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-DRIVE">
+<span id="cmdoption-arg-drive"></span><span class="sig-name descname"><span class="pre">DRIVE</span></span><span class="sig-prename descclassname"> <span class="pre">n</span></span><a class="headerlink" href="#cmdoption-arg-DRIVE" title="Permalink to this definition"></a></dt>
+<dd><p class="linemarker linemarker-20">Drive selection.</p>
+<p class="linemarker linemarker-22">This allows you to select one of the two attachable drives
+for further processing.</p>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-DCOPY">
+<span id="cmdoption-arg-dcopy"></span><span class="sig-name descname"><span class="pre">DCOPY</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-arg-DCOPY" title="Permalink to this definition"></a></dt>
+<dd><p class="linemarker linemarker-27">Copy disks.</p>
+<p class="linemarker linemarker-29">With this command you copy the contents of one floppy
+disk to another.</p>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-STATUS">
+<span id="cmdoption-arg-status"></span><span class="sig-name descname"><span class="pre">STATUS</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-arg-STATUS" title="Permalink to this definition"></a></dt>
+<dd><p class="linemarker linemarker-34">Output diskette status.</p>
+<p class="linemarker linemarker-36">With <strong>“STATUS”</strong> you can display the space still available
+on the diskette.
+(only from DISK BASIC V 1.2)</p>
+</dd></dl>
+
+</section>
+<section id="file-management-features">
+<h2>File Management Features<a class="headerlink" href="#file-management-features" title="Permalink to this heading"></a></h2>
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-DIR">
+<span id="cmdoption-arg-dir"></span><span class="sig-name descname"><span class="pre">DIR</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-arg-DIR" title="Permalink to this definition"></a></dt>
+<dd><p class="linemarker linemarker-45">Output of the table of contents.</p>
+<p class="linemarker linemarker-47">All programs and files stored on the disk are listed on the
+screen.</p>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-SAVE">
+<span id="cmdoption-arg-save"></span><span class="sig-name descname"><span class="pre">SAVE</span></span><span class="sig-prename descclassname"> <span class="pre">&quot;name&quot;</span></span><a class="headerlink" href="#cmdoption-arg-SAVE" title="Permalink to this definition"></a></dt>
+<dd><p class="linemarker linemarker-52">Save a BASIC program.</p>
+<p class="linemarker linemarker-54">A BASIC program in memory is written to disk with
+the filename “name”.</p>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-LOAD">
+<span id="cmdoption-arg-load"></span><span class="sig-name descname"><span class="pre">LOAD</span></span><span class="sig-prename descclassname"> <span class="pre">&quot;name&quot;</span></span><a class="headerlink" href="#cmdoption-arg-LOAD" title="Permalink to this definition"></a></dt>
+<dd><p class="linemarker linemarker-59">Load a BASIC program.</p>
+<p class="linemarker linemarker-61">The BASIC program marked with “name” is read from
+the diskette.</p>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-RUN">
+<span id="cmdoption-arg-run"></span><span class="sig-name descname"><span class="pre">RUN</span></span><span class="sig-prename descclassname"> <span class="pre">&quot;name&quot;</span></span><a class="headerlink" href="#cmdoption-arg-RUN" title="Permalink to this definition"></a></dt>
+<dd><p class="linemarker linemarker-66">Load and start a BASIC program.</p>
+<p class="linemarker linemarker-68">The BASIC program marked with “name” is read
+from the diskette and started immediately.</p>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-BSAVE">
+<span id="cmdoption-arg-bsave"></span><span class="sig-name descname"><span class="pre">BSAVE</span></span><span class="sig-prename descclassname"> <span class="pre">&quot;name&quot;,aaaa,eeee</span></span><a class="headerlink" href="#cmdoption-arg-BSAVE" title="Permalink to this definition"></a></dt>
+<dd><p class="linemarker linemarker-73">Saving a machine program</p>
+<p class="linemarker linemarker-75">A machine program in the memory is written to the
+diskette with the file name “name”.</p>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-BLOAD">
+<span id="cmdoption-arg-bload"></span><span class="sig-name descname"><span class="pre">BLOAD</span></span><span class="sig-prename descclassname"> <span class="pre">&quot;name&quot;</span></span><a class="headerlink" href="#cmdoption-arg-BLOAD" title="Permalink to this definition"></a></dt>
+<dd><p class="linemarker linemarker-80">Loading a machine program.</p>
+<p class="linemarker linemarker-82">The machine program specified with “name” is
+read in from the diskette.</p>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-BRUN">
+<span id="cmdoption-arg-brun"></span><span class="sig-name descname"><span class="pre">BRUN</span></span><span class="sig-prename descclassname"> <span class="pre">&quot;name&quot;</span></span><a class="headerlink" href="#cmdoption-arg-BRUN" title="Permalink to this definition"></a></dt>
+<dd><p class="linemarker linemarker-87">Loading and starting a machine program.</p>
+<p class="linemarker linemarker-89">The machine program specified with “name” is
+read in from the diskette and started.</p>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-REN">
+<span id="cmdoption-arg-ren"></span><span class="sig-name descname"><span class="pre">REN</span></span><span class="sig-prename descclassname"> <span class="pre">&quot;name1&quot;,”name2”</span></span><a class="headerlink" href="#cmdoption-arg-REN" title="Permalink to this definition"></a></dt>
+<dd><p class="linemarker linemarker-94">Rename a file.</p>
+<p class="linemarker linemarker-96">The file named “name1” will be renamed to
+“name2” on the disk.</p>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-ERA">
+<span id="cmdoption-arg-era"></span><span class="sig-name descname"><span class="pre">ERA</span></span><span class="sig-prename descclassname"> <span class="pre">&quot;name&quot;</span></span><a class="headerlink" href="#cmdoption-arg-ERA" title="Permalink to this definition"></a></dt>
+<dd><p class="linemarker linemarker-101">Delete a file.</p>
+<p class="linemarker linemarker-103">The file labeled “name” is deleted from the floppy
+disk.</p>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-0">
+<span class="sig-name descname"><span class="pre">DCOPY</span></span><span class="sig-prename descclassname"> <span class="pre">&quot;name&quot;</span></span><a class="headerlink" href="#cmdoption-arg-0" title="Permalink to this definition"></a></dt>
+<dd><p class="linemarker linemarker-108">Copy a program.</p>
+<p class="linemarker linemarker-110">The BASIC or machine program identified by
+“name” is copied to another diskette.</p>
+</dd></dl>
+
+</section>
+<section id="storage-and-processing-of-data">
+<h2>Storage and processing of data<a class="headerlink" href="#storage-and-processing-of-data" title="Permalink to this heading"></a></h2>
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-OPEN">
+<span id="cmdoption-arg-open"></span><span class="sig-name descname"><span class="pre">OPEN</span></span><span class="sig-prename descclassname"> <span class="pre">&quot;name&quot;,n</span></span><a class="headerlink" href="#cmdoption-arg-OPEN" title="Permalink to this definition"></a></dt>
+<dd><p class="linemarker linemarker-119">Open a data file.</p>
+<p class="linemarker linemarker-121">The data file designated with “name” is opened for
+writing or reading.</p>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-PR">
+<span id="cmdoption-arg-pr"></span><span class="sig-name descname"><span class="pre">PR#</span></span><span class="sig-prename descclassname"> <span class="pre">&quot;name&quot;,var1[,var2…,varn]</span></span><a class="headerlink" href="#cmdoption-arg-PR" title="Permalink to this definition"></a></dt>
+<dd><p class="linemarker linemarker-126">Write іп a data file.</p>
+<p class="linemarker linemarker-128">The variables specified in the command are
+combined into a data record and written to the data
+file designated with “name”.</p>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-IN">
+<span id="cmdoption-arg-in"></span><span class="sig-name descname"><span class="pre">IN#</span></span><span class="sig-prename descclassname"> <span class="pre">&quot;name&quot;,var1[,var2…,varn]</span></span><a class="headerlink" href="#cmdoption-arg-IN" title="Permalink to this definition"></a></dt>
+<dd><p class="linemarker linemarker-134">Reading from a data file.</p>
+<p class="linemarker linemarker-136">A data record is read from the data file denoted by
+“name” and transferred іпto the specified variables.</p>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-CLOSE">
+<span id="cmdoption-arg-close"></span><span class="sig-name descname"><span class="pre">CLOSE</span></span><span class="sig-prename descclassname"> <span class="pre">&quot;name&quot;</span></span><a class="headerlink" href="#cmdoption-arg-CLOSE" title="Permalink to this definition"></a></dt>
+<dd><p class="linemarker linemarker-141">Closing a data file.</p>
+<p class="linemarker linemarker-143">The data file denoted by “name” is closed.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="useofdos.html" class="btn btn-neutral float-left" title="Use of DOS commands" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../Chapter3/index.html" class="btn btn-neutral float-right" title="3. The individual DOS commands" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Gerhard Wolf (translated by Casper).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
