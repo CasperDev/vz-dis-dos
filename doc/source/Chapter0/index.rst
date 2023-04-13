@@ -13,7 +13,7 @@ systems on a home computer, which one can assume is not the first
 line was procured for commercial purposes, but primarily to accommodate a hobby
 to indulge in or to get further training in the field of data processing.
 This book deals specifically with the connection of a floppy disk system
-to a LASER 110, 210, 310 or еven VZ200.
+to a LASER 110, 210, 310 or even VZ200.
 
 It describes in detail the basics and structure of the system and deals with
 detailed with the possibilities of the supplied disk drive system (Disk

@@ -7,7 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'Laser310/VZ300 DOS 1.2'
-copyright = '1984, Gerhard Wolf (translation 2023, Casper)'
+copyright = '1985, Gerhard Wolf (translation 2023, Casper)'
 author = 'Gerhard Wolf (translated by Casper)'
 release = '1.0'
 
@@ -44,6 +44,7 @@ class Z80Lexer(RegexLexer):
     filenames = ['*.z80', '.asm']
 
     string = r'"(\\"|[^"])*"'
+    sstring = r"'(\\'|[^'])*'"
     char = r'[\w$.@-]'
     identifier = r'(?:[a-zA-Z$_]' + char + '*|\.' + char + '+)'
     number = r'(?:0[xX][a-fA-F0-9]+|[a-fA-F0-9]+[hH]|\$[a-fA-F0-9]+|\d+)'
@@ -60,6 +61,7 @@ class Z80Lexer(RegexLexer):
         ],
         'directive-args': [
             (identifier, Name.Constant),
+            (sstring, String),
             (string, String),
             (number, Number.Integer),
             (r'[\r\n]+', Text, '#pop'),
@@ -68,6 +70,8 @@ class Z80Lexer(RegexLexer):
         ],
         'instruction-args': [
             (identifier, Name.Constant),
+            (sstring, String),
+			(string, String),
             (number, Number.Integer),
             # Registers
             (register, Name.Variable),
