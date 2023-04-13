@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>INIT - Initialize disk. &mdash; Laser310/VZ300 DOS 1.2 1.0 documentation</title>
@@ -11,9 +11,10 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
@@ -28,15 +29,11 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
-            Laser310/VZ300 DOS 1.2
+            <a href="../index.html" class="icon icon-home"> Laser310/VZ300 DOS 1.2
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -54,7 +51,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../Chapter7/index.html">7. Technical Information</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Chapter8/index.html">8. Communication between the DOS and the Floppy Disk Controller</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">9. The most important DOS routines and their application іп machine programs.</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="index.html#call-and-overview">Call and Overview</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#call-and-overview">Call and Overview</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#dos-vector-functions">DOS Vector functions</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="PWRON.html">PWRON - Turn on a drive</a></li>
 <li class="toctree-l3"><a class="reference internal" href="PWROFF.html">PWROFF - Turn off a drive</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ERROR.html">ERROR - Error handling</a></li>
@@ -63,8 +61,23 @@
 <li class="toctree-l3"><a class="reference internal" href="SVMAP.html">SVMAP - Save allocation Map to disk.</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">INIT - Initialize disk.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="CSI.html">CSI - Interpret command parameters.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HEX.html">HEX - Conversion ASCII to HEX.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IDAM.html">IDAM - Look for the address mark on the diskette</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CREATE.html">CREATE - Write an entry in the table of contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MAP.html">MAP - Detect a free sector on the disk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEARCH.html">SEARCH - Find file in table of contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FIND.html">FIND - Look for a free entry in table of contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="WRITE.html">WRITE - Write sector to disk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="READ.html">READ - Read sector from disk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DLY.html">DLY - n milliseconds delay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="STPIN.html">STPIN - Advance read/write head n tracks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="STPOUT.html">STPOUT - Reset read/write head n tracks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LOAD.html">LOAD - Loading a program or memory area</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SAVE.html">SAVE - Saving a program or memory area to floppy disk</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#drive-selecting-a-drive">DRIVE - Selecting a drive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#wproct-check-write-protection">WPROCT - Check write protection</a></li>
 </ul>
 </li>
 </ul>
@@ -82,7 +95,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">9. The most important DOS routines and their application іп machine programs.</a></li>
       <li class="breadcrumb-item active">INIT - Initialize disk.</li>
       <li class="wy-breadcrumbs-aside">

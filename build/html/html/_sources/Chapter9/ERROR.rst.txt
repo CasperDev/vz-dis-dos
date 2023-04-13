@@ -48,23 +48,23 @@ The stack pointer is set to the BASIC stack.
 
 	Reg A | Generated message | Further process
 	0 | none | to the BASIC interpreter (1B9AH)
-	1 | ?SYNTAX ERROR | Release and further expiry about 1997H
-	2 | ?FILE ALREADY EXISTS | to the BASIC interpreter (1B9AH)
-	3 | ?DIRECTORY FULL | to the BASIC interpreter (1B9AH)
-	4 | ?DISK WRITE PROTECTED | to the BASIC interpreter (1B9AH)
-	5 | ?FILE NOT OPEN | to the BASIC interpreter (1B9AH)
-	6 | ?DISK I/O ERROR | to the BASIC interpreter (1B9AH)
-	7 | ?DISK FULL | to the BASIC interpreter (1B9AH)
-	8 | ?FILE ALREADY OPEN | to the BASIC interpreter (1B9AH)
-	9 | ?SECTOR NOT FOUND | to the BASIC interpreter (1B9AH)
-	10 | ?CHECKSUM ERROR | to the BASIC interpreter (1B9AH)
-	11 | ?UNSUPPORTED DEVICE | to the BASIC interpreter (1B9AH)
-	12 | ?FILE TYPE MISMATCH | to the BASIC interpreter (1B9AH)
-	13 | ?FILE NOT FOUND | to the BASIC interpreter (1B9AH)
-	14 | ?DISK BUFFER FULL | to the BASIC interpreter (1B9AH)
-	15 | ?ILLEGAL READ | to the BASIC interpreter (1B9AH)
-	16 | ?ILLEGAL WRITE | to the BASIC interpreter (1B9AH)
-	17 | ?BREAK | to the BREAK routine (1DA0H) in BASIC
+	1 | ``?SYNTAX ERROR`` | Release and further expiry about 1997H
+	2 | ``?FILE ALREADY EXISTS`` | to the BASIC interpreter (1B9AH)
+	3 | ``?DIRECTORY FULL`` | to the BASIC interpreter (1B9AH)
+	4 | ``?DISK WRITE PROTECTED`` | to the BASIC interpreter (1B9AH)
+	5 | ``?FILE NOT OPEN`` | to the BASIC interpreter (1B9AH)
+	6 | ``?DISK I/O ERROR`` | to the BASIC interpreter (1B9AH)
+	7 | ``?DISK FULL`` | to the BASIC interpreter (1B9AH)
+	8 | ``?FILE ALREADY OPEN`` | to the BASIC interpreter (1B9AH)
+	9 | ``?SECTOR NOT FOUND`` | to the BASIC interpreter (1B9AH)
+	10 | ``?CHECKSUM ERROR`` | to the BASIC interpreter (1B9AH)
+	11 | ``?UNSUPPORTED DEVICE`` | to the BASIC interpreter (1B9AH)
+	12 | ``?FILE TYPE MISMATCH`` | to the BASIC interpreter (1B9AH)
+	13 | ``?FILE NOT FOUND`` | to the BASIC interpreter (1B9AH)
+	14 | ``?DISK BUFFER FULL`` | to the BASIC interpreter (1B9AH)
+	15 | ``?ILLEGAL READ`` | to the BASIC interpreter (1B9AH)
+	16 | ``?ILLEGAL WRITE`` | to the BASIC interpreter (1B9AH)
+	17 | ``?BREAK`` | to the BREAK routine (1DA0H) in BASIC
 
 .. admonition:: Example:
 	:class: hint

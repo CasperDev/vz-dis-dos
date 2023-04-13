@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 
 7. Technical Information
@@ -11,17 +10,3 @@
    memory
 
    
-=======
-
-
-7. Technical Information
-========================
-
-.. toctree::
-   :maxdepth: 2
-   
-   diskette
-   memory
-
-   
->>>>>>> 1c2cccb34fc978694e80aff861a1e8543213b9b8

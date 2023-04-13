@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STPOUT - Reset read/write head n tracks &mdash; Laser310/VZ300 DOS 1.2 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="LOAD - Loading a program or memory area" href="LOAD.html" />
+    <link rel="prev" title="STPIN - Advance read/write head n tracks" href="STPIN.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Laser310/VZ300 DOS 1.2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Chapter0/index.html">0. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter1/index.html">1. The LASER 110, 210 and 310 Disk System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter2/index.html">2. DOS Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter3/index.html">3. The individual DOS commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter4/index.html">4. Error Messages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter5/index.html">5. Programming tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter6/index.html">6. Application example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter7/index.html">7. Technical Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter8/index.html">8. Communication between the DOS and the Floppy Disk Controller</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">9. The most important DOS routines and their application іп machine programs.</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#call-and-overview">Call and Overview</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#dos-vector-functions">DOS Vector functions</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="PWRON.html">PWRON - Turn on a drive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PWROFF.html">PWROFF - Turn off a drive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ERROR.html">ERROR - Error handling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RDMAP.html">RDMAP - Load allocation Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CLEAR.html">CLEAR - Deleting a sector on the floppy disk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SVMAP.html">SVMAP - Save allocation Map to disk.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="INIT.html">INIT - Initialize disk.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CSI.html">CSI - Interpret command parameters.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HEX.html">HEX - Conversion ASCII to HEX.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IDAM.html">IDAM - Look for the address mark on the diskette</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CREATE.html">CREATE - Write an entry in the table of contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MAP.html">MAP - Detect a free sector on the disk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEARCH.html">SEARCH - Find file in table of contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FIND.html">FIND - Look for a free entry in table of contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="WRITE.html">WRITE - Write sector to disk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="READ.html">READ - Read sector from disk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DLY.html">DLY - n milliseconds delay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="STPIN.html">STPIN - Advance read/write head n tracks</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">STPOUT - Reset read/write head n tracks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LOAD.html">LOAD - Loading a program or memory area</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SAVE.html">SAVE - Saving a program or memory area to floppy disk</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#drive-selecting-a-drive">DRIVE - Selecting a drive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#wproct-check-write-protection">WPROCT - Check write protection</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Laser310/VZ300 DOS 1.2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">9. The most important DOS routines and their application іп machine programs.</a></li>
+      <li class="breadcrumb-item active">STPOUT - Reset read/write head n tracks</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Chapter9/STPOUT.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="stpout-reset-read-write-head-n-tracks">
+<h1>STPOUT - Reset read/write head n tracks<a class="headerlink" href="#stpout-reset-read-write-head-n-tracks" title="Permalink to this heading"></a></h1>
+<div class="admonition-syntax admonition">
+<p class="admonition-title">Syntax:</p>
+<div class="highlight-Z80 notranslate"><div class="highlight"><pre><span></span><span class="nf">CALL</span> <span class="mi">403EH</span>
+</pre></div>
+</div>
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-Input">
+<span id="cmdoption-arg-input"></span><span class="sig-name descname"><span class="pre">Input:</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-arg-Input" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p class="linemarker linemarker-14">The drive must be powered on.</p></li>
+<li><p class="linemarker linemarker-15">B = number of tracks</p></li>
+</ul>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-Exit">
+<span id="cmdoption-arg-exit"></span><span class="sig-name descname"><span class="pre">Exit:</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-arg-Exit" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p class="linemarker linemarker-19">The read/write head was reset the corresponding number of tracks.</p></li>
+<li><p class="linemarker linemarker-20">DTRCK (IY+20) contains the new current track number.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-Registers">
+<span id="cmdoption-arg-registers"></span><span class="sig-name descname"><span class="pre">Registers</span></span><span class="sig-prename descclassname"> <span class="pre">used:</span></span><a class="headerlink" href="#cmdoption-arg-Registers" title="Permalink to this definition"></a></dt>
+<dd><p class="linemarker linemarker-24">AF, BC</p>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-Error">
+<span id="cmdoption-arg-error"></span><span class="sig-name descname"><span class="pre">Error</span></span><span class="sig-prename descclassname"> <span class="pre">handling:</span></span><a class="headerlink" href="#cmdoption-arg-Error" title="Permalink to this definition"></a></dt>
+<dd><p class="linemarker linemarker-28">none</p>
+</dd></dl>
+
+</div>
+<p class="linemarker linemarker-30">The read/write head is reset by the number of tracks contained іп B, but up to
+track 0 at most.</p>
+<div class="hint admonition">
+<p class="admonition-title">Example:</p>
+<div class="highlight-Z80 notranslate"><div class="highlight"><pre><span></span><span class="na">...</span>
+<span class="nf">DI</span>                                      <span class="c1">; disable interrupts</span>
+<span class="nf">LD</span> <span class="p">(</span><span class="no">IY</span><span class="p">+</span><span class="mi">11</span><span class="p">),</span><span class="mi">10H</span>          <span class="c1">; select Drive 1</span>
+<span class="nf">CALL</span> <span class="mi">4008H</span>                      <span class="c1">; and turn on</span>
+<span class="nf">LD</span> <span class="no">BC</span><span class="p">,</span><span class="mi">50</span>                        <span class="c1">; 50 ms delay</span>
+<span class="nf">CALL</span> <span class="mi">4038H</span>
+<span class="nf">LD</span> <span class="no">B</span><span class="p">,</span><span class="mi">5</span>                          <span class="c1">; reset head 5 tracks</span>
+<span class="nf">CALL</span> <span class="mi">403EH</span>
+<span class="nf">CALL</span> <span class="mi">400BH</span>                      <span class="c1">; turn off drive</span>
+<span class="nf">EI</span>                                      <span class="c1">; enable interrupts again</span>
+<span class="na">...</span>
+</pre></div>
+</div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="STPIN.html" class="btn btn-neutral float-left" title="STPIN - Advance read/write head n tracks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="LOAD.html" class="btn btn-neutral float-right" title="LOAD - Loading a program or memory area" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1984, Gerhard Wolf (translation 2023, Casper).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

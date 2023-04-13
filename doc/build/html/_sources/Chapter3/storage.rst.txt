@@ -150,6 +150,7 @@ asks about conversion problems.
 
 .. code:: BASIC
 	:class: hint
+	:force:
 
 	10 CLEAR 1000
 	20 DIM E$(6),F(6)
@@ -162,7 +163,7 @@ asks about conversion problems.
 	110 PRINT: FOR I%=0 TO 6
 	120 PRINT TAB(4); USING "(## ) % % ";I%,E$(I%)
 	130 NEXT
-	140 PRINT AT320, "WHICH CONVERSION (0-6)";
+	140 PRINT @320, "WHICH CONVERSION (0-6)";
 	150 INPUT W%: IF W% > 6 THEN 190
 	160 INPUT "ENGLISH VALUE";V
 	170 PRINT "THE METRIC VALUE IS" V*F(W%)

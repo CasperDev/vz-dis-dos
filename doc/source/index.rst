@@ -5,7 +5,7 @@
 
 
 Laser 310/VZ300 DOS 1.2
-=======================
+***********************
 
 
 .. figure:: _static/LaserDOS-0000.jpg
@@ -16,7 +16,6 @@ Laser 310/VZ300 DOS 1.2
 
 
 .. toctree::
-   :maxdepth: 3
    :caption: Table of Contents:
    
    Chapter0/index
@@ -31,9 +30,3 @@ Laser 310/VZ300 DOS 1.2
    Chapter9/index
 
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

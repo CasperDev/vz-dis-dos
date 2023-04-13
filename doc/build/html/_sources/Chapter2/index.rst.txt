@@ -2,8 +2,8 @@
 2. DOS Operations
 =================
 
+
 .. toctree::
-   :maxdepth: 2
    
    structure
    useofdos

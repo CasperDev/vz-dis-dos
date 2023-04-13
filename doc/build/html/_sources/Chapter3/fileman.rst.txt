@@ -85,8 +85,7 @@ READY.
 In program mode, the program is continued with the command following
 "SAVE".
 
-.. admonition:: Example:
-	:class: hint
+.. hint:: Example:
 
 	.. code:: BASIC
 

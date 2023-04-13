@@ -6,6 +6,7 @@ Program listing
 
 .. code:: BASIC
 	:class: hint
+	:force:
 
 	100 '**************************************************
 	110 '*
@@ -191,7 +192,7 @@ Program listing
 	2400 'HEADER OUT
 	2410 CLS: PRINT HD$: PRINT: RETURN
 	2420 'PLEASE WAIT
-	2460 CLS: PRINT AT 228,"***** PLEASE WAIT *****"
+	2460 CLS: PRINT @228,"***** PLEASE WAIT *****"
 	2470 RETURN
 	2500 'READ DIGIT
 	2510 PRINT: PRINT "PLEASE ENTER NUMBER (0=END)": PRINT

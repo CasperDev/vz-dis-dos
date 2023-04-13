@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
  * _sphinx_javascript_frameworks_compat.js
  * ~~~~~~~~~~
@@ -17,15 +16,6 @@ $u = _.noConflict();
 
 
 /**
-=======
-/* Compatability shim for jQuery and underscores.js.
- *
- * Copyright Sphinx contributors
- * Released under the two clause BSD licence
- */
-
-/**
->>>>>>> 1c2cccb34fc978694e80aff861a1e8543213b9b8
  * small helper function to urldecode strings
  *
  * See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent#Decoding_query_parameters_from_a_URL

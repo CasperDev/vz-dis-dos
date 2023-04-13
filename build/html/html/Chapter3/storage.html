@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
@@ -68,6 +67,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../Chapter6/index.html">6. Application example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Chapter7/index.html">7. Technical Information</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Chapter8/index.html">8. Communication between the DOS and the Floppy Disk Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter9/index.html">9. The most important DOS routines and their application іп machine programs.</a></li>
 </ul>
 
         </div>
@@ -243,7 +243,7 @@ asks about conversion problems.</p>
 <span class="nl">110</span><span class="w"> </span><span class="kr">PRINT</span><span class="o">:</span><span class="w"> </span><span class="kr">FOR</span><span class="w"> </span><span class="vg">I</span><span class="o">%=</span><span class="il">0</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="il">6</span>
 <span class="nl">120</span><span class="w"> </span><span class="kr">PRINT</span><span class="w"> </span><span class="kr">TAB</span><span class="p">(</span><span class="il">4</span><span class="p">);</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="s2">&quot;(## ) % % &quot;</span><span class="p">;</span><span class="vg">I</span><span class="o">%</span><span class="p">,</span><span class="vg">E$</span><span class="p">(</span><span class="vg">I</span><span class="o">%</span><span class="p">)</span>
 <span class="nl">130</span><span class="w"> </span><span class="kr">NEXT</span>
-<span class="nl">140</span><span class="w"> </span><span class="kr">PRINT</span><span class="w"> </span><span class="vg">AT320</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;WHICH CONVERSION (0-6)&quot;</span><span class="p">;</span>
+<span class="nl">140</span><span class="w"> </span><span class="kr">PRINT</span><span class="w"> </span><span class="err">@</span><span class="il">320</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;WHICH CONVERSION (0-6)&quot;</span><span class="p">;</span>
 <span class="nl">150</span><span class="w"> </span><span class="kr">INPUT</span><span class="w"> </span><span class="vg">W</span><span class="o">%:</span><span class="w"> </span><span class="kr">IF</span><span class="w"> </span><span class="vg">W</span><span class="o">%</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="il">6</span><span class="w"> </span><span class="kr">THEN</span><span class="w"> </span><span class="il">190</span>
 <span class="nl">160</span><span class="w"> </span><span class="kr">INPUT</span><span class="w"> </span><span class="s2">&quot;ENGLISH VALUE&quot;</span><span class="p">;</span><span class="vg">V</span>
 <span class="nl">170</span><span class="w"> </span><span class="kr">PRINT</span><span class="w"> </span><span class="s2">&quot;THE METRIC VALUE IS&quot;</span><span class="w"> </span><span class="vg">V</span><span class="o">*</span><span class="vg">F</span><span class="p">(</span><span class="vg">W</span><span class="o">%</span><span class="p">)</span>
@@ -251,7 +251,7 @@ asks about conversion problems.</p>
 <span class="nl">190</span><span class="w"> </span><span class="kr">GOTO</span><span class="w"> </span><span class="nl">100</span>
 </pre></div>
 </div>
-<p class="linemarker linemarker-173">Line 30 opens the file for input. Reading begins at the beginning of the file.
+<p class="linemarker linemarker-174">Line 30 opens the file for input. Reading begins at the beginning of the file.
 In line 50, a data set with the elements E$ (unit) and F (factor) is read and distributed
 to the matrices. <br />
 Note that the variable list when reading in is the same as the write command in the
@@ -260,24 +260,24 @@ In line 70 the file is closed again. <br /></p>
 </section>
 <section id="updating-a-file">
 <h3>Updating a file<a class="headerlink" href="#updating-a-file" title="Permalink to this heading"></a></h3>
-<p class="linemarker linemarker-183">If you want to add one or more records to an existing file, open this file for writing
+<p class="linemarker linemarker-184">If you want to add one or more records to an existing file, open this file for writing
 and simply enter additional data records with PR#, which will be appended to the
 existing database.</p>
-<p class="linemarker linemarker-187">If you want to change data within a file, we recommend the following procedure (not
+<p class="linemarker linemarker-188">If you want to change data within a file, we recommend the following procedure (not
 with DISK BASIC V1.0).</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><p class="linemarker linemarker-190">Open the file to be edited for reading.</p></li>
-<li><p class="linemarker linemarker-191">Open a second new file for writing</p></li>
-<li><p class="linemarker linemarker-192">Read a record and edit the data</p></li>
-<li><p class="linemarker linemarker-193">Write the record to the new file</p></li>
-<li><p class="linemarker linemarker-194">Repeat points 3 and 4 to the end of the file</p></li>
-<li><p class="linemarker linemarker-195">Close both files</p></li>
-<li><p class="linemarker linemarker-196">Delete the source file</p></li>
-<li><p class="linemarker linemarker-197">Rename the new file to the original file</p></li>
+<li><p class="linemarker linemarker-191">Open the file to be edited for reading.</p></li>
+<li><p class="linemarker linemarker-192">Open a second new file for writing</p></li>
+<li><p class="linemarker linemarker-193">Read a record and edit the data</p></li>
+<li><p class="linemarker linemarker-194">Write the record to the new file</p></li>
+<li><p class="linemarker linemarker-195">Repeat points 3 and 4 to the end of the file</p></li>
+<li><p class="linemarker linemarker-196">Close both files</p></li>
+<li><p class="linemarker linemarker-197">Delete the source file</p></li>
+<li><p class="linemarker linemarker-198">Rename the new file to the original file</p></li>
 </ol>
 </div></blockquote>
-<p class="linemarker linemarker-199">With DISK BASIC V1.0, the only solution is to read the file to be processed
+<p class="linemarker linemarker-200">With DISK BASIC V1.0, the only solution is to read the file to be processed
 completely іп the memory, process it and write it completely into the new file.
 However, this limits the size of the file to the available memory.</p>
 </section>
@@ -294,17 +294,17 @@ However, this limits the size of the file to the available memory.</p>
 <span class="w">    </span><span class="il">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="vg">Write</span>
 </pre></div>
 </div>
-<p class="linemarker linemarker-219">Permitted only in program mode.</p>
+<p class="linemarker linemarker-220">Permitted only in program mode.</p>
 </div>
-<p class="linemarker linemarker-221">The OPEN command opens a data file (type = <code class="docutils literal notranslate"><span class="pre">D</span></code>) for writing or reading.</p>
-<p class="linemarker linemarker-223">The OPEN command creates a file control block internally for each open file,
+<p class="linemarker linemarker-222">The OPEN command opens a data file (type = <code class="docutils literal notranslate"><span class="pre">D</span></code>) for writing or reading.</p>
+<p class="linemarker linemarker-224">The OPEN command creates a file control block internally for each open file,
 which contains function codes and pointers.</p>
-<p class="linemarker linemarker-226">Furthermore, the following is positioned on the data according to the access
+<p class="linemarker linemarker-227">Furthermore, the following is positioned on the data according to the access
 code:
 * When reading, always at the beginning of the file
 * When writing to a new file, to the beginning of the file
 * When writing to an existing file at the end of the file,</p>
-<p class="linemarker linemarker-232">Since there are only two file control blocks in the system, only two files can be
+<p class="linemarker linemarker-233">Since there are only two file control blocks in the system, only two files can be
 open at a time. The type of access is irrelevant, both can be opened for
 writing, both for reading or one for reading and the second for writing (see
 restriction DISK BASIC V1.0 on the previous pages).</p>
@@ -313,36 +313,36 @@ restriction DISK BASIC V1.0 on the previous pages).</p>
 <div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="kr">OPEN</span><span class="w"> </span><span class="s2">&quot;TEST&quot;</span><span class="p">,</span><span class="il">0</span>
 </pre></div>
 </div>
-<p class="linemarker linemarker-244">The “TEST” data file is opened for reading.</p>
+<p class="linemarker linemarker-245">The “TEST” data file is opened for reading.</p>
 </div>
-<p class="linemarker linemarker-246">A data file can only be opened once at a time. Attempting to open the same
+<p class="linemarker linemarker-247">A data file can only be opened once at a time. Attempting to open the same
 file again results in an error message.</p>
-<p class="linemarker linemarker-249">Since the file control blocks (FCB) are located outside the BASIC programs, a
+<p class="linemarker linemarker-250">Since the file control blocks (FCB) are located outside the BASIC programs, a
 file remains open if the calling program was aborted before the CLOSE call
 due to an error or by pressing the BREAK key and is perhaps no longer in
 memory. Such a file can no longer be opened without further ado.</p>
-<p class="linemarker linemarker-254">If it happen that a BASIC program is aborted without properly closing its files,
+<p class="linemarker linemarker-255">If it happen that a BASIC program is aborted without properly closing its files,
 you should do so with a direct command (<strong>CLOSE “filename”</strong>).</p>
 <div class="error admonition">
 <p class="admonition-title">Possible Errors:</p>
-<p class="linemarker linemarker-260"><code class="docutils literal notranslate"><span class="pre">?ILLEGAL</span> <span class="pre">DIRECT</span></code> An attempt was made to execute the OPEN
+<p class="linemarker linemarker-261"><code class="docutils literal notranslate"><span class="pre">?ILLEGAL</span> <span class="pre">DIRECT</span></code> An attempt was made to execute the OPEN
 command in direct mode.</p>
-<p class="linemarker linemarker-263"><code class="docutils literal notranslate"><span class="pre">?SYNTAX</span> <span class="pre">ERROR</span></code></p>
+<p class="linemarker linemarker-264"><code class="docutils literal notranslate"><span class="pre">?SYNTAX</span> <span class="pre">ERROR</span></code></p>
 <ul class="simple">
-<li><p class="linemarker linemarker-265">one or both parameters are missing</p></li>
-<li><p class="linemarker linemarker-266">no comma as separator</p></li>
-<li><p class="linemarker linemarker-267">filename not in quotes</p></li>
-<li><p class="linemarker linemarker-268">access type not 0 or 1</p></li>
+<li><p class="linemarker linemarker-266">one or both parameters are missing</p></li>
+<li><p class="linemarker linemarker-267">no comma as separator</p></li>
+<li><p class="linemarker linemarker-268">filename not in quotes</p></li>
+<li><p class="linemarker linemarker-269">access type not 0 or 1</p></li>
 </ul>
-<p class="linemarker linemarker-270"><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">ALREADY</span> <span class="pre">OPEN</span></code> File is already open, if necessary close it
+<p class="linemarker linemarker-271"><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">ALREADY</span> <span class="pre">OPEN</span></code> File is already open, if necessary close it
 with the direct command “CLOSE”.</p>
-<p class="linemarker linemarker-273"><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">TYPE</span> <span class="pre">MISMATCH</span></code> The file addressed in the OPEN command is
+<p class="linemarker linemarker-274"><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">TYPE</span> <span class="pre">MISMATCH</span></code> The file addressed in the OPEN command is
 not a data file</p>
-<p class="linemarker linemarker-276"><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">NOT</span> <span class="pre">FOUND</span></code> A file to be opened for reading does not exist
+<p class="linemarker linemarker-277"><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">NOT</span> <span class="pre">FOUND</span></code> A file to be opened for reading does not exist
 on the diskette.</p>
-<p class="linemarker linemarker-279"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">BUFFER</span> <span class="pre">FULL</span></code> Two files are already open and no more file
+<p class="linemarker linemarker-280"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">BUFFER</span> <span class="pre">FULL</span></code> Two files are already open and no more file
 control block is available.</p>
-<p class="linemarker linemarker-282"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> An error occurred while reading from the
+<p class="linemarker linemarker-283"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> An error occurred while reading from the
 floppy disk.</p>
 </div>
 </section>
@@ -357,11 +357,11 @@ floppy disk.</p>
 <span class="w">            </span><span class="vg">The</span><span class="w"> </span><span class="vg">individual</span><span class="w"> </span><span class="vg">elements</span><span class="w"> </span><span class="vg">are</span><span class="w"> </span><span class="vg">to</span><span class="w"> </span><span class="vg">be</span><span class="w"> </span><span class="vg">separated</span><span class="w"> </span><span class="vg">by</span><span class="w"> </span><span class="vg">commas</span>
 </pre></div>
 </div>
-<p class="linemarker linemarker-298">Permitted only in program mode.</p>
+<p class="linemarker linemarker-299">Permitted only in program mode.</p>
 </div>
-<p class="linemarker linemarker-300">Assembles a data record from the values in the element list and causes it to
+<p class="linemarker linemarker-301">Assembles a data record from the values in the element list and causes it to
 be written to the data file.</p>
-<p class="linemarker linemarker-303">This must first have been opened for writing with an OPEN command.</p>
+<p class="linemarker linemarker-304">This must first have been opened for writing with an OPEN command.</p>
 <div class="hint admonition">
 <p class="admonition-title">Example:</p>
 <div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="nl">200</span><span class="w"> </span><span class="vg">A1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">-40.456</span><span class="o">:</span><span class="w"> </span><span class="vg">B$</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;STRING-VALUE&quot;</span>
@@ -372,51 +372,51 @@ be written to the data file.</p>
 </pre></div>
 </div>
 </div>
-<p class="linemarker linemarker-316">After opening the “TEST” file in line 210, a data record is compiled in line 220
+<p class="linemarker linemarker-317">After opening the “TEST” file in line 210, a data record is compiled in line 220
 and written to this file.</p>
-<p class="linemarker linemarker-319">The data record contains the current values of Al and B$ and also the
+<p class="linemarker linemarker-320">The data record contains the current values of Al and B$ and also the
 character string “THE VAR’S”. The values can later be read in again with an
 IN# command.</p>
-<p class="linemarker linemarker-323">It must be ensured that the element list of the IN# command is the same as
+<p class="linemarker linemarker-324">It must be ensured that the element list of the IN# command is the same as
 that of the PR# command with regard to the number and type of elements.</p>
-<p class="linemarker linemarker-326">The values represented by the item list should not exceed 200 characters in
+<p class="linemarker linemarker-327">The values represented by the item list should not exceed 200 characters in
 total. In addition to the values themselves, this also includes all separators
 (commas) between the values, in the case of numeric values the sign position
 and a trailing space and finally the end of data record identifier (CR).</p>
-<p class="linemarker linemarker-331">The record in the previous example would be 31 characters long</p>
+<p class="linemarker linemarker-332">The record in the previous example would be 31 characters long</p>
 <blockquote>
-<div><p class="linemarker linemarker-333">-40,456 ,STRING VALUE, THAT’S IT</p>
+<div><p class="linemarker linemarker-334">-40,456 ,STRING VALUE, THAT’S IT</p>
 </div></blockquote>
-<p class="linemarker linemarker-335">Unfortunately, when creating the element list, one often does not know exactly
+<p class="linemarker linemarker-336">Unfortunately, when creating the element list, one often does not know exactly
 how large the individual variables will be at the time of storage. Then only
 careful estimation helps. Always stay on the safe side and, if in doubt, split
 your element list into several PR# commands.</p>
-<p class="linemarker linemarker-340">Unfortunately, the PR# command does not notice when a data record is too
+<p class="linemarker linemarker-341">Unfortunately, the PR# command does not notice when a data record is too
 long. This is simply written to the diskette in its entirety. Reading in with the
 IN# command then causes problems, whereby in the simplest case “only”
 data is lost.</p>
 <div class="error admonition">
 <p class="admonition-title">Possible Errors:</p>
-<p class="linemarker linemarker-348"><code class="docutils literal notranslate"><span class="pre">?ILLEGAL</span> <span class="pre">DIRECT</span></code> An attempt was made to execute the PR#
+<p class="linemarker linemarker-349"><code class="docutils literal notranslate"><span class="pre">?ILLEGAL</span> <span class="pre">DIRECT</span></code> An attempt was made to execute the PR#
 command in direct mode.</p>
-<p class="linemarker linemarker-351"><code class="docutils literal notranslate"><span class="pre">?SYNTAX</span> <span class="pre">ERROR</span></code></p>
+<p class="linemarker linemarker-352"><code class="docutils literal notranslate"><span class="pre">?SYNTAX</span> <span class="pre">ERROR</span></code></p>
 <ul class="simple">
-<li><p class="linemarker linemarker-353">no file name specified</p></li>
-<li><p class="linemarker linemarker-354">Filename not in quotes</p></li>
-<li><p class="linemarker linemarker-355">no item in the list</p></li>
-<li><p class="linemarker linemarker-356">no comma as separator</p></li>
+<li><p class="linemarker linemarker-354">no file name specified</p></li>
+<li><p class="linemarker linemarker-355">Filename not in quotes</p></li>
+<li><p class="linemarker linemarker-356">no item in the list</p></li>
+<li><p class="linemarker linemarker-357">no comma as separator</p></li>
 </ul>
-<p class="linemarker linemarker-358"><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">NOT</span> <span class="pre">OPEN</span></code> File was not previously opened.</p>
-<p class="linemarker linemarker-360"><code class="docutils literal notranslate"><span class="pre">?ILLEGAL</span> <span class="pre">WRITE</span></code> The file has been opened for reading.</p>
-<p class="linemarker linemarker-362"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">WRITE</span> <span class="pre">PROTECTED</span></code> The disk’s write-protect notch is taped over.</p>
-<p class="linemarker linemarker-364"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">FULL</span></code> No more free sectors could be found on the
+<p class="linemarker linemarker-359"><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">NOT</span> <span class="pre">OPEN</span></code> File was not previously opened.</p>
+<p class="linemarker linemarker-361"><code class="docutils literal notranslate"><span class="pre">?ILLEGAL</span> <span class="pre">WRITE</span></code> The file has been opened for reading.</p>
+<p class="linemarker linemarker-363"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">WRITE</span> <span class="pre">PROTECTED</span></code> The disk’s write-protect notch is taped over.</p>
+<p class="linemarker linemarker-365"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">FULL</span></code> No more free sectors could be found on the
 diskette.</p>
-<p class="linemarker linemarker-367"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> An error occurred while reading or writing to
+<p class="linemarker linemarker-368"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> An error occurred while reading or writing to
 the diskette.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p class="linemarker linemarker-372">If one of these errors occurs, the program is terminated with the
+<p class="linemarker linemarker-373">If one of these errors occurs, the program is terminated with the
 corresponding error message. Please note that this file was not closed
 afterwards, you should do this manually.</p>
 </div>
@@ -432,11 +432,11 @@ afterwards, you should do this manually.</p>
 <span class="w">            </span><span class="vg">The</span><span class="w"> </span><span class="vg">individual</span><span class="w"> </span><span class="vg">elements</span><span class="w"> </span><span class="vg">are</span><span class="w"> </span><span class="vg">to</span><span class="w"> </span><span class="vg">be</span><span class="w"> </span><span class="vg">separated</span><span class="w"> </span><span class="vg">by</span><span class="w"> </span><span class="vg">commas</span>
 </pre></div>
 </div>
-<p class="linemarker linemarker-389">Permitted only in program mode.</p>
+<p class="linemarker linemarker-390">Permitted only in program mode.</p>
 </div>
-<p class="linemarker linemarker-391">IN# reads a record from the specified file and assigns the elements of that
+<p class="linemarker linemarker-392">IN# reads a record from the specified file and assigns the elements of that
 record to the specified variables.</p>
-<p class="linemarker linemarker-394">The file must first have been opened for reading with an OPEN command.</p>
+<p class="linemarker linemarker-395">The file must first have been opened for reading with an OPEN command.</p>
 <div class="hint admonition">
 <p class="admonition-title">Example:</p>
 <div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="nl">200</span><span class="w"> </span><span class="kr">OPEN</span><span class="w"> </span><span class="s2">&quot;TEST&quot;</span><span class="p">,</span><span class="il">0</span>
@@ -447,64 +447,64 @@ record to the specified variables.</p>
 </pre></div>
 </div>
 </div>
-<p class="linemarker linemarker-407">This example refers to the data set created in the example of the PR#
+<p class="linemarker linemarker-408">This example refers to the data set created in the example of the PR#
 command in the “TEST” file. The data stored there are assigned to the
 variables of the IN# command in sequence.</p>
-<p class="linemarker linemarker-411">After executing line 210, the variables contain the following values:</p>
+<p class="linemarker linemarker-412">After executing line 210, the variables contain the following values:</p>
 <div class="hint highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">-40.456</span>
 <span class="vg">A$</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;STRING-VALUE&quot;</span>
 <span class="vg">B$</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;THE VAR’S&quot;</span>
 </pre></div>
 </div>
-<p class="linemarker linemarker-420">The element list of the IN# command must correspond to that of the PR#
+<p class="linemarker linemarker-421">The element list of the IN# command must correspond to that of the PR#
 command with regard to the number and type of variables. Likewise, the order
 must be observed for different types, the naming is irrelevant.</p>
-<p class="linemarker linemarker-424">If records are read continuously from a file with IN#, it is difficult to recognize
+<p class="linemarker linemarker-425">If records are read continuously from a file with IN#, it is difficult to recognize
 the end of the file at the right time. There is no special “END OF FILE”
 identifier for LASER-DOS.</p>
-<p class="linemarker linemarker-428">There are various possible solutions:</p>
+<p class="linemarker linemarker-429">There are various possible solutions:</p>
 <ul>
-<li><p class="linemarker linemarker-430">the number of records is known, they are counted with a counter in the
+<li><p class="linemarker linemarker-431">the number of records is known, they are counted with a counter in the
 reading program,</p></li>
-<li><p class="linemarker linemarker-432">a second small file contains the sentence counter for the main file.</p></li>
-<li><p class="linemarker linemarker-433">A short label consisting of only one alphanumeric character (e.g. PR#
+<li><p class="linemarker linemarker-433">a second small file contains the sentence counter for the main file.</p></li>
+<li><p class="linemarker linemarker-434">A short label consisting of only one alphanumeric character (e.g. PR#
 “name”, “А”) is written in front of each correct record.</p>
-<p class="linemarker linemarker-436">In the reading program, this identifier is first read before each reading
+<p class="linemarker linemarker-437">In the reading program, this identifier is first read before each reading
 of a data record (e.g., ІN# “name”, A$) If the receiving string variable is
 then empty, the end of the file has been reached.</p>
 </li>
 </ul>
 <div class="error admonition">
 <p class="admonition-title">Possible Errors:</p>
-<p class="linemarker linemarker-443"><code class="docutils literal notranslate"><span class="pre">?ILLEGAL</span> <span class="pre">DIRECT</span></code> An attempt was made to execute the IR#
+<p class="linemarker linemarker-444"><code class="docutils literal notranslate"><span class="pre">?ILLEGAL</span> <span class="pre">DIRECT</span></code> An attempt was made to execute the IR#
 command in direct mode.</p>
-<p class="linemarker linemarker-446"><code class="docutils literal notranslate"><span class="pre">?SYNTAX</span> <span class="pre">ERROR</span></code></p>
+<p class="linemarker linemarker-447"><code class="docutils literal notranslate"><span class="pre">?SYNTAX</span> <span class="pre">ERROR</span></code></p>
 <ul class="simple">
-<li><p class="linemarker linemarker-448">no file name specified</p></li>
-<li><p class="linemarker linemarker-449">Filename not in quotes</p></li>
-<li><p class="linemarker linemarker-450">no item in the list</p></li>
-<li><p class="linemarker linemarker-451">no comma as separator</p></li>
+<li><p class="linemarker linemarker-449">no file name specified</p></li>
+<li><p class="linemarker linemarker-450">Filename not in quotes</p></li>
+<li><p class="linemarker linemarker-451">no item in the list</p></li>
+<li><p class="linemarker linemarker-452">no comma as separator</p></li>
 </ul>
-<p class="linemarker linemarker-453"><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">NOT</span> <span class="pre">OPEN</span></code> File was not previously opened.</p>
-<p class="linemarker linemarker-455"><code class="docutils literal notranslate"><span class="pre">?ILLEGAL</span> <span class="pre">WRITE</span></code> The file has been opened for reading.</p>
-<p class="linemarker linemarker-457"><code class="docutils literal notranslate"><span class="pre">?ILLEGAL</span> <span class="pre">READ</span></code> The file was opened for writing.</p>
-<p class="linemarker linemarker-459"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> An error occurred while reading or writing to
+<p class="linemarker linemarker-454"><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">NOT</span> <span class="pre">OPEN</span></code> File was not previously opened.</p>
+<p class="linemarker linemarker-456"><code class="docutils literal notranslate"><span class="pre">?ILLEGAL</span> <span class="pre">WRITE</span></code> The file has been opened for reading.</p>
+<p class="linemarker linemarker-458"><code class="docutils literal notranslate"><span class="pre">?ILLEGAL</span> <span class="pre">READ</span></code> The file was opened for writing.</p>
+<p class="linemarker linemarker-460"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> An error occurred while reading or writing to
 the diskette.</p>
-<p class="linemarker linemarker-462"><code class="docutils literal notranslate"><span class="pre">?REDO</span></code> The type of one of the specified variables
+<p class="linemarker linemarker-463"><code class="docutils literal notranslate"><span class="pre">?REDO</span></code> The type of one of the specified variables
 does not match the data read in from the diskette.
 The program continues to run, the variable remains empty.</p>
-<p class="linemarker linemarker-466"><code class="docutils literal notranslate"><span class="pre">?EXTRA</span> <span class="pre">IGNORED</span></code> In the variable list of the IN# command
+<p class="linemarker linemarker-467"><code class="docutils literal notranslate"><span class="pre">?EXTRA</span> <span class="pre">IGNORED</span></code> In the variable list of the IN# command
 fewer variables are given than values
 are present in the data set, the
 numbered values are ignored, the program continues.</p>
-<p class="linemarker linemarker-471"><code class="docutils literal notranslate"><span class="pre">??</span></code> The variable list contains more variables
+<p class="linemarker linemarker-472"><code class="docutils literal notranslate"><span class="pre">??</span></code> The variable list contains more variables
 than there are values in the data set. The
 frogram now expects the missing values to
 be entered via the keyboard.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p class="linemarker linemarker-478">If one of these errors occurs (except <code class="docutils literal notranslate"><span class="pre">REDO</span></code>, <code class="docutils literal notranslate"><span class="pre">EXTRA</span> <span class="pre">IGNORED</span></code> and <code class="docutils literal notranslate"><span class="pre">??</span></code>), the
+<p class="linemarker linemarker-479">If one of these errors occurs (except <code class="docutils literal notranslate"><span class="pre">REDO</span></code>, <code class="docutils literal notranslate"><span class="pre">EXTRA</span> <span class="pre">IGNORED</span></code> and <code class="docutils literal notranslate"><span class="pre">??</span></code>), the
 program is terminated after the corresponding message has been output.
 Please note that this file was not closed, you should do this manually.</p>
 </div>
@@ -518,628 +518,39 @@ Please note that this file was not closed, you should do this manually.</p>
 <span class="w">         </span><span class="vg">enclosed</span><span class="w"> </span><span class="vg">in</span><span class="w"> </span><span class="vg">quotation</span><span class="w"> </span><span class="vg">marks</span><span class="o">.</span>
 </pre></div>
 </div>
-<p class="linemarker linemarker-493">Allowed as direct command and in program mode.</p>
+<p class="linemarker linemarker-494">Allowed as direct command and in program mode.</p>
 </div>
-<p class="linemarker linemarker-495">A previously processed data file is closed with the CLOSE command..</p>
-<p class="linemarker linemarker-497">If a file is open for reading or an inactive file (i.e. the last file access was not to
+<p class="linemarker linemarker-496">A previously processed data file is closed with the CLOSE command..</p>
+<p class="linemarker linemarker-498">If a file is open for reading or an inactive file (i.e. the last file access was not to
 this file) or in direct mode, only the file control block (FCB = File Control Block)
 is released again. Disk access does not take place.</p>
-<p class="linemarker linemarker-501">However, if the CLOSE command is given in program mode and the file to be
+<p class="linemarker linemarker-502">However, if the CLOSE command is given in program mode and the file to be
 closed is open for writing and is currently active, the last sector in the buffer is
 also written back to the diskette so that no data is lost.</p>
-<p class="linemarker linemarker-505">It is good programmer practice to close any open file after use. However, it is
+<p class="linemarker linemarker-506">It is good programmer practice to close any open file after use. However, it is
 essential for output files, unless you accept the possibility of data loss.</p>
 <div class="hint admonition">
 <p class="admonition-title">Example:</p>
 <blockquote>
-<div><p class="linemarker linemarker-511">CLOSE “MAILBOX”</p>
+<div><p class="linemarker linemarker-512">CLOSE “MAILBOX”</p>
 </div></blockquote>
-<p class="linemarker linemarker-513">The “MAILBOX” data file is closed.</p>
+<p class="linemarker linemarker-514">The “MAILBOX” data file is closed.</p>
 </div>
-<p class="linemarker linemarker-515">It is always necessary to close and reopen a file if you want to change the
+<p class="linemarker linemarker-516">It is always necessary to close and reopen a file if you want to change the
 type of access (e.g. from writing to reading).</p>
-<p class="linemarker linemarker-518">If the file to be closed is not open at all, i.e. there is no open file control block
+<p class="linemarker linemarker-519">If the file to be closed is not open at all, i.e. there is no open file control block
 for this file, the CLOSE command is skipped without any error message. This
 is especially useful for closing all files used in a program prophylactically at
 the end without checking which ones are currently open.</p>
 <div class="error admonition">
 <p class="admonition-title">Possible Errors:</p>
-<p class="linemarker linemarker-526"><code class="docutils literal notranslate"><span class="pre">?SYNTAX</span> <span class="pre">ERROR</span></code></p>
+<p class="linemarker linemarker-527"><code class="docutils literal notranslate"><span class="pre">?SYNTAX</span> <span class="pre">ERROR</span></code></p>
 <ul class="simple">
-<li><p class="linemarker linemarker-528">no file name specified</p></li>
-<li><p class="linemarker linemarker-529">Filename not in quotes</p></li>
+<li><p class="linemarker linemarker-529">no file name specified</p></li>
+<li><p class="linemarker linemarker-530">Filename not in quotes</p></li>
 </ul>
-<p class="linemarker linemarker-531"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">WRITE</span> <span class="pre">PROTECTED</span></code> The disk’s write-protect notch is taped over.</p>
-<p class="linemarker linemarker-533"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> An error occurred while reading or writing to
-the diskette.</p>
-</div>
-</section>
-</section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="fileman.html" class="btn btn-neutral float-left" title="File management functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../Chapter4/index.html" class="btn btn-neutral float-right" title="4. Error Messages" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2023, Gerhard Wolf (translated by Casper).</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
-
-</body>
-=======
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Storage and processing of data &mdash; Laser310/VZ300 DOS 1.2 1.0 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="4. Error Messages" href="../Chapter4/index.html" />
-    <link rel="prev" title="File management functions" href="fileman.html" /> 
-</head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
-            Laser310/VZ300 DOS 1.2
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../Chapter0/index.html">0. Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Chapter1/index.html">1. The LASER 110, 210 and 310 Disk System</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Chapter2/index.html">2. DOS Operations</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. The individual DOS commands</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="general.html">General Instructions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fileman.html">File management functions</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Storage and processing of data</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#file-organization-and-access">File organization and access</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#example-of-sequential-output">Example of sequential output:</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#example-of-sequential-input">Example of sequential input:</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#updating-a-file">Updating a file</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#open-open-a-file">OPEN - Open a file.</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pr-writing-records-to-a-file">PR# - Writing records to a file</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#in-reading-records-from-a-file">IN# - Reading records from a file</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#close-closing-a-data-file">CLOSE - Closing a data file</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../Chapter4/index.html">4. Error Messages</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Chapter5/index.html">5. Programming tips</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Chapter6/index.html">6. Application example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Chapter7/index.html">7. Technical Information</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Chapter8/index.html">8. Communication between the DOS and the Floppy Disk Controller</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../Chapter9/index.html">9. The most important DOS routines and their application іп machine programs.</a></li>
-</ul>
-
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Laser310/VZ300 DOS 1.2</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">3. The individual DOS commands</a></li>
-      <li class="breadcrumb-item active">Storage and processing of data</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/Chapter3/storage.rst.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="storage-and-processing-of-data">
-<h1>Storage and processing of data<a class="headerlink" href="#storage-and-processing-of-data" title="Permalink to this heading"></a></h1>
-<section id="file-organization-and-access">
-<h2>File organization and access<a class="headerlink" href="#file-organization-and-access" title="Permalink to this heading"></a></h2>
-<p class="linemarker linemarker-11">The LASER-DOS allows you to save data on the diskette from a BASIC program and
-then process them again.</p>
-<p class="linemarker linemarker-14">This data is stored in special data files with the type code <code class="docutils literal notranslate"><span class="pre">&quot;D&quot;</span></code>.</p>
-<p class="linemarker linemarker-16">The storage form offered is “sequential”. Sequential means that the data in the file is
-stored one after the other, like on a cassette. Reading or writing data always begins
-at the beginning of the file, further read and write calls access the subsequent
-positions of the file.</p>
-<p class="linemarker linemarker-21">In contrast to this is the “direct” type of access (random access), with which any data
-in a file can be accessed directly. Unfortunately, the LASER-DOS does not support
-this type of memory as standard. However, it can easily be reproduced with a little
-knowledge of assembler/machine language and the help routines described in the
-last chapter.</p>
-<p class="linemarker linemarker-27">Sequential access is data flow oriented, i.e. the number of characters for a write or
-read process can vary. This is also referred to as data records of variable length,
-where a data record is the sum of the data elements that are written to or read from
-the diskette with a write or read call.</p>
-<p class="linemarker linemarker-32">Sequential files represent the simplest form of data storage and retrieval. They are
-ideal for storing raw data without wasting a lot of space between each data element.
-Data is read back in the same order as it was written.</p>
-<p class="linemarker linemarker-36">In order to be able to access a data file, it must first be opened. A special OPEN call
-is available for this purpose. With the opening you also specify the type of access,
-whether data should be written or read.</p>
-<p class="linemarker linemarker-40">After completing the data manipulations, each data file should be closed with a CLOSE call.</p>
-<p class="linemarker linemarker-43">When editing data files, there are a few important points to keep in mind:</p>
-<ul>
-<li><p class="linemarker linemarker-45">If a file that does not exist is opened for writing, it is created anew and
-positioned at the start of the file.</p></li>
-<li><p class="linemarker linemarker-48">If an existing file is opened for writing, it is positioned at the end of the file, i.e.
-the file is extended with the following write calls.</p></li>
-<li><p class="linemarker linemarker-51">If you want to rewrite an existing file from the beginning, you must first delete
-it.</p></li>
-<li><p class="linemarker linemarker-54">After opening, reading always begins at the beginning of the file. If you are
-looking for data within a file, you must read over the preceding ones.</p></li>
-<li><p class="linemarker linemarker-57">To update a sequential file, read in the source file and write the updated data
-to a new file.</p></li>
-<li><p class="linemarker linemarker-60">When reading the file, the exact structure of the data record to be read must
-be known. This does not refer to the length of the sentence and the individual
-elements; However, you must know the number of elements and the format of
-each element (string, integer, etc.) and provide an appropriate receiving field
-for each element.</p></li>
-<li><p class="linemarker linemarker-66">Within the file, the data is stored exclusively in ASCII format. The individual
-elements are separated by commas. For example, the number 1.2345 takes
-up 8 bytes of storage, including a space for the sign at the beginning and
-another space at the end. The text “ROBERT MAIER” takes up 12 bytes on
-the disk.</p></li>
-<li><p class="linemarker linemarker-72">A data record should not be longer than 200 bytes, otherwise problems with
-the internal data structure of BASIC will occur when reading.</p>
-<p class="linemarker linemarker-75">The 200 bytes count</p>
-<blockquote>
-<div><ul class="simple">
-<li><p class="linemarker linemarker-77">the individual characters</p></li>
-<li><p class="linemarker linemarker-78">the commas as element separators</p></li>
-<li><p class="linemarker linemarker-79">for numbers, the sign and an additional space</p></li>
-<li><p class="linemarker linemarker-80">a final RETURN (CR) at the end of the sentence</p></li>
-<li><p class="linemarker linemarker-81">A maximum of two files can be opened at the same time, whereby the types
-of access can be the same or mixed.</p></li>
-</ul>
-</div></blockquote>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p class="linemarker linemarker-86">If your system reports DISК-ВАЅІС V1.0, work with one file at a time to be on
-the safe side. The management of two open files is still incorrect there and
-can lead to significant data loss.</p>
-</div>
-</li>
-<li><p class="linemarker linemarker-90">The DOS does not tell you when the end of the file is reached when reading,
-you have to determine this yourself, for example by writing a specific end
-identifier as the last in the file.</p></li>
-</ul>
-<section id="example-of-sequential-output">
-<h3>Example of sequential output:<a class="headerlink" href="#example-of-sequential-output" title="Permalink to this heading"></a></h3>
-<p class="linemarker linemarker-98">We want to store a table of English to metric conversion data.</p>
-<table class="docutils align-center">
-<thead>
-<tr class="row-odd"><th class="head"><p class="linemarker linemarker-1">English unit</p></th>
-<th class="head"><p class="linemarker linemarker-1">Metric unit</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p class="linemarker linemarker-1">1 Inch</p></td>
-<td><p class="linemarker linemarker-1">2.54001cm</p></td>
-</tr>
-<tr class="row-odd"><td><p class="linemarker linemarker-1">1 Mile</p></td>
-<td><p class="linemarker linemarker-1">1.60935 km</p></td>
-</tr>
-<tr class="row-even"><td><p class="linemarker linemarker-1">1 Acre</p></td>
-<td><p class="linemarker linemarker-1">4046.86 qm</p></td>
-</tr>
-<tr class="row-odd"><td><p class="linemarker linemarker-1">1 Cubic Inch</p></td>
-<td><p class="linemarker linemarker-1">0.01639 ltr</p></td>
-</tr>
-<tr class="row-even"><td><p class="linemarker linemarker-1">1 U.S. Gallon</p></td>
-<td><p class="linemarker linemarker-1">3.785 ltr</p></td>
-</tr>
-<tr class="row-odd"><td><p class="linemarker linemarker-1">1 Liquid Quart</p></td>
-<td><p class="linemarker linemarker-1">0.9463 ltr</p></td>
-</tr>
-<tr class="row-even"><td><p class="linemarker linemarker-1">1 lbs</p></td>
-<td><p class="linemarker linemarker-1">0.45359 kg</p></td>
-</tr>
-</tbody>
-</table>
-<p class="linemarker linemarker-114">The data should be structured as follows on the diskette and entered in a data file
-called “ENG&gt;MET”:</p>
-<blockquote>
-<div><p class="linemarker linemarker-117"><strong>“English unit -&gt; Metric unit” , conversion factor</strong></p>
-</div></blockquote>
-<p class="linemarker linemarker-119">e.g. “IN-&gt;CM”, 2.54001</p>
-<p class="linemarker linemarker-121">The following program creates such a file.</p>
-<div class="hint highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="nl">10</span><span class="w"> </span><span class="kr">OPEN</span><span class="w"> </span><span class="s2">&quot;ENG&gt;MET&quot;</span><span class="p">,</span><span class="il">1</span>
-<span class="nl">20</span><span class="w"> </span><span class="kr">FOR</span><span class="w"> </span><span class="vg">I</span><span class="o">%</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="il">1</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="il">7</span>
-<span class="nl">30</span><span class="w"> </span><span class="kr">READ</span><span class="w"> </span><span class="vg">E$</span><span class="p">,</span><span class="vg">F</span>
-<span class="nl">40</span><span class="w"> </span><span class="vg">PR#</span><span class="w"> </span><span class="s2">&quot;ENG&gt;MET&quot;</span><span class="p">,</span><span class="vg">E$</span><span class="p">,</span><span class="vg">F</span>
-<span class="nl">50</span><span class="w"> </span><span class="kr">NEXT</span>
-<span class="nl">60</span><span class="w"> </span><span class="kr">CLOSE</span><span class="w"> </span><span class="s2">&quot;ENG&gt;MET&quot;</span>
-<span class="nl">70</span><span class="w"> </span><span class="kd">DATA</span><span class="w"> </span><span class="s2">&quot;IN-&gt;CM&quot;</span><span class="p">,</span><span class="mf">2.54001</span><span class="p">,</span><span class="s2">&quot;MI-&gt;KM&quot;</span><span class="p">,</span><span class="mf">1.60935</span><span class="p">,</span><span class="s2">&quot;ACRE-&gt;QKM&quot;</span><span class="p">,</span><span class="mf">4046.86</span><span class="vg">E</span><span class="il">-6</span>
-<span class="nl">80</span><span class="w"> </span><span class="kd">DATA</span><span class="w"> </span><span class="s2">&quot;CU.IN-&gt;LTR&quot;</span><span class="p">,</span><span class="mf">1.638716</span><span class="vg">E</span><span class="il">-2</span><span class="p">,</span><span class="s2">&quot;GAL-&gt;LTR&quot;</span><span class="p">,</span><span class="mf">3.785</span>
-<span class="nl">90</span><span class="w"> </span><span class="kd">DATA</span><span class="w"> </span><span class="s2">&quot;LIQ.QT-&gt;LTR&quot;</span><span class="p">,</span><span class="mf">0.9463</span><span class="p">,</span><span class="s2">&quot;LB-&gt;KG&quot;</span><span class="p">,</span><span class="mf">0.45359</span>
-<span class="nl">100</span><span class="w"> </span><span class="kr">END</span>
-</pre></div>
-</div>
-<p class="linemarker linemarker-141">Line 10 creates the file “ENG&gt;MET” and opens it for writing. <br />
-In line 40, one data record is written to the file. <br />
-Line 50 closes the “ENG&gt;MET” file again. <br /></p>
-</section>
-<section id="example-of-sequential-input">
-<h3>Example of sequential input:<a class="headerlink" href="#example-of-sequential-input" title="Permalink to this heading"></a></h3>
-<p class="linemarker linemarker-148">The following program reads the “ENG&gt;MET” file into two parallel matrices and then
-asks about conversion problems.</p>
-<div class="hint highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="nl">10</span><span class="w"> </span><span class="kr">CLEAR</span><span class="w"> </span><span class="il">1000</span>
-<span class="nl">20</span><span class="w"> </span><span class="kd">DIM</span><span class="w"> </span><span class="vg">E$</span><span class="p">(</span><span class="il">6</span><span class="p">),</span><span class="vg">F</span><span class="p">(</span><span class="il">6</span><span class="p">)</span>
-<span class="nl">30</span><span class="w"> </span><span class="kr">OPEN</span><span class="w"> </span><span class="s2">&quot;ENG&gt;MET&quot;</span><span class="p">,</span><span class="il">0</span>
-<span class="nl">40</span><span class="w"> </span><span class="kr">FOR</span><span class="w"> </span><span class="vg">I</span><span class="o">%</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="il">0</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="il">6</span>
-<span class="nl">50</span><span class="w"> </span><span class="vg">IN#</span><span class="w"> </span><span class="s2">&quot;ENG&gt;MET&quot;</span><span class="p">,</span><span class="vg">E$</span><span class="p">(</span><span class="vg">I</span><span class="o">%</span><span class="p">),</span><span class="vg">F</span><span class="p">(</span><span class="vg">I</span><span class="o">%</span><span class="p">)</span>
-<span class="nl">60</span><span class="w"> </span><span class="kr">NEXT</span>
-<span class="nl">70</span><span class="w"> </span><span class="kr">CLOSE</span><span class="w"> </span><span class="s2">&quot;ENG&gt;MET&quot;</span>
-<span class="nl">100</span><span class="w"> </span><span class="kr">CLS</span><span class="o">:</span><span class="w"> </span><span class="kr">PRINT</span><span class="w"> </span><span class="s2">&quot;CONVERSION ENGLISH=&gt;METRIC&quot;</span>
-<span class="nl">110</span><span class="w"> </span><span class="kr">PRINT</span><span class="o">:</span><span class="w"> </span><span class="kr">FOR</span><span class="w"> </span><span class="vg">I</span><span class="o">%=</span><span class="il">0</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="il">6</span>
-<span class="nl">120</span><span class="w"> </span><span class="kr">PRINT</span><span class="w"> </span><span class="kr">TAB</span><span class="p">(</span><span class="il">4</span><span class="p">);</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="s2">&quot;(## ) % % &quot;</span><span class="p">;</span><span class="vg">I</span><span class="o">%</span><span class="p">,</span><span class="vg">E$</span><span class="p">(</span><span class="vg">I</span><span class="o">%</span><span class="p">)</span>
-<span class="nl">130</span><span class="w"> </span><span class="kr">NEXT</span>
-<span class="nl">140</span><span class="w"> </span><span class="kr">PRINT</span><span class="w"> </span><span class="vg">AT320</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;WHICH CONVERSION (0-6)&quot;</span><span class="p">;</span>
-<span class="nl">150</span><span class="w"> </span><span class="kr">INPUT</span><span class="w"> </span><span class="vg">W</span><span class="o">%:</span><span class="w"> </span><span class="kr">IF</span><span class="w"> </span><span class="vg">W</span><span class="o">%</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="il">6</span><span class="w"> </span><span class="kr">THEN</span><span class="w"> </span><span class="il">190</span>
-<span class="nl">160</span><span class="w"> </span><span class="kr">INPUT</span><span class="w"> </span><span class="s2">&quot;ENGLISH VALUE&quot;</span><span class="p">;</span><span class="vg">V</span>
-<span class="nl">170</span><span class="w"> </span><span class="kr">PRINT</span><span class="w"> </span><span class="s2">&quot;THE METRIC VALUE IS&quot;</span><span class="w"> </span><span class="vg">V</span><span class="o">*</span><span class="vg">F</span><span class="p">(</span><span class="vg">W</span><span class="o">%</span><span class="p">)</span>
-<span class="nl">180</span><span class="w"> </span><span class="vg">ІNPUT</span><span class="w"> </span><span class="s2">&quot;CONTINUE WITH &lt;RETURN&gt;&quot;</span><span class="p">;</span><span class="vg">X</span>
-<span class="nl">190</span><span class="w"> </span><span class="kr">GOTO</span><span class="w"> </span><span class="nl">100</span>
-</pre></div>
-</div>
-<p class="linemarker linemarker-173">Line 30 opens the file for input. Reading begins at the beginning of the file.
-In line 50, a data set with the elements E$ (unit) and F (factor) is read and distributed
-to the matrices. <br />
-Note that the variable list when reading in is the same as the write command in the
-previous program. <br />
-In line 70 the file is closed again. <br /></p>
-</section>
-<section id="updating-a-file">
-<h3>Updating a file<a class="headerlink" href="#updating-a-file" title="Permalink to this heading"></a></h3>
-<p class="linemarker linemarker-183">If you want to add one or more records to an existing file, open this file for writing
-and simply enter additional data records with PR#, which will be appended to the
-existing database.</p>
-<p class="linemarker linemarker-187">If you want to change data within a file, we recommend the following procedure (not
-with DISK BASIC V1.0).</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p class="linemarker linemarker-190">Open the file to be edited for reading.</p></li>
-<li><p class="linemarker linemarker-191">Open a second new file for writing</p></li>
-<li><p class="linemarker linemarker-192">Read a record and edit the data</p></li>
-<li><p class="linemarker linemarker-193">Write the record to the new file</p></li>
-<li><p class="linemarker linemarker-194">Repeat points 3 and 4 to the end of the file</p></li>
-<li><p class="linemarker linemarker-195">Close both files</p></li>
-<li><p class="linemarker linemarker-196">Delete the source file</p></li>
-<li><p class="linemarker linemarker-197">Rename the new file to the original file</p></li>
-</ol>
-</div></blockquote>
-<p class="linemarker linemarker-199">With DISK BASIC V1.0, the only solution is to read the file to be processed
-completely іп the memory, process it and write it completely into the new file.
-However, this limits the size of the file to the available memory.</p>
-</section>
-</section>
-<section id="open-open-a-file">
-<h2>OPEN - Open a file.<a class="headerlink" href="#open-open-a-file" title="Permalink to this heading"></a></h2>
-<div class="admonition-syntax admonition">
-<p class="admonition-title">Syntax:</p>
-<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="kr">OPEN</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="p">,</span><span class="vg">n</span>
-<span class="s2">&quot;name&quot;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="vg">File</span><span class="o">/</span><span class="vg">program</span><span class="w"> </span><span class="vg">name</span><span class="p">,</span><span class="w"> </span><span class="vg">max</span><span class="o">.</span><span class="w"> </span><span class="il">8</span><span class="w"> </span><span class="vg">characters</span><span class="p">,</span>
-<span class="w">         </span><span class="vg">enclosed</span><span class="w"> </span><span class="vg">in</span><span class="w"> </span><span class="vg">quotation</span><span class="w"> </span><span class="vg">marks</span><span class="o">.</span>
-<span class="vg">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="vg">type</span><span class="w"> </span><span class="vg">of</span><span class="w"> </span><span class="vg">access</span>
-<span class="w">    </span><span class="il">0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="vg">Read</span>
-<span class="w">    </span><span class="il">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="vg">Write</span>
-</pre></div>
-</div>
-<p class="linemarker linemarker-219">Permitted only in program mode.</p>
-</div>
-<p class="linemarker linemarker-221">The OPEN command opens a data file (type = <code class="docutils literal notranslate"><span class="pre">D</span></code>) for writing or reading.</p>
-<p class="linemarker linemarker-223">The OPEN command creates a file control block internally for each open file,
-which contains function codes and pointers.</p>
-<p class="linemarker linemarker-226">Furthermore, the following is positioned on the data according to the access
-code:
-* When reading, always at the beginning of the file
-* When writing to a new file, to the beginning of the file
-* When writing to an existing file at the end of the file,</p>
-<p class="linemarker linemarker-232">Since there are only two file control blocks in the system, only two files can be
-open at a time. The type of access is irrelevant, both can be opened for
-writing, both for reading or one for reading and the second for writing (see
-restriction DISK BASIC V1.0 on the previous pages).</p>
-<div class="hint admonition">
-<p class="admonition-title">Example:</p>
-<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="kr">OPEN</span><span class="w"> </span><span class="s2">&quot;TEST&quot;</span><span class="p">,</span><span class="il">0</span>
-</pre></div>
-</div>
-<p class="linemarker linemarker-244">The “TEST” data file is opened for reading.</p>
-</div>
-<p class="linemarker linemarker-246">A data file can only be opened once at a time. Attempting to open the same
-file again results in an error message.</p>
-<p class="linemarker linemarker-249">Since the file control blocks (FCB) are located outside the BASIC programs, a
-file remains open if the calling program was aborted before the CLOSE call
-due to an error or by pressing the BREAK key and is perhaps no longer in
-memory. Such a file can no longer be opened without further ado.</p>
-<p class="linemarker linemarker-254">If it happen that a BASIC program is aborted without properly closing its files,
-you should do so with a direct command (<strong>CLOSE “filename”</strong>).</p>
-<div class="error admonition">
-<p class="admonition-title">Possible Errors:</p>
-<p class="linemarker linemarker-260"><code class="docutils literal notranslate"><span class="pre">?ILLEGAL</span> <span class="pre">DIRECT</span></code> An attempt was made to execute the OPEN
-command in direct mode.</p>
-<p class="linemarker linemarker-263"><code class="docutils literal notranslate"><span class="pre">?SYNTAX</span> <span class="pre">ERROR</span></code></p>
-<ul class="simple">
-<li><p class="linemarker linemarker-265">one or both parameters are missing</p></li>
-<li><p class="linemarker linemarker-266">no comma as separator</p></li>
-<li><p class="linemarker linemarker-267">filename not in quotes</p></li>
-<li><p class="linemarker linemarker-268">access type not 0 or 1</p></li>
-</ul>
-<p class="linemarker linemarker-270"><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">ALREADY</span> <span class="pre">OPEN</span></code> File is already open, if necessary close it
-with the direct command “CLOSE”.</p>
-<p class="linemarker linemarker-273"><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">TYPE</span> <span class="pre">MISMATCH</span></code> The file addressed in the OPEN command is
-not a data file</p>
-<p class="linemarker linemarker-276"><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">NOT</span> <span class="pre">FOUND</span></code> A file to be opened for reading does not exist
-on the diskette.</p>
-<p class="linemarker linemarker-279"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">BUFFER</span> <span class="pre">FULL</span></code> Two files are already open and no more file
-control block is available.</p>
-<p class="linemarker linemarker-282"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> An error occurred while reading from the
-floppy disk.</p>
-</div>
-</section>
-<section id="pr-writing-records-to-a-file">
-<h2>PR# - Writing records to a file<a class="headerlink" href="#pr-writing-records-to-a-file" title="Permalink to this heading"></a></h2>
-<div class="admonition-syntax admonition">
-<p class="admonition-title">Syntax:</p>
-<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">PR#</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="p">,</span><span class="vg">item</span><span class="w"> </span><span class="vg">list</span>
-<span class="s2">&quot;name&quot;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="vg">File</span><span class="o">/</span><span class="vg">program</span><span class="w"> </span><span class="vg">name</span><span class="p">,</span><span class="w"> </span><span class="vg">max</span><span class="o">.</span><span class="w"> </span><span class="il">8</span><span class="w"> </span><span class="vg">characters</span><span class="p">,</span>
-<span class="w">         </span><span class="vg">enclosed</span><span class="w"> </span><span class="vg">in</span><span class="w"> </span><span class="vg">quotation</span><span class="w"> </span><span class="vg">marks</span><span class="o">.</span>
-<span class="vg">item</span><span class="w"> </span><span class="vg">list</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="vg">List</span><span class="w"> </span><span class="vg">of</span><span class="w"> </span><span class="vg">variables</span><span class="w"> </span><span class="vg">and</span><span class="w"> </span><span class="vg">values</span><span class="w"> </span><span class="vg">to</span><span class="w"> </span><span class="vg">be</span><span class="w"> </span><span class="vg">written</span><span class="w"> </span><span class="vg">to</span><span class="w"> </span><span class="vg">the</span><span class="w"> </span><span class="vg">file</span><span class="o">.</span>
-<span class="w">            </span><span class="vg">The</span><span class="w"> </span><span class="vg">individual</span><span class="w"> </span><span class="vg">elements</span><span class="w"> </span><span class="vg">are</span><span class="w"> </span><span class="vg">to</span><span class="w"> </span><span class="vg">be</span><span class="w"> </span><span class="vg">separated</span><span class="w"> </span><span class="vg">by</span><span class="w"> </span><span class="vg">commas</span>
-</pre></div>
-</div>
-<p class="linemarker linemarker-298">Permitted only in program mode.</p>
-</div>
-<p class="linemarker linemarker-300">Assembles a data record from the values in the element list and causes it to
-be written to the data file.</p>
-<p class="linemarker linemarker-303">This must first have been opened for writing with an OPEN command.</p>
-<div class="hint admonition">
-<p class="admonition-title">Example:</p>
-<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="nl">200</span><span class="w"> </span><span class="vg">A1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">-40.456</span><span class="o">:</span><span class="w"> </span><span class="vg">B$</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;STRING-VALUE&quot;</span>
-<span class="nl">210</span><span class="w"> </span><span class="kr">OPEN</span><span class="w"> </span><span class="s2">&quot;TEST&quot;</span><span class="p">,</span><span class="il">1</span>
-<span class="nl">220</span><span class="w"> </span><span class="vg">PR#</span><span class="w"> </span><span class="s2">&quot;TEST&quot;</span><span class="p">,</span><span class="vg">A1</span><span class="p">,</span><span class="vg">B$</span><span class="p">,</span><span class="s2">&quot;THE VAR’S&quot;</span>
-<span class="nl">230</span><span class="w"> </span><span class="kr">CLOSE</span><span class="w"> </span><span class="s2">&quot;TEST&quot;</span>
-<span class="nl">240</span><span class="w"> </span><span class="kr">END</span>
-</pre></div>
-</div>
-</div>
-<p class="linemarker linemarker-316">After opening the “TEST” file in line 210, a data record is compiled in line 220
-and written to this file.</p>
-<p class="linemarker linemarker-319">The data record contains the current values of Al and B$ and also the
-character string “THE VAR’S”. The values can later be read in again with an
-IN# command.</p>
-<p class="linemarker linemarker-323">It must be ensured that the element list of the IN# command is the same as
-that of the PR# command with regard to the number and type of elements.</p>
-<p class="linemarker linemarker-326">The values represented by the item list should not exceed 200 characters in
-total. In addition to the values themselves, this also includes all separators
-(commas) between the values, in the case of numeric values the sign position
-and a trailing space and finally the end of data record identifier (CR).</p>
-<p class="linemarker linemarker-331">The record in the previous example would be 31 characters long</p>
-<blockquote>
-<div><p class="linemarker linemarker-333">-40,456 ,STRING VALUE, THAT’S IT</p>
-</div></blockquote>
-<p class="linemarker linemarker-335">Unfortunately, when creating the element list, one often does not know exactly
-how large the individual variables will be at the time of storage. Then only
-careful estimation helps. Always stay on the safe side and, if in doubt, split
-your element list into several PR# commands.</p>
-<p class="linemarker linemarker-340">Unfortunately, the PR# command does not notice when a data record is too
-long. This is simply written to the diskette in its entirety. Reading in with the
-IN# command then causes problems, whereby in the simplest case “only”
-data is lost.</p>
-<div class="error admonition">
-<p class="admonition-title">Possible Errors:</p>
-<p class="linemarker linemarker-348"><code class="docutils literal notranslate"><span class="pre">?ILLEGAL</span> <span class="pre">DIRECT</span></code> An attempt was made to execute the PR#
-command in direct mode.</p>
-<p class="linemarker linemarker-351"><code class="docutils literal notranslate"><span class="pre">?SYNTAX</span> <span class="pre">ERROR</span></code></p>
-<ul class="simple">
-<li><p class="linemarker linemarker-353">no file name specified</p></li>
-<li><p class="linemarker linemarker-354">Filename not in quotes</p></li>
-<li><p class="linemarker linemarker-355">no item in the list</p></li>
-<li><p class="linemarker linemarker-356">no comma as separator</p></li>
-</ul>
-<p class="linemarker linemarker-358"><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">NOT</span> <span class="pre">OPEN</span></code> File was not previously opened.</p>
-<p class="linemarker linemarker-360"><code class="docutils literal notranslate"><span class="pre">?ILLEGAL</span> <span class="pre">WRITE</span></code> The file has been opened for reading.</p>
-<p class="linemarker linemarker-362"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">WRITE</span> <span class="pre">PROTECTED</span></code> The disk’s write-protect notch is taped over.</p>
-<p class="linemarker linemarker-364"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">FULL</span></code> No more free sectors could be found on the
-diskette.</p>
-<p class="linemarker linemarker-367"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> An error occurred while reading or writing to
-the diskette.</p>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p class="linemarker linemarker-372">If one of these errors occurs, the program is terminated with the
-corresponding error message. Please note that this file was not closed
-afterwards, you should do this manually.</p>
-</div>
-</section>
-<section id="in-reading-records-from-a-file">
-<h2>IN# - Reading records from a file<a class="headerlink" href="#in-reading-records-from-a-file" title="Permalink to this heading"></a></h2>
-<div class="admonition-syntax admonition">
-<p class="admonition-title">Syntax:</p>
-<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">IN#</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="p">,</span><span class="vg">item</span><span class="w"> </span><span class="vg">list</span>
-<span class="s2">&quot;name&quot;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="vg">File</span><span class="o">/</span><span class="vg">program</span><span class="w"> </span><span class="vg">name</span><span class="p">,</span><span class="w"> </span><span class="vg">max</span><span class="o">.</span><span class="w"> </span><span class="il">8</span><span class="w"> </span><span class="vg">characters</span><span class="p">,</span>
-<span class="w">         </span><span class="vg">enclosed</span><span class="w"> </span><span class="vg">in</span><span class="w"> </span><span class="vg">quotation</span><span class="w"> </span><span class="vg">marks</span><span class="o">.</span>
-<span class="vg">item</span><span class="w"> </span><span class="vg">list</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="vg">List</span><span class="w"> </span><span class="vg">of</span><span class="w"> </span><span class="vg">variables</span><span class="w"> </span><span class="vg">and</span><span class="w"> </span><span class="vg">values</span><span class="w"> </span><span class="vg">to</span><span class="w"> </span><span class="vg">be</span><span class="w"> </span><span class="vg">written</span><span class="w"> </span><span class="vg">to</span><span class="w"> </span><span class="vg">the</span><span class="w"> </span><span class="vg">file</span><span class="o">.</span>
-<span class="w">            </span><span class="vg">The</span><span class="w"> </span><span class="vg">individual</span><span class="w"> </span><span class="vg">elements</span><span class="w"> </span><span class="vg">are</span><span class="w"> </span><span class="vg">to</span><span class="w"> </span><span class="vg">be</span><span class="w"> </span><span class="vg">separated</span><span class="w"> </span><span class="vg">by</span><span class="w"> </span><span class="vg">commas</span>
-</pre></div>
-</div>
-<p class="linemarker linemarker-389">Permitted only in program mode.</p>
-</div>
-<p class="linemarker linemarker-391">IN# reads a record from the specified file and assigns the elements of that
-record to the specified variables.</p>
-<p class="linemarker linemarker-394">The file must first have been opened for reading with an OPEN command.</p>
-<div class="hint admonition">
-<p class="admonition-title">Example:</p>
-<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="nl">200</span><span class="w"> </span><span class="kr">OPEN</span><span class="w"> </span><span class="s2">&quot;TEST&quot;</span><span class="p">,</span><span class="il">0</span>
-<span class="nl">210</span><span class="w"> </span><span class="vg">IN#</span><span class="w"> </span><span class="s2">&quot;TEST&quot;</span><span class="p">,</span><span class="vg">X</span><span class="p">,</span><span class="vg">A$</span><span class="p">,</span><span class="vg">B$</span>
-<span class="nl">220</span><span class="w"> </span><span class="kr">CLOSE</span><span class="w"> </span><span class="s2">&quot;TEST&quot;</span>
-<span class="o">...</span>
-<span class="o">...</span>
-</pre></div>
-</div>
-</div>
-<p class="linemarker linemarker-407">This example refers to the data set created in the example of the PR#
-command in the “TEST” file. The data stored there are assigned to the
-variables of the IN# command in sequence.</p>
-<p class="linemarker linemarker-411">After executing line 210, the variables contain the following values:</p>
-<div class="hint highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">X</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">-40.456</span>
-<span class="vg">A$</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;STRING-VALUE&quot;</span>
-<span class="vg">B$</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;THE VAR’S&quot;</span>
-</pre></div>
-</div>
-<p class="linemarker linemarker-420">The element list of the IN# command must correspond to that of the PR#
-command with regard to the number and type of variables. Likewise, the order
-must be observed for different types, the naming is irrelevant.</p>
-<p class="linemarker linemarker-424">If records are read continuously from a file with IN#, it is difficult to recognize
-the end of the file at the right time. There is no special “END OF FILE”
-identifier for LASER-DOS.</p>
-<p class="linemarker linemarker-428">There are various possible solutions:</p>
-<ul>
-<li><p class="linemarker linemarker-430">the number of records is known, they are counted with a counter in the
-reading program,</p></li>
-<li><p class="linemarker linemarker-432">a second small file contains the sentence counter for the main file.</p></li>
-<li><p class="linemarker linemarker-433">A short label consisting of only one alphanumeric character (e.g. PR#
-“name”, “А”) is written in front of each correct record.</p>
-<p class="linemarker linemarker-436">In the reading program, this identifier is first read before each reading
-of a data record (e.g., ІN# “name”, A$) If the receiving string variable is
-then empty, the end of the file has been reached.</p>
-</li>
-</ul>
-<div class="error admonition">
-<p class="admonition-title">Possible Errors:</p>
-<p class="linemarker linemarker-443"><code class="docutils literal notranslate"><span class="pre">?ILLEGAL</span> <span class="pre">DIRECT</span></code> An attempt was made to execute the IR#
-command in direct mode.</p>
-<p class="linemarker linemarker-446"><code class="docutils literal notranslate"><span class="pre">?SYNTAX</span> <span class="pre">ERROR</span></code></p>
-<ul class="simple">
-<li><p class="linemarker linemarker-448">no file name specified</p></li>
-<li><p class="linemarker linemarker-449">Filename not in quotes</p></li>
-<li><p class="linemarker linemarker-450">no item in the list</p></li>
-<li><p class="linemarker linemarker-451">no comma as separator</p></li>
-</ul>
-<p class="linemarker linemarker-453"><code class="docutils literal notranslate"><span class="pre">?FILE</span> <span class="pre">NOT</span> <span class="pre">OPEN</span></code> File was not previously opened.</p>
-<p class="linemarker linemarker-455"><code class="docutils literal notranslate"><span class="pre">?ILLEGAL</span> <span class="pre">WRITE</span></code> The file has been opened for reading.</p>
-<p class="linemarker linemarker-457"><code class="docutils literal notranslate"><span class="pre">?ILLEGAL</span> <span class="pre">READ</span></code> The file was opened for writing.</p>
-<p class="linemarker linemarker-459"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> An error occurred while reading or writing to
-the diskette.</p>
-<p class="linemarker linemarker-462"><code class="docutils literal notranslate"><span class="pre">?REDO</span></code> The type of one of the specified variables
-does not match the data read in from the diskette.
-The program continues to run, the variable remains empty.</p>
-<p class="linemarker linemarker-466"><code class="docutils literal notranslate"><span class="pre">?EXTRA</span> <span class="pre">IGNORED</span></code> In the variable list of the IN# command
-fewer variables are given than values
-are present in the data set, the
-numbered values are ignored, the program continues.</p>
-<p class="linemarker linemarker-471"><code class="docutils literal notranslate"><span class="pre">??</span></code> The variable list contains more variables
-than there are values in the data set. The
-frogram now expects the missing values to
-be entered via the keyboard.</p>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p class="linemarker linemarker-478">If one of these errors occurs (except <code class="docutils literal notranslate"><span class="pre">REDO</span></code>, <code class="docutils literal notranslate"><span class="pre">EXTRA</span> <span class="pre">IGNORED</span></code> and <code class="docutils literal notranslate"><span class="pre">??</span></code>), the
-program is terminated after the corresponding message has been output.
-Please note that this file was not closed, you should do this manually.</p>
-</div>
-</section>
-<section id="close-closing-a-data-file">
-<h2>CLOSE - Closing a data file<a class="headerlink" href="#close-closing-a-data-file" title="Permalink to this heading"></a></h2>
-<div class="admonition-syntax admonition">
-<p class="admonition-title">Syntax:</p>
-<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="kr">CLOSE</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
-<span class="s2">&quot;name&quot;</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="vg">File</span><span class="o">/</span><span class="vg">program</span><span class="w"> </span><span class="vg">name</span><span class="p">,</span><span class="w"> </span><span class="vg">max</span><span class="o">.</span><span class="w"> </span><span class="il">8</span><span class="w"> </span><span class="vg">characters</span><span class="p">,</span>
-<span class="w">         </span><span class="vg">enclosed</span><span class="w"> </span><span class="vg">in</span><span class="w"> </span><span class="vg">quotation</span><span class="w"> </span><span class="vg">marks</span><span class="o">.</span>
-</pre></div>
-</div>
-<p class="linemarker linemarker-493">Allowed as direct command and in program mode.</p>
-</div>
-<p class="linemarker linemarker-495">A previously processed data file is closed with the CLOSE command..</p>
-<p class="linemarker linemarker-497">If a file is open for reading or an inactive file (i.e. the last file access was not to
-this file) or in direct mode, only the file control block (FCB = File Control Block)
-is released again. Disk access does not take place.</p>
-<p class="linemarker linemarker-501">However, if the CLOSE command is given in program mode and the file to be
-closed is open for writing and is currently active, the last sector in the buffer is
-also written back to the diskette so that no data is lost.</p>
-<p class="linemarker linemarker-505">It is good programmer practice to close any open file after use. However, it is
-essential for output files, unless you accept the possibility of data loss.</p>
-<div class="hint admonition">
-<p class="admonition-title">Example:</p>
-<blockquote>
-<div><p class="linemarker linemarker-511">CLOSE “MAILBOX”</p>
-</div></blockquote>
-<p class="linemarker linemarker-513">The “MAILBOX” data file is closed.</p>
-</div>
-<p class="linemarker linemarker-515">It is always necessary to close and reopen a file if you want to change the
-type of access (e.g. from writing to reading).</p>
-<p class="linemarker linemarker-518">If the file to be closed is not open at all, i.e. there is no open file control block
-for this file, the CLOSE command is skipped without any error message. This
-is especially useful for closing all files used in a program prophylactically at
-the end without checking which ones are currently open.</p>
-<div class="error admonition">
-<p class="admonition-title">Possible Errors:</p>
-<p class="linemarker linemarker-526"><code class="docutils literal notranslate"><span class="pre">?SYNTAX</span> <span class="pre">ERROR</span></code></p>
-<ul class="simple">
-<li><p class="linemarker linemarker-528">no file name specified</p></li>
-<li><p class="linemarker linemarker-529">Filename not in quotes</p></li>
-</ul>
-<p class="linemarker linemarker-531"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">WRITE</span> <span class="pre">PROTECTED</span></code> The disk’s write-protect notch is taped over.</p>
-<p class="linemarker linemarker-533"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> An error occurred while reading or writing to
+<p class="linemarker linemarker-532"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">WRITE</span> <span class="pre">PROTECTED</span></code> The disk’s write-protect notch is taped over.</p>
+<p class="linemarker linemarker-534"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> An error occurred while reading or writing to
 the diskette.</p>
 </div>
 </section>
@@ -1176,5 +587,4 @@ the diskette.</p>
   </script> 
 
 </body>
->>>>>>> 1c2cccb34fc978694e80aff861a1e8543213b9b8
 </html>

@@ -50,7 +50,7 @@ Disk access does not take place.
 		  LD HL,DNAM1 		; address of filename
 		  CALL 401DH 		; are transmitted to FNAM
 		...
-		DNAM1 DEFM "MAILBOX",':'
+		DNAM1: DEFM '"MAILBOX":'
 
 	The file name "MAILBOX" is transferred to the DOS vector FNAM for
 	subsequent addressing.

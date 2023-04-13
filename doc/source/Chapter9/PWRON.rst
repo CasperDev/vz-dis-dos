@@ -1,5 +1,5 @@
 
-.. title:: PWRON
+.. _PWRON:
 
 
 PWRON - Turn on a drive

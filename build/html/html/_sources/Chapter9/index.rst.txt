@@ -1,4 +1,8 @@
 
+.. toctree:: 
+	:maxdepth: 2
+
+
 
 9. The most important DOS routines and their application іп machine programs.
 =============================================================================
@@ -47,38 +51,42 @@ subroutines to be called.
 
 It is called using the Z80 command
 
-.. code:: asm
+.. code:: Z80
 	:class: hint
 
 	CALL xxxxH
 
 The following subroutines can be reached via this jump table:
 
+.. role:: Z80(code)
+	:language: Z80
+	:class: highlight
+
 .. csv-table:: 
 	:delim: |
 
 	Name   | Call | Function
-	PWRON  | CALL 4008H | Turn on the drive
-	PWROFF | CALL 400BH | Turn off the drive
-	ERROR  | CALL 400EH | DOS error handling
-	RDMAP  | CALL 4011H | Load sector occupancy Map
-	CLEAR  | CALL 4014H | Delete sector
-	SVMAP  | CALL 4017H | Write allocation Map sector
-	INIT   | CALL 401AH | Initialize disk
-	CSI    | CALL 401DH | Interpret command parameters
-	HEX    | CALL 4020H | Conversion ASCII to HEX
-	IDAM   | CALL 4023H | Look for the address mark on the diskette
-	CREATE | CALL 4026H | Write an entry in the table of contents
-	MAP    | CALL 4029H | Detect a free sector
-	SEARCH | CALL 402CH | Find file in table of contents
-	FIND   | CALL 402FH | Look for free space in the table of contents
-	WRITE  | CALL 4032H | Write sector to disk
-	READ   | CALL 4035H | Read sector from disk
-	DLY    | CALL 4038H | n milliseconds delay
-	STPIN  | CALL 403BH | Advance head n tracks inward
-	STPOUT | CALL 403EH | Advance head n tracks outward
-	LOAD   | CALL 4041H | Load a program
-	SAVE   | CALL 4044H | Save a program
+	:doc:`PWRON <PWRON>` | :Z80:`CALL 4008H` | Turn on the drive
+	:doc:`PWROFF <PWROFF>` | :Z80:`CALL 400BH` | Turn off the drive
+	:doc:`ERROR <ERROR>`  | :Z80:`CALL 400EH` | DOS error handling
+	:doc:`RDMAP <RDMAP>`  | :Z80:`CALL 4011H` | Load sector occupancy Map
+	:doc:`CLEAR <CLEAR>`  | :Z80:`CALL 4014H` | Delete sector
+	:doc:`SVMAP <SVMAP>`  | :Z80:`CALL 4017H` | Write allocation Map sector
+	:doc:`INIT <INIT>`   | :Z80:`CALL 401AH` | Initialize disk
+	:doc:`CSI <CSI>`    | :Z80:`CALL 401DH` | Interpret command parameters
+	:doc:`HEX <HEX>`    | :Z80:`CALL 4020H` | Conversion ASCII to HEX
+	:doc:`IDAM <IDAM>`   | :Z80:`CALL 4023H` | Look for the address mark on the diskette
+	:doc:`CREATE <CREATE>` | :Z80:`CALL 4026H` | Write an entry in the table of contents
+	:doc:`MAP <MAP>`    | :Z80:`CALL 4029H` | Detect a free sector
+	:doc:`SEARCH <SEARCH>` | :Z80:`CALL 402CH` | Find file in table of contents
+	:doc:`FIND <FIND>`   | :Z80:`CALL 402FH` | Look for free space in the table of contents
+	:doc:`WRITE <WRITE>`  | :Z80:`CALL 4032H` | Write sector to disk
+	:doc:`READ <READ>`   | :Z80:`CALL 4035H` | Read sector from disk
+	:doc:`DLY <DLY>`    | :Z80:`CALL 4038H` | n milliseconds delay
+	:doc:`STPIN <STPIN>`  | :Z80:`CALL 403BH` | Advance head n tracks inward
+	:doc:`STPOUT <STPOUT>` | :Z80:`CALL 403EH` | Advance head n tracks outward
+	:doc:`LOAD <LOAD>`   | :Z80:`CALL 4041H` | Load a program
+	:doc:`SAVE <SAVE>`   | :Z80:`CALL 4044H` | Save a program
 
 
 However, before you call one of these subroutines, very specific input parameters
@@ -122,7 +130,10 @@ then switch them on again with EI (enable interrupts) before each diskette acces
 In many cases, you must also check whether the diskette to be edited is
 write-protected; otherwise, write operations are still performed.
 
-.. toctree:: 
+DOS Vector functions
+--------------------
+
+.. toctree::
 
 	PWRON
 	PWROFF
@@ -132,4 +143,67 @@ write-protected; otherwise, write operations are still performed.
 	SVMAP
 	INIT
 	CSI
+	HEX
+	IDAM
+	CREATE
+	MAP
+	SEARCH
+	FIND
+	WRITE
+	READ
+	DLY
+	STPIN
+	STPOUT
+	LOAD
+	SAVE
+
+---------------------------------------------
+
+To supplement these routines, two more functions are listed here that you will find in
+many of the previous examples.
+
+DRIVE - Selecting a drive
+-------------------------
+
+This function cannot be accessed via the jump table.
+
+However, it is easy to do as you just need to put the correct code of the
+selected drive in the DK (IY+11) field of the DOS vectors.
+
+- Drive 1 = LD (IY+11),10H
+- Drive 2 = LD (IY+11),80H
+  
+This code is used by the PWRON routine to select the correct drive and turn it
+on.
+
+
+WPROCT - Check write protection
+-------------------------------
+
+In many cases, you are responsible for checking the write-protection status of
+a diskette before performing a write operation.
+
+You can get the information about this via port 13H. If the diskette's
+write-protection notch is taped over, bit 7 of this port is set to 1.
+
+To do this, the drive must be selected and switched on.
+
+.. admonition:: Example:
+	:class: hint
+
+	.. code-block:: Z80
+
+		...
+		IN A,(13H) 				; read in port 13
+		OR A 					; check byte
+		LD A,4 					; set error code
+		JP M,400EH 				; if negative, then the disk is
+								; write-protected.
+		...
+
+
+If the diskette is write-protected, error code 4 branches to the ERROR routine
+and the message "DISK WRITE PROTECTED" is output there
+
+
 
