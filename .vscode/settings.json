@@ -1,7 +1,7 @@
 {
-    "esbonio.sphinx.buildDir" : "${workspaceFolder}doc/build/html",
-    "esbonio.sphinx.confDir"  : "${workspaceFolder}\\doc\\source",
-	"esbonio.sphinx.srcDir": "${workspaceFolder}/doc//source",
+    "esbonio.sphinx.buildDir" : "${workspaceFolder}/doc/build/html",
+    "esbonio.sphinx.confDir"  : "${workspaceFolder}/doc/source",
+	"esbonio.sphinx.srcDir": "${workspaceFolder}/doc/source",
 	"restructuredtext.linter.run": "onSave",
 	"restructuredtext.preview.fontSize": 11,
 	"restructuredtext.preview.lineHeight": 1.1,
