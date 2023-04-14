@@ -29,7 +29,7 @@ READ - Read sector from disk
 		- A = 0 Ok, sector was read
 		- A = 9 An address mark was not found
 		- A =10 Checksum wrong
-		- A =17 BREAK key pressed
+		- A =17 :kbd:`BREAK` key pressed
   
 
 The sector addressed with SCTR and TRCK is transferred from the diskette to

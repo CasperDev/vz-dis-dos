@@ -8,7 +8,7 @@
 	:class: error
 
 As already mentioned in the description of the last sections, there is the
-problem that when a program is aborted due to an error or the BREAK key,
+problem that when a program is aborted due to an error or the :kbd:`BREAK` key,
 not all files are necessarily closed correctly.
 
 A restart of such a program after error correction or similar usually leads to the

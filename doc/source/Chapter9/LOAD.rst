@@ -29,7 +29,7 @@ LOAD - Loading a program or memory area
 		- A =10 A checksum error
 		- A =12 File found but wrong type
 		- A =13 File does not exists
-		- A =17 BREAK key pressed
+		- A =17 :kbd:`BREAK` key pressed
 
 The program specified in the FNAM field is transferred from the diskette to the
 memory.

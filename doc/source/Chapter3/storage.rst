@@ -249,7 +249,7 @@ file again results in an error message.
 
 Since the file control blocks (FCB) are located outside the BASIC programs, a
 file remains open if the calling program was aborted before the CLOSE call
-due to an error or by pressing the BREAK key and is perhaps no longer in
+due to an error or by pressing the :kbd:`BREAK` key and is perhaps no longer in
 memory. Such a file can no longer be opened without further ado.
 
 If it happen that a BASIC program is aborted without properly closing its files,

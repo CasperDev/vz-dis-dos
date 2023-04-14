@@ -28,7 +28,7 @@ IDAM - Look for the address mark on the diskette
 		
 		- A = 0 - Address mark found
 		- A = 9 - Address mark not found
-		- A = 17 - BREAK key pressed
+		- A = 17 - :kbd:`BREAK` key pressed
 
 		- if A = 0, Z flag is set
 		- if A <> 0, Z flag is clear

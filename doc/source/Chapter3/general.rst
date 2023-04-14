@@ -31,7 +31,7 @@ The entire initialization process takes about 2-3 minutes.
 After correct implementation, BASIC responds with READY and the next
 command can be entered.
 
-The initialization process can be aborted at any time by pressing the BREAK
+The initialization process can be aborted at any time by pressing the :kbd:`BREAK`
 button.
 
 .. warning:: 
@@ -120,7 +120,7 @@ Answer each of these questions by pressing the "1" or “2” key.
 
 Only own one drive; so answer "1" to each question.
 
-Command execution can be aborted with CTRL/BREAK.
+Command execution can be aborted with :kbd:`CTRL` + :kbd:`BREAK`.
 
 After the drive has been selected, the copying process begins. The entire
 RAM memory is used for this in order to have to switch between the source
@@ -147,7 +147,7 @@ before each reading from the source diskette, or
 
 before each write to the target disk.
 
-You can interrupt the copying process at any time by pressing the BREAK key.
+You can interrupt the copying process at any time by pressing the :kbd:`BREAK` key.
 
 The completion of the copying process is indicated with READY.
 

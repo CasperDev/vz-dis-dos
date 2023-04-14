@@ -36,7 +36,7 @@ SEARCH - Find file in table of contents
 		- A = 9 An address mark was not found
 		- A =10 A checksum error occurred during reading
 		- A =13 File does not exists
-		- A =17 BREAK key pressed
+		- A =17 :kbd:`BREAK` key pressed
   
 The SEARCH routine checks whether a file with the name stored in FNAM
 already exists in the table of contents of the addressed diskette.
@@ -60,7 +60,7 @@ The result of the search is transferred in the A register.
 			- A=0 - the end of valid entries has been reached.
 			- А=13 - the end of the table of contents has been reached.
 			
-			All other values of A indicate an error or fact that BREAK key was pressed.
+			All other values of A indicate an error or fact that :kbd:`BREAK` key was pressed.
 
 .. admonition:: Example:
 	:class: hint

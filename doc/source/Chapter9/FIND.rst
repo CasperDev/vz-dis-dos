@@ -31,7 +31,7 @@ FIND - Look for a free entry in table of contents
 		- A = 9 An address mark was not found
 		- A =10 A checksum error occurred during reading
 		- A =13 File does not exists
-		- A =17 BREAK key pressed
+		- A =17 :kbd:`BREAK` key pressed
 
 
 A free entry is determined in the table of contents of the activated floppy disk.

@@ -28,7 +28,7 @@ WRITE - Write sector to disk
 		
 		- A = 0 Ok, sector written
 		- A = 9 An address mark was not found
-		- A =17 BREAK key pressed
+		- A =17 :kbd:`BREAK` key pressed
 
 
 The sensitive data in the data buffer are transferred to the addressed sector of

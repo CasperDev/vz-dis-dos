@@ -48,7 +48,7 @@ The listing includes file type and file name.
 	* two BASIC programs, AB.LAND and ANSCHR and
 	* a data file called KARTEI.
 
-The listing can be stopped by pressing the space bar (SPACE) and continued
+The listing can be stopped by pressing the space bar (:kbd:`SPACE`) and continued
 with the same key.
 
 .. admonition:: Possible Errors:
@@ -119,7 +119,7 @@ In program mode, the program is continued with the command following
 	``?DISK I/O ERROR`` An error occurred while writing or reading
 	the floppy disk..
 
-The writing process can be aborted at any time by pressing the BREAK key.
+The writing process can be aborted at any time by pressing the :kbd:`BREAK` key.
 However, depending on when the key is pressed, the entry in the table of contents is
 not always deleted (error in DOS).
 
@@ -182,7 +182,7 @@ necessary.
 After the program has been read in, direct mode (BASIC warm start) is always
 accessed, regardless of whether the call was made directly or from within a program.
 
-The reading process can be aborted at any time by pressing the BREAK key.
+The reading process can be aborted at any time by pressing the :kbd:`BREAK` key.
 
 .. admonition:: Possible Errors:
 	:class: error
@@ -316,7 +316,7 @@ immediately after loading.
 	``?DISK I/O ERROR`` An error occurred while reading from the
 	floppy disk. (faulty disk or centering problems)
 
-The writing process can be aborted at any time by pressing the BREAK button.
+The writing process can be aborted at any time by pressing the :kbd:`BREAK` button.
 However, depending on when the key is pressed, the entry in the table of contents is
 not always deleted (error in DOS).
 
@@ -519,7 +519,7 @@ Answer each of these two questions by pressing the '1' or '2' key.
 
 If you only have one drive, answer '1' to each question.
 
-You can abort command execution with CTRL/BREAK.
+You can abort command execution with :kbd:`CTRL` + :kbd:`BREAK`.
 
 After selecting the drive, the copying process begins. The copying takes place
 by calling the LOAD and SAVE routines, as they are also used with LOAD and
@@ -547,7 +547,7 @@ and before writing the prompt
 If you have inserted the correct diskette, press the spacebar to continue the
 function.
 
-You can interrupt the copying process at any time with the BREAK button. If
+You can interrupt the copying process at any time with the :kbd:`BREAK` button. If
 you do this during the writing process, please note the information on SAVE
 and BSAVE.
 
