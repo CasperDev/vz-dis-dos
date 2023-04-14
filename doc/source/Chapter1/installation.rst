@@ -14,7 +14,7 @@ The floppy disk controller is first connected to the system bus on the back of t
 computer. This is the plug strip to which a possibly existing memory extension was
 connected. You can now connect it to the top of the floppy disk controller.
 There are two 20-pin connector strips on the back of the floppy disk controller
-to connect the drives, they are marked "D1" for drive і and "D2" for drive 2
+to connect the drives, they are marked "D1" for drive 1 and "D2" for drive 2
 
 If you only have one drive, connect it to "D1".
 

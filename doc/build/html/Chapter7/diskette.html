@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Structure and organization of the diskette &mdash; Laser310/VZ300 DOS 1.2 1.0 documentation</title>
@@ -11,10 +11,9 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
@@ -29,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> Laser310/VZ300 DOS 1.2
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Laser310/VZ300 DOS 1.2
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -76,7 +79,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">7. Technical Information</a></li>
       <li class="breadcrumb-item active">Structure and organization of the diskette</li>
       <li class="wy-breadcrumbs-aside">
@@ -101,11 +104,6 @@ As noted in the “Recording Structure” section, each sector is followed by a 
 results in a total length of 154 bytes per sector.</p>
 <p>Such a sector has the following basic structure:</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 22%" />
-<col style="width: 51%" />
-<col style="width: 26%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Bytes 0-6</p></td>
 <td><p>Address synchronization</p></td>
@@ -162,10 +160,6 @@ This gives a capacity of 8 entries per sector and 8 x 15 = 120 entries in the wh
 directory (see error message <code class="docutils literal notranslate"><span class="pre">?DIRECTORY</span> <span class="pre">FULL</span></code>).</p>
 <p>An entry in the table of contents has the following structure:</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 16%" />
-<col style="width: 84%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Byte 0</p></td>
 <td><p>occupancy status / file type   <br />
@@ -216,13 +210,13 @@ containing relevant information in this sector.</p>
 for storage. The sectors are always occupied from front to back and any gaps that
 may have arisen are filled in by deleting them.</p>
 <p>Mapping example:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>Track <span class="m">0</span> / Sector <span class="m">15</span>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>Track<span class="w"> </span><span class="m">0</span><span class="w"> </span>/<span class="w"> </span>Sector<span class="w"> </span><span class="m">15</span>
 
-Byte <span class="m">0</span> ⇒ Track <span class="m">0</span>, Sectors <span class="m">0</span> - <span class="m">7</span>
-Byte <span class="m">1</span> ⇒ Track <span class="m">0</span>, Sectors <span class="m">8</span> - <span class="m">15</span>
-Byte <span class="m">2</span> ⇒ Track <span class="m">0</span>, Sectors <span class="m">0</span> - <span class="m">7</span>
+Byte<span class="w"> </span><span class="m">0</span><span class="w"> </span>⇒<span class="w"> </span>Track<span class="w"> </span><span class="m">0</span>,<span class="w"> </span>Sectors<span class="w"> </span><span class="m">0</span><span class="w"> </span>-<span class="w"> </span><span class="m">7</span>
+Byte<span class="w"> </span><span class="m">1</span><span class="w"> </span>⇒<span class="w"> </span>Track<span class="w"> </span><span class="m">0</span>,<span class="w"> </span>Sectors<span class="w"> </span><span class="m">8</span><span class="w"> </span>-<span class="w"> </span><span class="m">15</span>
+Byte<span class="w"> </span><span class="m">2</span><span class="w"> </span>⇒<span class="w"> </span>Track<span class="w"> </span><span class="m">0</span>,<span class="w"> </span>Sectors<span class="w"> </span><span class="m">0</span><span class="w"> </span>-<span class="w"> </span><span class="m">7</span>
 ...
-Byte <span class="m">77</span> ⇒ Track <span class="m">39</span>, Sectors <span class="m">8</span> - <span class="m">15</span>
+Byte<span class="w"> </span><span class="m">77</span><span class="w"> </span>⇒<span class="w"> </span>Track<span class="w"> </span><span class="m">39</span>,<span class="w"> </span>Sectors<span class="w"> </span><span class="m">8</span><span class="w"> </span>-<span class="w"> </span><span class="m">15</span>
 </pre></div>
 </div>
 </section>
@@ -278,7 +272,7 @@ are read.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 1984, Gerhard Wolf (translation 2023, Casper).</p>
+    <p>&#169; Copyright 1985, Gerhard Wolf (translation 2023, Casper).</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

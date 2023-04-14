@@ -33,9 +33,9 @@ CREATE - Write an entry in the table of contents
 		- A = 7 no free sector (disk full)
 		- A = 9 An address mark was not found
 		- A =10 A checksum error occurred during reading
-		- A =17 BREAK key pressed
+		- A =17 :keyword:`BREAK` key pressed
 
-An entry is made in the directory for the file specified in FNAM and the first
+An entry is made in the directory for the file specified in :keyword:`FNAM` and the first
 free sector is reserved for this file.
 
 First, SEARCH checks whether a file with the same name already exists. If

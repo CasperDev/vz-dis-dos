@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Use of DOS commands &mdash; Laser310/VZ300 DOS 1.2 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Commands - Overview" href="commands.html" />
+    <link rel="prev" title="Structure of the LASER-DOS" href="structure.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Laser310/VZ300 DOS 1.2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Chapter0/index.html">0. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter1/index.html">1. The LASER 110, 210 and 310 Disk System</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">2. DOS Operations</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="structure.html">Structure of the LASER-DOS</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Use of DOS commands</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#commands-syntax">Commands - Syntax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file-types-and-specifications">File Types and Specifications</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="commands.html">Commands - Overview</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter3/index.html">3. The individual DOS commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter4/index.html">4. Error Messages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter5/index.html">5. Programming tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter6/index.html">6. Application example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter7/index.html">7. Technical Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter8/index.html">8. Communication between the DOS and the Floppy Disk Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter9/index.html">9. The most important DOS routines and their application іп machine programs.</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Laser310/VZ300 DOS 1.2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">2. DOS Operations</a></li>
+      <li class="breadcrumb-item active">Use of DOS commands</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Chapter2/useofdos.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="use-of-dos-commands">
+<h1>Use of DOS commands<a class="headerlink" href="#use-of-dos-commands" title="Permalink to this heading"></a></h1>
+<section id="commands-syntax">
+<h2>Commands - Syntax<a class="headerlink" href="#commands-syntax" title="Permalink to this heading"></a></h2>
+<p class="linemarker linemarker-13">The available commands are entered without any special identification like usual
+BASIC statements.</p>
+<p class="linemarker linemarker-16">Most of these commands can be used both in BASIC programs and in direct mode,
+i.e. for immediate execution from the screen.</p>
+<p class="linemarker linemarker-19">However, a select few are limited to one mode or another. When exactly which
+command may be used is noted in the detailed descriptions.</p>
+<p class="linemarker linemarker-22">In terms of syntax, the commands can be divided into three categories:</p>
+<ul class="simple">
+<li><p class="linemarker linemarker-24">Commands that do not address a file:</p></li>
+</ul>
+<div class="hint highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">command</span><span class="w"> </span><span class="o">[</span>parameter<span class="o">]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p class="linemarker linemarker-32">Commands that address a file:</p></li>
+</ul>
+<div class="hint highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">command</span><span class="w"> </span><span class="s2">&quot;filename&quot;</span><span class="w"> </span><span class="o">[</span>,parameter<span class="o">]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p class="linemarker linemarker-39">Commands that address two files:</p></li>
+</ul>
+<div class="hint highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">command</span><span class="w"> </span><span class="s2">&quot;filename1&quot;</span>,<span class="s2">&quot;filename2&quot;</span>
+</pre></div>
+</div>
+<p class="linemarker linemarker-47">Parameters are additional information required by some commands. If several
+parameters are required, they must be separated by commas.</p>
+<p class="linemarker linemarker-50">A small restriction arises when using it within BASIC programs.
+The additional diskette commands are not recognized if they are specified directly
+after a <code class="docutils literal notranslate"><span class="pre">THEN</span></code> or <code class="docutils literal notranslate"><span class="pre">ELSE</span></code> in <code class="docutils literal notranslate"><span class="pre">IF</span></code> statements.</p>
+<p class="linemarker linemarker-54">They must always be entered as an independent command either at the beginning of
+a line or after a command separator <code class="docutils literal notranslate"><span class="pre">&quot;:&quot;</span></code>.</p>
+<div class="hint highlight-basic notranslate"><div class="highlight"><pre><span></span><span class="nl">100</span><span class="w"> </span><span class="kr">IF</span><span class="w"> </span><span class="vg">A</span><span class="o">=</span><span class="w"> </span><span class="il">1</span><span class="w"> </span><span class="kr">THEN</span><span class="w"> </span><span class="kr">RUN</span><span class="w"> </span><span class="s2">&quot;XYZ&quot;</span><span class="w"> </span><span class="vg">wrong</span>
+<span class="nl">100</span><span class="w"> </span><span class="kr">IF</span><span class="w"> </span><span class="vg">A</span><span class="o">=</span><span class="w"> </span><span class="il">1</span><span class="w"> </span><span class="kr">THEN</span><span class="w"> </span><span class="o">:</span><span class="kr">RUN</span><span class="w"> </span><span class="s2">&quot;ХҮZ&quot;</span><span class="w"> </span><span class="vg">correct</span>
+</pre></div>
+</div>
+<p class="linemarker linemarker-63">or</p>
+<div class="hint highlight-basic notranslate"><div class="highlight"><pre><span></span><span class="nl">100</span><span class="w"> </span><span class="vg">ІF</span><span class="w"> </span><span class="vg">А</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="il">1</span><span class="w"> </span><span class="vg">ТНЕN</span><span class="w"> </span><span class="il">120</span>
+<span class="nl">110</span><span class="w"> </span><span class="kr">RUN</span><span class="w"> </span><span class="s2">&quot;XYZ&quot;</span>
+<span class="nl">120</span><span class="w"> </span><span class="o">......</span>
+</pre></div>
+</div>
+</section>
+<section id="file-types-and-specifications">
+<h2>File Types and Specifications<a class="headerlink" href="#file-types-and-specifications" title="Permalink to this heading"></a></h2>
+<p class="linemarker linemarker-77">There are three different types of files in LASER-DOS:</p>
+<ul>
+<li><p class="linemarker linemarker-79">BASIC program files</p>
+<p class="linemarker linemarker-81">with the label <code class="docutils literal notranslate"><span class="pre">&quot;T&quot;</span></code> as file type (= text file).
+BASIC programs are stored on the diskette in this file type.</p>
+</li>
+<li><p class="linemarker linemarker-85">Machine program files</p>
+<p class="linemarker linemarker-87">with the label <code class="docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> as file type (=binary file).
+Machine programs are stored on the diskette in this file type.</p>
+</li>
+<li><p class="linemarker linemarker-91">Data files</p>
+<p class="linemarker linemarker-93">with the label <code class="docutils literal notranslate"><span class="pre">&quot;D&quot;</span></code> as file type (=data).</p>
+<p class="linemarker linemarker-95">Your personal data is saved in this file type if you want to store it on the
+diskette from a BASIC program.</p>
+</li>
+</ul>
+<p class="linemarker linemarker-98">BASIC and machine programs are stored on the diskette in the same format. The
+different type designation is only in the table of contents and causes different
+handling when loading and starting.</p>
+<p class="linemarker linemarker-102">Data files have a completely different structure, which means that there are also
+restrictions when using individual commands.</p>
+<p class="linemarker linemarker-105">If you want to address a file on the floppy disk or create a new one, you must specify
+a file name in the commands, which is entered in the table of contents of the floppy
+disk.</p>
+<p class="linemarker linemarker-109">A file name can be a maximum of eight characters long and can consist of any
+sequence of letters, characters or numbers.</p>
+<p class="linemarker linemarker-112">In the commands, the file name must always be given in quotation marks. In contrast
+to other BASIC commands, the final quotation mark must not be forgotten, even if no
+further information is given.</p>
+<p class="linemarker linemarker-116">Unfortunately, LASER-DOS does not allow using a string variable instead of the file
+name; this must always be specified in full directly in the command. This complicates
+the flexible handling of different data files. How you can still help yourself is noted in
+chapter 5 “Tips for programming”.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="structure.html" class="btn btn-neutral float-left" title="Structure of the LASER-DOS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="commands.html" class="btn btn-neutral float-right" title="Commands - Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1985, Gerhard Wolf (translation 2023, Casper).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

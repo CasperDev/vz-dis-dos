@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WRITE - Write sector to disk &mdash; Laser310/VZ300 DOS 1.2 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="READ - Read sector from disk" href="READ.html" />
+    <link rel="prev" title="FIND - Look for a free entry in table of contents" href="FIND.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Laser310/VZ300 DOS 1.2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Chapter0/index.html">0. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter1/index.html">1. The LASER 110, 210 and 310 Disk System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter2/index.html">2. DOS Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter3/index.html">3. The individual DOS commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter4/index.html">4. Error Messages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter5/index.html">5. Programming tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter6/index.html">6. Application example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter7/index.html">7. Technical Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter8/index.html">8. Communication between the DOS and the Floppy Disk Controller</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">9. The most important DOS routines and their application іп machine programs.</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#call-and-overview">Call and Overview</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#dos-vector-functions">DOS Vector functions</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="PWRON.html">PWRON - Turn on a drive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PWROFF.html">PWROFF - Turn off a drive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ERROR.html">ERROR - Error handling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RDMAP.html">RDMAP - Load allocation Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CLEAR.html">CLEAR - Deleting a sector on the floppy disk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SVMAP.html">SVMAP - Save allocation Map to disk.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="INIT.html">INIT - Initialize disk.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CSI.html">CSI - Interpret command parameters.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HEX.html">HEX - Conversion ASCII to HEX.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IDAM.html">IDAM - Look for the address mark on the diskette</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CREATE.html">CREATE - Write an entry in the table of contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MAP.html">MAP - Detect a free sector on the disk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SEARCH.html">SEARCH - Find file in table of contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FIND.html">FIND - Look for a free entry in table of contents</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">WRITE - Write sector to disk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="READ.html">READ - Read sector from disk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DLY.html">DLY - n milliseconds delay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="STPIN.html">STPIN - Advance read/write head n tracks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="STPOUT.html">STPOUT - Reset read/write head n tracks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LOAD.html">LOAD - Loading a program or memory area</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SAVE.html">SAVE - Saving a program or memory area to floppy disk</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#drive-selecting-a-drive">DRIVE - Selecting a drive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#wproct-check-write-protection">WPROCT - Check write protection</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Laser310/VZ300 DOS 1.2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">9. The most important DOS routines and their application іп machine programs.</a></li>
+      <li class="breadcrumb-item active">WRITE - Write sector to disk</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Chapter9/WRITE.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="write-write-sector-to-disk">
+<h1>WRITE - Write sector to disk<a class="headerlink" href="#write-write-sector-to-disk" title="Permalink to this heading"></a></h1>
+<div class="admonition-syntax admonition">
+<p class="admonition-title">Syntax:</p>
+<div class="highlight-Z80 notranslate"><div class="highlight"><pre><span></span><span class="nf">CALL</span> <span class="mi">4032H</span>
+</pre></div>
+</div>
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-Input">
+<span id="cmdoption-arg-input"></span><span class="sig-name descname"><span class="pre">Input:</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-arg-Input" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p class="linemarker linemarker-14">The drive must be powered on.</p></li>
+<li><p class="linemarker linemarker-15">The sector to be written must be in the data buffer.</p></li>
+<li><p class="linemarker linemarker-16">The address of the sector to be written must be in the SCTR and TRCK
+fields of the DOS vectors.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-Exit">
+<span id="cmdoption-arg-exit"></span><span class="sig-name descname"><span class="pre">Exit:</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-arg-Exit" title="Permalink to this definition"></a></dt>
+<dd><p class="linemarker linemarker-21">The sector in the data buffer was transferred to the diskette.</p>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-Registers">
+<span id="cmdoption-arg-registers"></span><span class="sig-name descname"><span class="pre">Registers</span></span><span class="sig-prename descclassname"> <span class="pre">used:</span></span><a class="headerlink" href="#cmdoption-arg-Registers" title="Permalink to this definition"></a></dt>
+<dd><p class="linemarker linemarker-25">AF, BC, DE, HL, BC’, DE’, HL’</p>
+</dd></dl>
+
+<dl class="std cmdoption">
+<dt class="sig sig-object std" id="cmdoption-arg-Error">
+<span id="cmdoption-arg-error"></span><span class="sig-name descname"><span class="pre">Error</span></span><span class="sig-prename descclassname"> <span class="pre">handling:</span></span><a class="headerlink" href="#cmdoption-arg-Error" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p class="linemarker linemarker-29">A = 0 Ok, sector written</p></li>
+<li><p class="linemarker linemarker-30">A = 9 An address mark was not found</p></li>
+<li><p class="linemarker linemarker-31">A =17 BREAK key pressed</p></li>
+</ul>
+</dd></dl>
+
+</div>
+<p class="linemarker linemarker-34">The sensitive data in the data buffer are transferred to the addressed sector of
+the diskette. The checksum is determined and placed at the end of the sector.</p>
+<p class="linemarker linemarker-37">The sector is transferred including the data mark (10 bytes) in front of the data
+buffer and the checksum, means a total of 140 bytes are written to the diskette.</p>
+<div class="hint admonition">
+<p class="admonition-title">Example:</p>
+<div class="highlight-Z80 notranslate"><div class="highlight"><pre><span></span><span class="na">...</span>
+<span class="nf">DI</span>                  <span class="c1">; disable interrupts</span>
+<span class="nf">LD</span> <span class="p">(</span><span class="no">IY</span><span class="p">+</span><span class="mi">11</span><span class="p">),</span><span class="mi">10H</span>      <span class="c1">; select Drive 1</span>
+<span class="nf">CALL</span> <span class="mi">4008H</span>          <span class="c1">; and turn on</span>
+<span class="nf">LD</span> <span class="no">BC</span><span class="p">,</span><span class="mi">50</span>            <span class="c1">; 50 ms delay</span>
+<span class="nf">CALL</span> <span class="mi">4038H</span>
+<span class="nf">IN</span> <span class="no">A</span><span class="p">,(</span><span class="mi">13H</span><span class="p">)</span>          <span class="c1">; check write protection</span>
+<span class="nf">OR</span> <span class="no">A</span>
+<span class="nf">LD</span> <span class="no">A</span><span class="p">,</span><span class="mi">4</span>
+<span class="nf">JP</span> <span class="no">M</span><span class="p">,</span><span class="mi">400EH</span>          <span class="c1">; read only, to the ERROR routine</span>
+<span class="nf">LD</span> <span class="p">(</span><span class="no">IY</span><span class="p">+</span><span class="mi">17</span><span class="p">),</span><span class="mi">10</span>       <span class="c1">; set Sector Number in SCTR</span>
+<span class="nf">LD</span> <span class="p">(</span><span class="no">IY</span><span class="p">+</span><span class="mi">18</span><span class="p">),</span><span class="mi">5</span>        <span class="c1">; set Track Number in TRCK</span>
+<span class="nf">CALL</span> <span class="mi">4023H</span>          <span class="c1">; write sector to disk</span>
+<span class="nf">OR</span> <span class="no">A</span>                <span class="c1">; error occurred?</span>
+<span class="nf">JP</span> <span class="no">NZ</span><span class="p">,</span><span class="mi">400EH</span>         <span class="c1">; yes, to the ERROR routine</span>
+<span class="nf">CALL</span> <span class="mi">400BH</span>          <span class="c1">; turn off drive</span>
+<span class="nf">EI</span>                  <span class="c1">; enable interrupts again</span>
+<span class="na">...</span>
+</pre></div>
+</div>
+<p class="linemarker linemarker-64">The data from the data buffer is written to track 5, sector 10 of the
+floppy disk in drive 1.</p>
+</div>
+<p class="linemarker linemarker-67">Internally called routines: IDAM</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="FIND.html" class="btn btn-neutral float-left" title="FIND - Look for a free entry in table of contents" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="READ.html" class="btn btn-neutral float-right" title="READ - Read sector from disk" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1985, Gerhard Wolf (translation 2023, Casper).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

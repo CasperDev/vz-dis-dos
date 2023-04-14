@@ -1,4 +1,5 @@
 
+.. _Error Messages:
 
 4. Error Messages
 =================

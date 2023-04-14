@@ -24,7 +24,7 @@ The diskette stays in this sleeve at all times, which has three openings for han
 
 * a large hole in the middle for the drive mechanism
 * an oval cutout through which the head on the coating can access
-* a small opening as an index hole, which is used by many drives to physically identify the start of a track (not on the LASER DD20).
+* a small opening as an index hole, which is used by many drives to physically identify the start of a track (not by the **LASER DD20**).
 
 There is a small rectangular recess on the back of the case. This is device
 write-protection that you can use to protect the contents of a floppy disk. 
@@ -47,11 +47,10 @@ the head is not always on the same track.
 Because of this abrasion, malicious gossip also refers to diskette processing as
 "cutting data technology".
 
-
+.. _Inserting a floppy disk:
 
 Insert the disk
 ---------------
-
 
 To insert a floppy disk, the locking lever on the drive opening is set horizontally. The
 floppy disk is now pushed into the drive until it stops, with the oval head cutout to the
@@ -63,7 +62,7 @@ against the read/write head.
 
 Normally this is sufficient and the read/write operations can begin.
 However, as previously mentioned, difficulties can arise when the disk is crookedly
-clipped onto the cone, and unfortunately this often happens with the LASER DD20.
+clipped onto the cone, and unfortunately this often happens with the **LASER DD20**.
 You should therefore make the following points a rule:
 
 * Use only floppy disks with a reinforcement ring around the drive shaft. This prevents premature wear on the drive hole due to crooked pinching on the cone.
@@ -93,21 +92,22 @@ density".
 
 You can also use double-density floppy disks (SSDD). These have been tested a
 little more thoroughly, are a bit more expensive, but are not absolutely necessary for
-the recording process used with the LASER DD20.
+the recording process used with the **LASER DD20**.
 
 If you look closely at such a "single-sided" diskette, you will notice that both sides are
 coated and that the oval opening for the head is also present on both sides of the
 case.
-| This means that in principle you can write to both sides of the disk.
 
-However, the LASER DD20 drive is only equipped with one read/write head. So you
+This means that in principle you can write to both sides of the disk.
+
+However, the **LASER DD20** drive is equipped with only one read/write head. So you
 had to turn the disk to bring it to the other side. If you do this and now try to write
-something on this side, you will get the message "?DISK WRITE PROTECTED".
+something on this side, you will get the message :ref:`?DISK WRITE PROTECTED <Error Messages>`.
 This is due to the lack of a write protect notch on the other side of the case.
 Remember that a floppy disk is write-protected when you tape over the write-protect
 notch.
 
-No write-protect notch” obviously has the same effect.
+"No write-protect notch” obviously has the same effect.
 
 In order to be able to use the second side, only a second write protection notch is
 required, which you can easily attach to the case with a hole punch. Use another
@@ -159,7 +159,7 @@ Record structure
 
 What determines the amount of data that can be stored on a floppy disk? Each
 system has its own disk storage capacity; with the 5 1/4 inch floppy disks this is
-possible up to 1/2 million bytes (characters) per disk side. With the LASER DD20 it is
+possible up to 1/2 million bytes (characters) per disk side. With the **LASER DD20** it is
 slightly more than 80000 bytes.
 
 Two key factors affect storage capacity. This is the number of increments with which
@@ -167,7 +167,7 @@ the head moves over the floppy disk and which is equal to the number of data tra
 to be written on the floppy disk. There are currently Known to vary between 35 and
 89 on different systems.
 
-The LASER DD20 has 40 tracks.
+The **LASER DD20** has 40 tracks.
 
 The second factor is the way each bit is written to disk. A distinction is made here
 between “single density” (FM) and “double density” (MFM). Double recording density
@@ -190,7 +190,7 @@ different tracks into 16 equal sections (sectors), like a pie. Each of these sec
 separately addressable and can be treated individually.
 
 Each track consists of 16 sectors, in each of which 128 data bytes can be
-accommodated (Figure 1.6). For the LASER DD20 this means a precise storage
+accommodated (Figure 1.6). For the **LASER DD20** this means a precise storage
 capacity of
 
 	48 tracks x 16 sectors x 128 bytes = 81920 bytes

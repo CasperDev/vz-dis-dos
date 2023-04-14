@@ -2,7 +2,7 @@
 The Floppy Disk Controller
 ==========================
 
-A LASER DI40 Floppy Disk Controller is required to connect a drive to a computer.
+A **LASER DI40** Floppy Disk Controller is required to connect a drive to a computer.
 
 This is connected to the computer's system bus and has two 20-pin plug-in
 connections on the back for connecting one or two drives.

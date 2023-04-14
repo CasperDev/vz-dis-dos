@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>General Instructions &mdash; Laser310/VZ300 DOS 1.2 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="File management functions" href="fileman.html" />
+    <link rel="prev" title="3. The individual DOS commands" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Laser310/VZ300 DOS 1.2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../Chapter0/index.html">0. Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter1/index.html">1. The LASER 110, 210 and 310 Disk System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter2/index.html">2. DOS Operations</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">3. The individual DOS commands</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">General Instructions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#init-prepare-a-floppy-disk">INIT - Prepare a floppy disk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#drive-drive-selection">DRIVE - Drive selection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dcopy-copy-disk">DCOPY - Copy disk</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#status-display-the-diskette-status">STATUS - Display the diskette status</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="fileman.html">File management functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="storage.html">Storage and processing of data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter4/index.html">4. Error Messages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter5/index.html">5. Programming tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter6/index.html">6. Application example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter7/index.html">7. Technical Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter8/index.html">8. Communication between the DOS and the Floppy Disk Controller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Chapter9/index.html">9. The most important DOS routines and their application іп machine programs.</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Laser310/VZ300 DOS 1.2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">3. The individual DOS commands</a></li>
+      <li class="breadcrumb-item active">General Instructions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Chapter3/general.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="general-instructions">
+<h1>General Instructions<a class="headerlink" href="#general-instructions" title="Permalink to this heading"></a></h1>
+<section id="init-prepare-a-floppy-disk">
+<h2>INIT - Prepare a floppy disk<a class="headerlink" href="#init-prepare-a-floppy-disk" title="Permalink to this heading"></a></h2>
+<div class="admonition-syntax admonition">
+<p class="admonition-title">Syntax</p>
+<div class="highlight-basic notranslate"><div class="highlight"><pre><span></span><span class="vg">INIT</span>
+</pre></div>
+</div>
+<p class="linemarker linemarker-16">Allowed as direct command and in program mode.</p>
+</div>
+<p class="linemarker linemarker-18">The INIT command prepares a floppy disk for storing programs or data; it will
+be “initialized”.</p>
+<p class="linemarker linemarker-21">This means that the basic structure shown in the “Recording structure” section
+will be produced on the diskette.</p>
+<p class="linemarker linemarker-24">40 tracks with 16 sectors each are set up and all address and data marks are
+written.</p>
+<p class="linemarker linemarker-27">After writing, each sector is individually addressed and read.</p>
+<p class="linemarker linemarker-29">The entire initialization process takes about 2-3 minutes.</p>
+<p class="linemarker linemarker-31">After correct implementation, BASIC responds with READY and the next
+command can be entered.</p>
+<p class="linemarker linemarker-34">The initialization process can be aborted at any time by pressing the BREAK
+button.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p class="linemarker linemarker-39">With the INIT command, a non-write-protected diskette is overwritten without
+any further checking, i.e. any data on it is lost.</p>
+</div>
+<div class="error admonition">
+<p class="admonition-title">Possible Errors</p>
+<p class="linemarker linemarker-45"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">WRITE</span> <span class="pre">PROTECTED</span></code> The disk’s write-protect notch is taped
+over.</p>
+<p class="linemarker linemarker-48"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> An error occurred during the check read.
+(faulty disk or bad centering - see
+Insertion)</p>
+</div>
+</section>
+<section id="drive-drive-selection">
+<h2>DRIVE - Drive selection<a class="headerlink" href="#drive-drive-selection" title="Permalink to this heading"></a></h2>
+<div class="admonition-syntax admonition">
+<p class="admonition-title">Syntax</p>
+<div class="highlight-basic notranslate"><div class="highlight"><pre><span></span><span class="vg">DRIVE</span><span class="w"> </span><span class="vg">n</span>
+<span class="vg">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="vg">drive</span><span class="w"> </span><span class="vg">number</span><span class="w"> </span><span class="p">(</span><span class="il">1</span><span class="w"> </span><span class="vg">оr</span><span class="w"> </span><span class="il">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="linemarker linemarker-64">Allowed as direct command and in program mode.</p>
+</div>
+<p class="linemarker linemarker-67">The DRIVE command is used to select one of the two drives that can be
+connected.</p>
+<p class="linemarker linemarker-70">After switching on the computer and after each copy command (DCOPY),
+drive 1 is automatically selected.</p>
+<p class="linemarker linemarker-73">If you want to access drive 2, you must first switch to it with DRIVE 2.</p>
+<p class="linemarker linemarker-75">All DOS commands, except DCOPY, are executed on the selected drive.
+Therefore, make sure that you have always selected the correct drive. An
+“INIT” command, e.g. on the wrong drive, inevitably leads to the destruction of
+a floppy disk with important data that happens to be there.</p>
+<p class="linemarker linemarker-81">If you are not sure which drive is currently selected, execute a corresponding
+DRIVE command (DRIVE 1 or DRIVE 2) to be safe.</p>
+<p class="linemarker linemarker-84">The DRIVE command. only changes the DOS internal pointers, a floppy disk
+access does not take place.</p>
+<div class="error admonition">
+<p class="admonition-title">Possible Errors:</p>
+<p class="linemarker linemarker-90"><code class="docutils literal notranslate"><span class="pre">?FUNCTION</span> <span class="pre">CODE</span> <span class="pre">ERROR</span></code> Wrong drive selection (not 1 or 2)</p>
+</div>
+</section>
+<section id="dcopy-copy-disk">
+<h2>DCOPY - Copy disk<a class="headerlink" href="#dcopy-copy-disk" title="Permalink to this heading"></a></h2>
+<div class="admonition-syntax admonition">
+<p class="admonition-title">Syntax</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">DCOPY</span>
+</pre></div>
+</div>
+<p class="linemarker linemarker-102">Allowed only as a direct command.</p>
+</div>
+<p class="linemarker linemarker-104">The DCOPY command without any further parameters results in a complete
+copy of a floppy disk onto a second initialized floppy disk.</p>
+<p class="linemarker linemarker-107">Copying is possible with one or two drives. With only one drive, however, you
+will have to change the diskettes several times during the copying process.</p>
+<p class="linemarker linemarker-110">After entering the command, you will first be prompted to select the source
+and target drives.</p>
+<div class="hint highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">SOURCE</span><span class="w"> </span><span class="vg">DISK</span><span class="w"> </span><span class="p">(</span><span class="il">1</span><span class="o">/</span><span class="il">2</span><span class="p">)</span><span class="o">?</span>
+<span class="vg">DESTINATION</span><span class="w"> </span><span class="vg">DISK</span><span class="w"> </span><span class="p">(</span><span class="il">1</span><span class="o">/</span><span class="il">2</span><span class="p">)</span><span class="o">?</span>
+</pre></div>
+</div>
+<p class="linemarker linemarker-119">Answer each of these questions by pressing the “1” or “2” key.</p>
+<p class="linemarker linemarker-121">Only own one drive; so answer “1” to each question.</p>
+<p class="linemarker linemarker-123">Command execution can be aborted with CTRL/BREAK.</p>
+<p class="linemarker linemarker-125">After the drive has been selected, the copying process begins. The entire
+RAM memory is used for this in order to have to switch between the source
+and target drive as little as possible.</p>
+<p class="linemarker linemarker-129">If you copy from one drive to a second, the entire copying process runs
+automatically. If there is only one drive (from 1 to 1 or from 2 to 2), you will
+have the opportunity to insert the correct diskette before each read or write
+operation.</p>
+<div class="hint highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">INSERT</span><span class="w"> </span><span class="vg">SOURCE</span><span class="w"> </span><span class="vg">DISKETTE</span>
+<span class="p">(</span><span class="vg">PRESS</span><span class="w"> </span><span class="vg">SPACE</span><span class="w"> </span><span class="vg">WHEN</span><span class="w"> </span><span class="vg">READY</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="linemarker linemarker-140">before each reading from the source diskette, or</p>
+<div class="hint highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">INSERT</span><span class="w"> </span><span class="vg">DESTINATION</span><span class="w"> </span><span class="vg">DISKETTE</span>
+<span class="p">(</span><span class="vg">PRESS</span><span class="w"> </span><span class="vg">SPACE</span><span class="w"> </span><span class="vg">WHEN</span><span class="w"> </span><span class="vg">READY</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="linemarker linemarker-148">before each write to the target disk.</p>
+<p class="linemarker linemarker-150">You can interrupt the copying process at any time by pressing the BREAK key.</p>
+<p class="linemarker linemarker-152">The completion of the copying process is indicated with READY.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<ul class="simple">
+<li><p class="linemarker linemarker-156">Note that the target disk must first be initialized.</p></li>
+<li><p class="linemarker linemarker-158">Data on the target diskette will be overwritten (ensure the correct drive and diskette selection).</p></li>
+<li><p class="linemarker linemarker-160">The entire available RAM area is overwritten by DCOPY, i.e. data or programs located there must first be saved or then reloaded.</p></li>
+<li><p class="linemarker linemarker-162">When using “Extended BASIC” the computer has to be re-initialized (switch off/on).</p></li>
+<li><p class="linemarker linemarker-164">After completion, drive 1 is always selected, regardless of a previous DRIVE command.</p></li>
+</ul>
+</div>
+<div class="error admonition">
+<p class="admonition-title">Possible Errors:</p>
+<p class="linemarker linemarker-170"><code class="docutils literal notranslate"><span class="pre">?ILLEGAL</span> <span class="pre">DIRECT</span></code> An attempt was made to call the DCOPY
+command from a program.</p>
+<p class="linemarker linemarker-173"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">WRITE</span> <span class="pre">PROTECTED</span></code> The target disk’s write-protect notch is
+taped over.</p>
+<p class="linemarker linemarker-176"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> Write or read error on one of the
+two disks. (defective or bad / centering)</p>
+</div>
+<div class="information admonition">
+<p class="admonition-title">Note:</p>
+<p class="linemarker linemarker-182">This is one of the most important DOS commands.</p>
+<p class="linemarker linemarker-184">As already mentioned at the beginning, no floppy disk is a reliable data
+storage device in the long run (abrasion).</p>
+<p class="linemarker linemarker-187">So make a copy of every diskette that contains programs and data that are
+important to you</p>
+<ul class="simple">
+<li><p class="linemarker linemarker-190">after the initial creation or acquisition</p></li>
+<li><p class="linemarker linemarker-191">after any significant change in content.</p></li>
+</ul>
+</div>
+</section>
+<section id="status-display-the-diskette-status">
+<h2>STATUS - Display the diskette status<a class="headerlink" href="#status-display-the-diskette-status" title="Permalink to this heading"></a></h2>
+<div class="admonition-syntax-only-from-disk-basic-v-1-2 admonition">
+<p class="admonition-title">Syntax <cite>(only from DISK BASIC V 1.2)</cite></p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">STATUS</span>
+</pre></div>
+</div>
+<p class="linemarker linemarker-204">Allowed as direct command and in program mode.</p>
+</div>
+<p class="linemarker linemarker-206">The STATUS command determines and displays the space still available on
+the diskette.</p>
+<p class="linemarker linemarker-209">The output comes in two forms. The first line shows the number of free
+sectors in the form:</p>
+<div class="hint highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">nn</span><span class="w"> </span><span class="vg">RECORDS</span><span class="w"> </span><span class="vg">FREE</span>
+</pre></div>
+</div>
+<p class="linemarker linemarker-217">In the second line, the free bytes are specified in the form:</p>
+<div class="highlight-BASIC notranslate"><div class="highlight"><pre><span></span><span class="vg">nn</span><span class="o">.</span><span class="vg">nnn</span><span class="w"> </span><span class="vg">K</span><span class="w"> </span><span class="vg">BYTES</span><span class="w"> </span><span class="vg">FREE</span>
+</pre></div>
+</div>
+<div class="hint admonition">
+<p class="admonition-title">Example:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>STATUS
+<span class="m">80</span><span class="w"> </span>RECORDS<span class="w"> </span>FREE
+<span class="m">10</span>.0<span class="w"> </span>K<span class="w"> </span>BYTES<span class="w"> </span>FREE
+</pre></div>
+</div>
+</div>
+<div class="error admonition">
+<p class="admonition-title">Possible Errors:</p>
+<p class="linemarker linemarker-237"><code class="docutils literal notranslate"><span class="pre">?DISK</span> <span class="pre">I/O</span> <span class="pre">ERROR</span></code> The occupancy overview of the diskette
+could not be read correctly.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="3. The individual DOS commands" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="fileman.html" class="btn btn-neutral float-right" title="File management functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1985, Gerhard Wolf (translation 2023, Casper).</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
