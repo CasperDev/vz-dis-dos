@@ -64,11 +64,12 @@ The result of the search is transferred in the A register.
 
 .. admonition:: Example:
 	:class: hint
-
+	
 	.. code:: Z80
+		
 
 		...
-		DI 					; disable interrupts
+		DI					; disable interrupts
 		LD (IY+11),10H 		; select Drive 1
 		CALL 4008H 			; and turn on
 		LD BC,50 			; 50 ms delay

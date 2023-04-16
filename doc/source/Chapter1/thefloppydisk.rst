@@ -134,7 +134,9 @@ possible, you should absolutely observe the following rules:
 
 * Always keep floppy disks in their protective cases when they are outside the drive.
 * Make sure there is no disk in the drive when turning the power on or off.
-* Never bring your floppy disks close to strong magnetic fields (transformers,motors, magnets, televisions/monitors, radios, etc.); the magnetic fields emitted there could destroy the data content.
+* Never bring your floppy disks close to strong magnetic fields 
+  (transformers,motors, magnets, televisions/monitors, radios, etc.); 
+  the magnetic fields emitted there could destroy the data content.
 * Only touch the disk by the sleeve. Avoid touching the magnetizable coating. Also try to clean the coating. Scratches are quick in the surface and you can then forget about the disk.
 * Never expose a floppy disk to direct sunlight or excessive heat.
 * Avoid contaminating the coating with cigarette ash, dust or other things.

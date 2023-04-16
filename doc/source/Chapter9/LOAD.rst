@@ -18,6 +18,7 @@ LOAD - Loading a program or memory area
 		- 78A4/A5 = starting address
 		- 78F9/FA = ending address + 1
 
+
 	.. cmdoption:: Registers used: 
 		
 		AF, BC, DE, HL
@@ -52,6 +53,7 @@ interrupts.
 	:class: hint
 
 	.. code:: Z80
+		:force:
 
 		...
 		LD (IY+11),80H 			; select Drive 2
@@ -64,6 +66,7 @@ interrupts.
 		EI 						; enable interrupts again
 		...
 		DNAM: DEFM '“GRAFDR”:'
+		
 
 	The binary file or machine program "GRAFDR" is transferred from the
 	floppy disk in drive 1 into memory.
