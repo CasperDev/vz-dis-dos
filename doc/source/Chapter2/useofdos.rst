@@ -21,22 +21,22 @@ command may be used is noted in the detailed descriptions.
 
 In terms of syntax, the commands can be divided into three categories:
 
-* Commands that do not address a file:
+.. rubric:: Commands that do not address a file:
 
-.. code:: sh
+.. code-block:: sh
   	:class: hint
 	
 	command [parameter]
 
 
-* Commands that address a file:
+.. rubric:: Commands that address a file:
   
 .. code:: sh
 	:class: hint
 
 	command "filename" [,parameter]
 
-* Commands that address two files:
+.. rubric:: Commands that address two files:
 
 .. code:: sh
 	:class: hint
@@ -49,7 +49,7 @@ parameters are required, they must be separated by commas.
 
 A small restriction arises when using it within BASIC programs.
 The additional diskette commands are not recognized if they are specified directly
-after a ``THEN`` or ``ELSE`` in ``IF`` statements.
+after a :guilabel:`THEN` or :guilabel:`ELSE` in :guilabel:`IF` statements.
 
 They must always be entered as an independent command either at the beginning of
 a line or after a command separator ``":"``.
@@ -58,14 +58,14 @@ a line or after a command separator ``":"``.
 	:class: hint
 
 	100 IF A= 1 THEN RUN "XYZ" wrong
-	100 IF A= 1 THEN :RUN "ХҮZ" correct
+	100 IF A= 1 THEN :RUN "XYZ" correct
 
 or
 
 .. code:: basic
 	:class: hint
 
-	100 ІF А <> 1 ТНЕN 120
+	100 IF A <> 1 THEN 120
 	110 RUN "XYZ"
 	120 ......
 
@@ -77,23 +77,22 @@ File Types and Specifications
 There are three different types of files in LASER-DOS:
 
 * BASIC program files
-  
-  with the label ``"T"`` as file type (= text file).
-  BASIC programs are stored on the diskette in this file type.
+    with the label ``"T"`` as file type (= text file).
+    
+	BASIC programs are stored on the diskette in this file type.
 
 
 * Machine program files
-
-  with the label ``"B"`` as file type (=binary file).
-  Machine programs are stored on the diskette in this file type.
+    with the label ``"B"`` as file type (=binary file).
+    
+	Machine programs are stored on the diskette in this file type.
 
 
 * Data files
+    with the label ``"D"`` as file type (=data).
 
-  with the label ``"D"`` as file type (=data).
-
-  Your personal data is saved in this file type if you want to store it on the
-  diskette from a BASIC program.
+    Your personal data is saved in this file type if you want to store it on the
+    diskette from a BASIC program.
 
 BASIC and machine programs are stored on the diskette in the same format. The
 different type designation is only in the table of contents and causes different
@@ -116,7 +115,7 @@ further information is given.
 Unfortunately, LASER-DOS does not allow using a string variable instead of the file
 name; this must always be specified in full directly in the command. This complicates
 the flexible handling of different data files. How you can still help yourself is noted in
-chapter 5 "Tips for programming".
+chapter 5 :ref:`"Tips for programming" <tips for programming>`.
 
 
 

@@ -1,5 +1,5 @@
 
-
+.. _tips for programming:
 
 5. Programming tips
 ===================
@@ -18,14 +18,14 @@ You can now manually complete these files in direct mode if their names are
 known.
 
 However, this is not sufficient for new files to be created in a program. Such
-files must then also be deleted, otherwise the file will be updated when OPEN
+files must then also be deleted, otherwise the file will be updated when :guilabel:`OPEN`
 is repeated and you will have your data in the file more than once.
 In all these cases, the following procedure is recommended:
 
 At the end of all programs under development you define a block with
-CLOSE calls and possibly also delete calls for all files addressed in the
+:guilabel:`CLOSE` calls and possibly also delete calls for all files addressed in the
 program. If the program is interrupted as mentioned above, simply call
-this routine with RUN line number.
+this routine with :guilabel:`RUN` line number.
 
 In a program, you edit the three files DAT1, DAT2 for reading, and
 DAT3 is recreated.
@@ -43,7 +43,7 @@ DAT3 is recreated.
 	20030 ERA "DAT3"
 	20040 END
 
-If a program is interrupted, you can use RUN 20000 to clean up your
+If a program is interrupted, you can use :guilabel:`RUN 20000` to clean up your
 files and restart your program without any problems after correction.
 
 

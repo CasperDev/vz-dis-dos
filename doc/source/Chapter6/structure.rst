@@ -29,6 +29,6 @@ Dis has the advantage that if errors occur during writing (DISK FULL or similar)
 least the old file is still available.
 
 If you are interested in the program, simply type it in and save it on the floppy disk
-with SAVE "ANSCHR".
+with :guilabel:`SAVE "ANSCHR"`.
 
 

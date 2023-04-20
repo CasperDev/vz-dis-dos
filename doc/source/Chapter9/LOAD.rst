@@ -43,8 +43,8 @@ This routine only works with files that contain the start address in bytes 12 an
 13 of the table of contents and the end address + 1 in bytes 14 and 15, ie not
 with standard data files.
 
-If a program is saved with the BASIC commands SAVE or BSAVE or by
-machine programs with the routine SAVE, this entry is made automatically.
+If a program is saved with the BASIC commands :guilabel:`SAVE` or :guilabel:`BSAVE` or by
+machine programs with the routine :doc:`SAVE </Chapter9/SAVE>`, this entry is made automatically.
 
 The LOAD routine automatically turns the drive on and off and also turns off
 interrupts.

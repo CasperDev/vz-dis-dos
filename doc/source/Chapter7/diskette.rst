@@ -10,7 +10,7 @@ Structure of the diskette after initialization
 Before you can work with a floppy disk, it must have the basic structure of tracks and
 sectors.
 
-This basic structure is written to the diskette using the initialization (INIT command).
+This basic structure is written to the diskette using the initialization (:guilabel:`INIT` command).
 It consists of 40 tracks with 16 sectors each, each with 128 bytes of data capacity.
 As noted in the "Recording Structure" section, each sector is followed by a certain
 "overhead" consisting of necessary synchronization and addressing fields. This
@@ -23,7 +23,7 @@ Such a sector has the following basic structure:
 	<br />
 
 +---------------+-----------------------------------+------------------+
-| Bytes 0-6     | Address synchronization           | 7 * X'80'        |
+| Bytes 0-6     | Address synchronization           | 7 x X'80'        |
 +---------------+-----------------------------------+------------------+
 | Bytes 7-10    | Address mark                      | X'FE E7 18 C3'   |
 +---------------+-----------------------------------+------------------+
@@ -33,7 +33,7 @@ Such a sector has the following basic structure:
 |               | 13 - checksum "address field"     |                  |
 |               | (Track# + Sector#)                |                  | 
 +---------------+-----------------------------------+------------------+
-| Bytes 14-19   | Data synchronization              | 6 * X'80'        |
+| Bytes 14-19   | Data synchronization              | 6 x X'80'        |
 +---------------+-----------------------------------+------------------+
 | Bytes 20-23   | Data mark                         | X'C3 18 E7 FE'   |
 +---------------+-----------------------------------+------------------+
@@ -46,7 +46,7 @@ Each sector is written completely during initialization, with the data field and
 checksum (bytes 24 - 153) being set to X'00'.
 
 The sectors are not numbered consecutively around the disk, but arranged in jumps
-of three (see Figure 1.6). This achieves the effect that consecutive sectors of a track
+of three (see :ref:`Figure 1.6 <Figure 1.6>`). This achieves the effect that consecutive sectors of a track
 can be reached during one revolution of the disk if a certain processing time in
 between is not exceeded.
 
@@ -73,7 +73,7 @@ An entry in the table of contents has the following structure:
 +-----------+-----------------------------------------------------------+
 | Byte 0    | occupancy status / file type   |br|                       |
 |           | ``0`` - end of used entries in the table of contents |br| |
-|           | ``1`` - released entry (e.g. after a "ERA") |br|          |
+|           | ``1`` - released entry (e.g. after a :guilabel:`ERA`) |br||
 |           | ``D`` - entry refers to a data file |br|                  |
 |           | ``T`` - entry refers to a text file (BASIC program) |br|  |
 |           | ``B`` - entry refers to a binary file (machine Program)   |
@@ -96,7 +96,7 @@ An entry in the table of contents has the following structure:
 +-----------+-----------------------------------------------------------+
 
 
-With the "DIR" command, the first 10 bytes of each assigned entry are simply output
+With the :guilabel:`DIR` command, the first 10 bytes of each assigned entry are simply output
 on the screen without any preparation.
 
 If a file is deleted, only the status byte (byte 0) is set to '1'. All other entries are
@@ -142,7 +142,8 @@ This type designation is the only difference between text files (BASIC programs)
 binary files (machine programs). The recording structures are identical.
 
 The different type identifiers result in different handling after loading or starting such
-a program (see the LOAD/RUN or BLOAD/BRUN command descriptions).
+a program (see the :ref:`LOAD <cmdLOAD>`/:ref:`RUN <cmdRUN>` or 
+:ref:`BLOAD <cmdBLOAD>`/:ref:`BRUN <cmdBRUN>` command descriptions).
 
 Bytes 10 and 11 of the table of contents contain a pointer to the first sector occupied
 by this program.
@@ -175,7 +176,7 @@ bytes.
 The structure of the data in the first 126 bytes differs from the other two file types.
 
 Data representation is in ASCII format only. Storage is based on data records, with
-each PR# command writing a complete data record to the file.
+each :guilabel:`PR#` command writing a complete data record to the file.
 
 Records contain a defined end identifier. This is the ASCII character for "Carriage
 Return" X'0D'.
@@ -185,7 +186,7 @@ one sector; a data record can also extend over several sectors. Except for the f
 record of a file, records do not have to start on a sector boundary either.
 
 Within the data records, the various data fields are separated from one another by
-commas; they are assigned to the variables defined in the IN# command when they
+commas; they are assigned to the variables defined in the :guilabel:`IN#` command when they
 are read.
 
 

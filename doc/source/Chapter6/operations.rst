@@ -4,7 +4,7 @@
 Operation of the program
 ------------------------
 
-The program is loaded and started with RUN "ANSCHR". Immediately after the start,
+The program is loaded and started with :guilabel:`RUN "ANSCHR"`. Immediately after the start,
 the content of the "MAILROX" file is transferred to the program-internal matrices.
 This file must be on the diskette, otherwise the program is terminated after an error
 message is output.

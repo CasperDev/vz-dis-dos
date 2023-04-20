@@ -32,7 +32,7 @@ HEX - Conversion ASCII to HEX.
 This routine can be used to convert a hexadecimal address input from the
 keyboard to its binary equivalent.
 
-This routine is used by DOS BASIC, e.g. by the BSAVE command, to interpret
+This routine is used by DOS BASIC, e.g. by the :guilabel:`BSAVE` command, to interpret
 and accept the program start address and end address.
 
 .. admonition:: Example:

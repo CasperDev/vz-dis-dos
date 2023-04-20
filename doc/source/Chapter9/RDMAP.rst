@@ -16,7 +16,7 @@ RDMAP - Load allocation Map
 	.. cmdoption:: Exit: 
 		
 		The sector allocation map is located in the 80-byte buffer at the end
-		of the DOS work area (MAPAREA).
+		of the :ref:`DOS work area` (MAPAREA).
 
 		The drive remains powered on.
 
@@ -31,7 +31,7 @@ RDMAP - Load allocation Map
 
 The sectors allocation map is loaded from sector 15
 of track 0 from the diskette into the main memory and transferred to the
-MAPAREA at the end of the DOS work area.
+MAPAREA at the end of the :ref:`DOS work area`.
 
 Note that you are responsible for turning the drive on and off yourself.
 

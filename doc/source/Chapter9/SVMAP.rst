@@ -32,7 +32,7 @@ SVMAP - Save allocation Map to disk.
 		to the ERROR routine. Custom error handling is not possible.
 
 The sectors allocation map is transferred from the
-corresponding buffer of the DOS work area (MAPAREA) to the data buffer and
+corresponding buffer of the :ref:`DOS work area` (MAPAREA) to the data buffer and
 written from there to sector 15 of track 0 on the diskette.
 
 Note that you must turn the drive on and off by yourself.
@@ -60,7 +60,7 @@ Before saving, check that the floppy disk is not write-protected,
 		EI 					; enable interrupts again
 		...
 
-	The sector allocation overview is written back from the DOS work area
+	The sector allocation overview is written back from the :ref:`DOS work area`
 	(MAPAREA) to the diskette in drive 1 (track 0, sector 15).
 	
 Internally called routines: WRITE

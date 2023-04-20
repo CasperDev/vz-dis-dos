@@ -16,7 +16,7 @@ is replaced by the text “DOS BASIC V1.0”
 
 This is your sure sign that your diskette drive system is initialized.
 
-You now have the additional 17 diskette editing commands mentioned above.
+You now have the additional :ref:`17 diskette editing commands <DOS commands>` mentioned above.
 
 Of course, this does not happen if you have not connected any additional memory
 expansion via a LASER 110 or VZ200.

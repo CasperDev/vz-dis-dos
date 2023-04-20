@@ -67,8 +67,8 @@ You should therefore make the following points a rule:
 
 * Use only floppy disks with a reinforcement ring around the drive shaft. This prevents premature wear on the drive hole due to crooked pinching on the cone.
 * Before inserting the disk, center it by hand as best you can in the case.
-* Before writing anything to an initialized floppy disk, test it with the DIR command.
-* After reinitialization, remove the diskette, reinsert it and also test with the DIR command.
+* Before writing anything to an initialized floppy disk, test it with the :option:`DIR` command.
+* After reinitialization, remove the diskette, reinsert it and also test with the :option:`DIR` command.
   
 If, despite this, the Drive keeps trying to reposition the head during a read process
 (you can hear this from the slightly louder clicking noises), open the locking lever
@@ -156,6 +156,8 @@ pack of disks, which you can also easily change once in a while. If you do not u
 them to seal any important openings, you can use the entire surface of the case for
 this purpose.
 
+.. _record structure:
+
 Record structure
 ----------------
 
@@ -199,16 +201,17 @@ capacity of
 
 per disc side.
 
+.. _Figure 1.6:
 .. figure:: ../_static/Figure1_6.jpg
 	:width: 640
 	:align: center
 
 	Figure 1.6 Arrangement of tracks and sectors on a floppy disk
 
-However, this is not all that needs to be stored on a formatted floppy disk
+However, this is not all that needs to be stored on a formatted floppy disk.
+
 Among other things, to be able to access a sector directly without any major fuss,
-mап must know when the information you are looking for is passing under your
-head.
+maп must know when the information you are looking for is passing under the head.
 
 For this purpose, each sector receives a header, a so-called address field, in which
 the sector number and, in order to recognize head alignment errors, also the track
@@ -226,7 +229,7 @@ of a synchronization of the head.
 For this purpose, specially defined bit sequences and recording marks are written
 onto the diskette, which have an easily recognizable pattern.
 There are two different types of these marks. One precedes each sector address
-field, which is the "address mark"; a second precedes 'each data field of a sector, the
+field, which is the "address mark"; a second precedes each data field of a sector, the
 "data mark".
 
 Each of these markers are preceded by sync bytes, and the markers are
@@ -262,7 +265,7 @@ you get such a complete record without having to keep track of sectors yourself?
 A whole track of the floppy disk was sacrificed for this purpose. On track 0, the
 outermost track, there is a table of contents on the diskette, in which it is recorded
 which programs and files are stored on the diskette and where they can be found.
-With the DOS command "DIR" you can display this table of contents on the screen.
+With the DOS command :guilabel:`DIR` you can display this table of contents on the screen.
 
 The last sector of this track 0 still has a special use. It notes whether each sector of
 the diskette is free or contains valid data.

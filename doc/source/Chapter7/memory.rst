@@ -1,4 +1,4 @@
-
+.. _DOS work area:
 
 Memory resident workspaces
 ==========================
@@ -130,24 +130,25 @@ The DOS vector area is structured as follows:
 |RESVE      |10   |IY+58  |reserved for extensions. |br|                 |
 +-----------+-----+-------+----------------------------------------------+
 
+.. _FCB:
 
 File Control Blocks (FCB)
 -------------------------
 
 
-Within the DOS vectors are two 13 byte file management blocks, FCB1 and FCB2.
+Within the DOS vectors are two 13 byte file control blocks, FCB1 and FCB2.
 
 These are required when processing data files in order to keep status and control
 information about the file being accessed.
 
-A free file management block is determined by the OPEN command and provided
+A free file control block is determined by the :guilabel:`OPEN` command and provided
 with the necessary parameters for the file to be opened.
 
-The IN# and PR# commands are based on the relevant file management block, e.g.
+The :guilabel:`IN#` and :guilabel:`PR#` commands are based on the relevant file control block, e.g.
 which sector of the file is to be read and at which byte of this sector processing is to
 be continued.
 
-The file management blocks are released again by the CLOSE command.
+The file control blocks are released again by the :guilabel:`CLOSE` command.
 
 Since there are only two of these blocks, only two files can be open at the same
 time.
@@ -163,7 +164,7 @@ FCB1 or FCB2
 |           |     |       |0 - FCB not used                         |br|       | 
 |           |     |       |1 - FCB used, file currently not active |br|        |
 |           |     |       |2 - FCR used, file active.           |br|           |
-|           |     |       |Active means that currently a current sector of |br||
+|           |     |       |Active means that a current sector of |br|          |
 |           |     |       |this file is in the data buffer for processing |br| |
 +-----------+-----+-------+----------------------------------------------------+
 |ACCESS     |1    |1      |Access type for this file. |br|                     | 
@@ -195,7 +196,7 @@ with the floppy disk.
 When writing, the sectors are transferred from the data buffer to the diskette; when
 reading, the sectors are transferred from the diskette to the data buffer.
 
-During initialization, the 18 bytes of the data mark are set in front of the data buffer,
+During initialization, the 10 bytes of the data mark are set in front of the data buffer,
 so that a complete information block (data mark + data field) is available when a
 sector is written.
 

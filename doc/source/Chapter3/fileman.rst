@@ -4,6 +4,8 @@
 File management functions
 =========================
 
+.. _cmdDIR:
+
 DIR - Display of the table of contents
 --------------------------------------
 
@@ -15,7 +17,7 @@ DIR - Display of the table of contents
 	
 	Allowed as direct command and in program mode.
 
-The DIR command displays a directory of all programs and files stored on the
+The :guilabel:`DIR` command displays a directory of all programs and files stored on the
 diskette on the screen.
 
 The listing includes file type and file name.
@@ -59,7 +61,7 @@ with the same key.
 
 
 
-
+.. _cmdSAVE:
 
 SAVE - Saving a BASIC program to floppy disk
 --------------------------------------------
@@ -98,9 +100,9 @@ In program mode, the program is continued with the command following
 	:class: error
 
 	``?SYNTAX ERROR`` 
-	
+    	
 	* no file name specified
-	* Filename not in quotes
+    * Filename not in quotes
 	* No end of line (RETURN) or command separator ``":"`` after the file name.
   
 
@@ -117,16 +119,17 @@ In program mode, the program is continued with the command following
 	diskette for the program.
 
 	``?DISK I/O ERROR`` An error occurred while writing or reading
-	the floppy disk..
+	the floppy disk.
 
 The writing process can be aborted at any time by pressing the :kbd:`BREAK` key.
 However, depending on when the key is pressed, the entry in the table of contents is
 not always deleted (error in DOS).
 
 In order to ensure problem-free diskette management, you should therefore check
-the table of contents with DIR in such a case and, if necessary, delete the file
-manually with ERA.
+the table of contents with :guilabel:`DIR` in such a case and, if necessary, delete the file
+manually with :guilabel:`ERA`.
 
+.. _cmdLOAD:
 
 LOAD - Loading a BASIC program from diskette
 --------------------------------------------
@@ -155,14 +158,14 @@ The completion of the storage process is indicated with READY.
 
 	Transfers the BASIC program KFZ from the diskette to the memory.
 
-You can then look at a BASIC program loaded in this way with LIST and modify it if
-necessary.
+You can then look at a BASIC program loaded in this way with :guilabel:`LIST` 
+and modify it if necessary.
 
 .. admonition:: Warning:
 	:class: warning
 
 	Before writing a modified program back to the diskette, you must either first delete
-	the program on it with "ERA" or give the modified program a different name.
+	the program on it with :guilabel:`ERA` or give the modified program a different name.
 
 .. admonition:: Example:
 	:class: hint
@@ -203,6 +206,7 @@ The reading process can be aborted at any time by pressing the :kbd:`BREAK` key.
 	``?DISK I/O ERROR`` An error occurred while reading from the
 	floppy disk. (faulty disk or centering problems)
 
+.. _cmdRUN:
 
 RUN - Load and start a BASIC program
 ------------------------------------
@@ -248,6 +252,7 @@ and executed.
 	``?DISK I/O ERROR`` An error occurred while reading from the
 	floppy disk. (faulty disk or centering problems)
 
+.. _cmdBSAVE:
 
 BSAVE - Saving a machine program on diskette
 --------------------------------------------
@@ -266,19 +271,20 @@ BSAVE - Saving a machine program on diskette
 
 	Allowed as direct command and in program mode.
 
+
 A machine program in memory is written to the floppy disk from address
 "aaaa" to address "eeee" with the file name "name".
 
 It receives the type designation ``"B"`` (binary file) in the table of contents.
 In direct mode, the completion of the storage process is indicated with
 READY. In program mode, the program is continued with the command
-following BSAVE.
+following :guilabel:`BSAVE`.
 
 
 Instead of a machine program, this command can also be used to transfer any
-memory area to the diskette and then load it again with BLOAD.
+memory area to the diskette and then load it again with :guilabel:`BLOAD`.
 
-Only BRUN requires an executable machine program as this is started
+Only :guilabel:`BRUN` requires an executable machine program as this is started
 immediately after loading.
 
 .. admonition:: Example:
@@ -321,10 +327,11 @@ However, depending on when the key is pressed, the entry in the table of content
 not always deleted (error in DOS).
 
 In order to ensure problem-free diskette management, you should therefore check
-the table of contents with DIR in such a case and, if necessary, delete the file
-manually with ERA.
+the table of contents with :guilabel:`DIR` in such a case and, if necessary, delete the file
+manually with :guilabel:`ERA`.
 
 
+.. _cmdBLOAD:
 
 BLOAD - Loading a machine program from diskette
 -----------------------------------------------
@@ -344,7 +351,7 @@ into the memory.
 
 With a direct command, the end of the loading process is indicated with
 READY, in program mode the program is continued with the command
-following BLOAD.
+following :guilabel:`BLOAD`.
 
 .. admonition:: Example:
 	:class: hint
@@ -356,8 +363,8 @@ following BLOAD.
 		Machine program UPR01 is loaded from the diskette.
 
 The command is particularly suitable for loading machine program routines
-saved with BSAVE from a BASIC program and calling them as subroutines via
-USR.
+saved with :guilabel:`BSAVE` from a BASIC program and calling them as subroutines via
+:guilabel:`USR`.
 
 .. admonition:: Example:
 	:class: hint
@@ -372,7 +379,7 @@ USR.
 		...
 
 	The subprogram UPR01 is to be loaded from diskette 
-	and called at address В000.
+	and called at address B000.
 
 .. admonition:: Possible Errors:
 	:class: error
@@ -393,6 +400,8 @@ USR.
 	``?DISK I/O ERROR`` An error occurred while reading from the
 	floppy disk. (faulty disk or centering problems)
 
+.. _cmdBRUN:
+
 BRUN - Loading and starting a machine program
 ---------------------------------------------
 
@@ -409,7 +418,7 @@ BRUN - Loading and starting a machine program
 A machine program stored on the floppy disk under the file name "name" is
 loaded into memory and executed.
 
-The program starts exclusively at the program start address (see BSAVE).
+The program starts exclusively at the program start address (see :ref:`BSAVE <cmdBSAVE>`).
 
 .. admonition:: Example:
 	:class: hint
@@ -440,6 +449,9 @@ The program starts exclusively at the program start address (see BSAVE).
 
 	``?DISK I/O ERROR`` An error occurred while reading from the
 	floppy disk. (faulty disk or centering problems)
+
+
+.. _cmdREN:
 
 REN - Renaming files and programs
 ---------------------------------
@@ -487,8 +499,7 @@ A program or file on the disk under the name "name1" is renamed "name2".
 	floppy disk. (faulty disk or centering problems)
 
 
-
-
+.. _cmdDCOPYfile:
 
 DCOPY - Copy a program
 ----------------------
@@ -503,7 +514,7 @@ DCOPY - Copy a program
 
 	Only permitted as a direct command,.
 
-The DCOPY command with specification of a program name causes this
+The :guilabel:`DCOPY` command with specification of a program name causes this
 program to be copied from one diskette to another.
 
 After entering the command, you will first be prompted to specify the source
@@ -522,8 +533,8 @@ If you only have one drive, answer '1' to each question.
 You can abort command execution with :kbd:`CTRL` + :kbd:`BREAK`.
 
 After selecting the drive, the copying process begins. The copying takes place
-by calling the LOAD and SAVE routines, as they are also used with LOAD and
-BLOAD, or with SAVE and BSAVE.
+by calling the LOAD and SAVE routines, as they are also used with :guilabel:`LOAD` and
+:guilabel:`BLOAD` commands, or with :guilabel:`SAVE` and :guilabel:`BSAVE`.
 
 For this reason, it is not possible to copy a single data file (file type = D) with
 the DCOPY command, as this is structured differently.
@@ -548,8 +559,8 @@ If you have inserted the correct diskette, press the spacebar to continue the
 function.
 
 You can interrupt the copying process at any time with the :kbd:`BREAK` button. If
-you do this during the writing process, please note the information on SAVE
-and BSAVE.
+you do this during the writing process, please note the information on :guilabel:`SAVE`
+and :guilabel:`BSAVE`.
 
 When copying is complete, the message READY appears.
 
@@ -580,13 +591,13 @@ When copying is complete, the message READY appears.
 
 	The program to be copied overwrites its original memory area in RAM.
 
-After copying is complete, drive 1 is always selected, regardless of a previous DRIVE
+After copying is complete, drive 1 is always selected, regardless of a previous :guilabel:`DRIVE`
 command.
 
 .. admonition:: Possible Errors:
 	:class: error
 
-	``?ILLEGAL DIRECT`` An attempt was made to call the DCOPY
+	``?ILLEGAL DIRECT`` An attempt was made to call the :guilabel:`DCOPY`
 	command from a program.
 
 	``?SYNTAX ERROR`` 
@@ -617,6 +628,7 @@ command.
 	``?DISK I/O ERROR`` An error occurred while reading from the
 	floppy disk. (faulty disk or centering problems)
 
+.. _cmdERA:
 
 ERA - Delete a file or program on the floppy disk
 -------------------------------------------------

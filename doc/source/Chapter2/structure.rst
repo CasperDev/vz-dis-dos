@@ -25,8 +25,8 @@ is automatically recognized by the initialization routine of the standard ROM an
 initialized, i.e. embedded in the BASIC interpreter's sequence routines.
 
 The floppy disk operating system has its own command interpreter, which
-independently recognizes the 17 additional input commands and initiates its own
-execution routines.
+independently recognizes the :ref:`17 additional input commands <DOS commands>` 
+and initiates its own execution routines.
 
 The additional commands are exclusively floppy disk operations that enable you to
 save and retrieve programs and also to manage your own data stocks on the floppy

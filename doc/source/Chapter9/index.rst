@@ -115,7 +115,7 @@ Some routines return error codes in register A. In any case, you should check
 whether your call was successful or not.
 
 All data that is moved between the computer and the floppy disk uses the data buffer
-in the DOS work area as temporary storage. Remember that each time a sector is
+in the :ref:`DOS work area` as temporary storage. Remember that each time a sector is
 read or written, its content is modified.
 
 The operating system generates an interrupt every 20 ms, which is normally used to
@@ -157,28 +157,37 @@ DOS Vector functions
 	LOAD
 	SAVE
 
----------------------------------------------
+DOS Extra functions
+--------------------
 
 To supplement these routines, two more functions are listed here that you will find in
 many of the previous examples.
 
+.. _procDRIVE:
+
 DRIVE - Selecting a drive
--------------------------
++++++++++++++++++++++++++
 
 This function cannot be accessed via the jump table.
 
 However, it is easy to do as you just need to put the correct code of the
 selected drive in the DK (IY+11) field of the DOS vectors.
 
-- Drive 1 = LD (IY+11),10H
-- Drive 2 = LD (IY+11),80H
+.. admonition:: Example:
+	:class: hint
+
+	.. code-block:: Z80
+
+      LD (IY+11),10H		; Drive 1
+      LD (IY+11),80H		; Drive 2
   
 This code is used by the PWRON routine to select the correct drive and turn it
 on.
 
+.. _procWPROCT:
 
 WPROCT - Check write protection
--------------------------------
++++++++++++++++++++++++++++++++
 
 In many cases, you are responsible for checking the write-protection status of
 a diskette before performing a write operation.
@@ -203,7 +212,7 @@ To do this, the drive must be selected and switched on.
 
 
 If the diskette is write-protected, error code 4 branches to the ERROR routine
-and the message "DISK WRITE PROTECTED" is output there
+and the message ``"?DISK WRITE PROTECTED"`` is output there
 
 
 

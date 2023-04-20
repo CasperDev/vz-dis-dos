@@ -3,6 +3,7 @@
 General Instructions
 ====================
 
+.. _cmdinit:
 
 INIT - Prepare a floppy disk
 ----------------------------
@@ -15,11 +16,11 @@ INIT - Prepare a floppy disk
 		
 	Allowed as direct command and in program mode.
 
-The INIT command prepares a floppy disk for storing programs or data; it will
+The :guilabel:`INIT` command prepares a floppy disk for storing programs or data; it will
 be "initialized".
 
-This means that the basic structure shown in the "Recording structure" section
-will be produced on the diskette.
+This means that the basic structure shown in the :ref:`"Recording structure" <record structure>` 
+section will be produced on the diskette.
 
 40 tracks with 16 sectors each are set up and all address and data marks are
 written.
@@ -36,20 +37,18 @@ button.
 
 .. warning:: 
 	
-	With the INIT command, a non-write-protected diskette is overwritten without
+	With the :guilabel:`INIT` command, a non-write-protected diskette is overwritten without
 	any further checking, i.e. any data on it is lost.
 
 .. admonition:: Possible Errors
 	:class: error
 
-	``?DISK WRITE PROTECTED`` The disk's write-protect notch is taped
-	over.
+	``?DISK WRITE PROTECTED`` The disk's write-protect notch is taped over.
 
-	``?DISK I/O ERROR`` An error occurred during the check read.
-	(faulty disk or bad centering - see
-	Insertion)
+	``?DISK I/O ERROR`` - An error occurred during the check read.
+	(faulty disk or bad centering - see :ref:`Insertion <inserting a floppy disk>`)
 
-
+.. _cmdDrive:
 
 DRIVE - Drive selection
 -----------------------
@@ -59,27 +58,27 @@ DRIVE - Drive selection
 	.. code:: basic
 	
 		DRIVE n
-		n = drive number (1 оr 2)
+		n = drive number (1 or 2)
 		
 	Allowed as direct command and in program mode.
 
 
-The DRIVE command is used to select one of the two drives that can be
+The :guilabel:`DRIVE` command is used to select one of the two drives that can be
 connected.
 
-After switching on the computer and after each copy command (DCOPY),
+After switching on the computer and after each copy command (:guilabel:`DCOPY`),
 drive 1 is automatically selected.
 
-If you want to access drive 2, you must first switch to it with DRIVE 2.
+If you want to access drive 2, you must first switch to it with :guilabel:`DRIVE 2`.
 
-All DOS commands, except DCOPY, are executed on the selected drive.
+All DOS commands, except :guilabel:`DCOPY`, are executed on the selected drive.
 Therefore, make sure that you have always selected the correct drive. An
-"INIT" command, e.g. on the wrong drive, inevitably leads to the destruction of
+:guilabel:`INIT` command, e.g. on the wrong drive, inevitably leads to the destruction of
 a floppy disk with important data that happens to be there.
 
 
 If you are not sure which drive is currently selected, execute a corresponding
-DRIVE command (DRIVE 1 or DRIVE 2) to be safe.
+:guilabel:`DRIVE` command (:guilabel:`DRIVE 1` or :guilabel:`DRIVE 2`) to be safe.
 
 The DRIVE command. only changes the DOS internal pointers, a floppy disk
 access does not take place.
@@ -89,6 +88,8 @@ access does not take place.
 
 	``?FUNCTION CODE ERROR`` Wrong drive selection (not 1 or 2)
 
+
+.. _cmdDCOPY:
 
 DCOPY - Copy disk
 -----------------
@@ -101,7 +102,7 @@ DCOPY - Copy disk
 
 	Allowed only as a direct command.
 
-The DCOPY command without any further parameters results in a complete
+The :guilabel:`DCOPY` command without any further parameters results in a complete
 copy of a floppy disk onto a second initialized floppy disk.
 
 Copying is possible with one or two drives. With only one drive, however, you
@@ -116,7 +117,7 @@ and target drives.
 	SOURCE DISK (1/2)?
 	DESTINATION DISK (1/2)?
 
-Answer each of these questions by pressing the "1" or “2” key.
+Answer each of these questions by pressing the :kbd:`1` or :kbd:`2` key.
 
 Only own one drive; so answer "1" to each question.
 
@@ -155,26 +156,28 @@ The completion of the copying process is indicated with READY.
 
 	* Note that the target disk must first be initialized.
  		
-	* Data on the target diskette will be overwritten (ensure the correct drive and diskette selection).
+	* Data on the target diskette will be overwritten (ensure the correct drive 
+      and diskette selection).
 	
-	* The entire available RAM area is overwritten by DCOPY, i.e. data or programs located there must first be saved or then reloaded.
+	* The entire available RAM area is overwritten by :guilabel:`DCOPY`, i.e. data 
+	  or programs located there must first be saved or then reloaded.
 	
 	* When using "Extended BASIC" the computer has to be re-initialized (switch off/on).
 	
-	* After completion, drive 1 is always selected, regardless of a previous DRIVE command.
-
+	* After completion, drive 1 is always selected, regardless of a previous :guilabel:`DRIVE` command.
 
 .. admonition:: Possible Errors:
 	:class: error
 
-	``?ILLEGAL DIRECT`` An attempt was made to call the DCOPY
+
+	``?ILLEGAL DIRECT`` An attempt was made to call the :guilabel:`DCOPY`
 	command from a program.
 
 	``?DISK WRITE PROTECTED`` The target disk's write-protect notch is
 	taped over.
 
-	``?DISK I/O ERROR`` Write or read error on one of the
-	two disks. (defective or bad / centering)
+	``?DISK I/O ERROR`` Write or read error on one of the 
+	two disks. (defective or bad centering)
 
 .. admonition:: Note:
 	:class: information
@@ -190,10 +193,10 @@ The completion of the copying process is indicated with READY.
 	* after the initial creation or acquisition
 	* after any significant change in content.
 
+.. _cmdSTATUS:
 
 STATUS - Display the diskette status
 ------------------------------------
-
 
 .. admonition:: Syntax `(only from DISK BASIC V 1.2)`
 	
@@ -203,7 +206,7 @@ STATUS - Display the diskette status
 
 	Allowed as direct command and in program mode.
 
-The STATUS command determines and displays the space still available on
+The :guilabel:`STATUS` command determines and displays the space still available on
 the diskette.
 
 The output comes in two forms. The first line shows the number of free
@@ -223,7 +226,7 @@ In the second line, the free bytes are specified in the form:
 .. admonition:: Example:
 	:class: hint
 	
-	.. code:: sh
+	.. code:: basic
 		
 		STATUS
 		80 RECORDS FREE
@@ -232,8 +235,6 @@ In the second line, the free bytes are specified in the form:
 .. admonition:: Possible Errors:
 	:class: error
 	
-	
-
 	``?DISK I/O ERROR`` The occupancy overview of the diskette
 	could not be read correctly.
 
