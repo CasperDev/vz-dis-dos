@@ -63,8 +63,6 @@ The DOS vector area is structured as follows:
 |           |     |       |1 = write |br|                                |
 |           |     |       |Must be set by the user program. |br|         | 
 |           |     |       |With BASIC, this is done with the |br|        |
-|           |     |       |With BASIC, this is done with the |br|        |
-|           |     |       |With BASIC, this is done with the |br|        |
 |           |     |       |OPEN command. |br|                            |
 +-----------+-----+-------+----------------------------------------------+
 |SOURCE     |1    |IY+13  |Starting drive (source) used by |br|          | 
@@ -97,10 +95,10 @@ The DOS vector area is structured as follows:
 |NTRK       |1    |IY+22  |Marker field for the next track to be |br|    |
 |           |     |       |addressed. |br|                               |
 +-----------+-----+-------+----------------------------------------------+
-|FCB1       |13   |IY+23  |File management block 1. |br|                 |
+|FCB1       |13   |IY+23  |File Control Block 1. |br|                    |
 |           |     |       |(see Structure description)  |br|             |
 +-----------+-----+-------+----------------------------------------------+
-|FCB2       |13   |IY+36  |File management block 2. |br|                 | 
+|FCB2       |13   |IY+36  |File Control Block 2. |br|                    | 
 |           |     |       |(see Structure description) |br|              |
 +-----------+-----+-------+----------------------------------------------+
 |DBFR       |2    |IY+49  |Pointer to the DOS data buffer for |br|       |
@@ -112,7 +110,7 @@ The DOS vector area is structured as follows:
 |           |     |       |Floppy Disk Controller. |br|                  |
 +-----------+-----+-------+----------------------------------------------+
 |MAPADR     |2    |IY+52  |Pointer to the DOS buffer in which the |br|   |
-|           |     |       |sector occupancy overview is |br|             |
+|           |     |       |sector allocation map is |br|                 |
 |           |     |       |temporarily stored. |br|                      |
 |           |     |       |This is behind the data buffer in the |br|    |
 |           |     |       |work area. |br|                               |
