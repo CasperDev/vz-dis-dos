@@ -1861,7 +1861,7 @@ DCmdCLOSE:
 ; as hexadecimal 16bit number.
 ; IN: hl - parse point (just after 'LOAD' text)
 DCmdBSAVE:
-; -- expected required name of file enclosed with double quote chars
+; -- expected required name of file enclosed with double quote chars 
 	call ParseFilename				; Verify syntax and copy filename to DOS Filename Buffer		;4839	cd 78 53 	. x S 
 	push hl							; save hl - parse point											;483c	e5 	. 
 	or a							; was any Error?												;483d	b7 	. 
@@ -2151,7 +2151,7 @@ DCmdDIR:
 	jr nz,.nextSector				; no - read next Sector ---------------------------------------	;498d	20 8c 	  . 
 
 .exit:
-	call PWROFF					; Disk power OFF												;498f	cd 52 5f 	. R _ 
+	call PWROFF						; Disk power OFF												;498f	cd 52 5f 	. R _ 
 	pop hl							; restore hl - parse point										;4992	e1 	. 
 	ret								; -------------------- End of Proc ----------------------------	;4993	c9 	. 
 
@@ -2166,7 +2166,7 @@ DCmdDIR:
 ; IN: hl - parse point (just after 'ERA' text)
 DCmdERA:
 ; -- expected required name of file enclosed with double quote chars
-	call CSI						; parse filename and copy it to (iy+FNAM)					;4994	cd 67 53 	. g S 
+	call CSI						; parse filename and copy it to (iy+FNAM)						;4994	cd 67 53 	. g S 
 	push hl							; save hl - parse point											;4997	e5 	. 
 	or a							; was any Error?												;4998	b7 	. 
 	jp nz,ERROR						; yes - go to Error handling routine --------------------------	;4999	c2 41 42 	. A B 
@@ -2426,7 +2426,7 @@ DCmdREN:
 	or a							; was any Error?												;4aff	b7 	. 
 	jp nz,ERROR						; yes - go to Error handling routine --------------------------	;4b00	c2 41 42 	. A B 
 ; -- no error - turn off DIsk and return
-	call PWROFF					; Disk power OFF												;4b03	cd 52 5f 	. R _ 
+	call PWROFF						; Disk power OFF												;4b03	cd 52 5f 	. R _ 
 	pop hl							; restore hl - parse point (after whole command)				;4b06	e1 	. 
 	ret								; ------------------- End of Proc -----------------------------	;4b07	c9 	. 
 
@@ -2947,43 +2947,65 @@ DCmdIN#:
 ; -- parse next char - must be ','
 	rst 8							; verify this char is ',' (comma) and point hl to next			;4d9c	cf 	. 
 	defb ','						; expected char													;4d9d	2c 	, 
-	push hl			;4d9e	e5 	. 
+	push hl							; save hl - next char in BASIC program							;4d9e	e5 	. 
+
+; -- get File Control Block used to open this file
 	call FindFCBForOpen				; Find FCB Block to use or get one if file already opened		;4d9f	cd 78 47 	. x G 
-	cp 008h		;4da2	fe 08 	. . 
-	ld a,005h		;4da4	3e 05 	> . 
-	jp nz,ERROR		; Error handling routine	;4da6	c2 41 42 	. A B 
-	inc de			;4da9	13 	. 
-	ld a,(de)			;4daa	1a 	. 
-	or a			;4dab	b7 	. 
-	ld a,00fh		;4dac	3e 0f 	> . 
-	jp nz,ERROR		; Error handling routine	;4dae	c2 41 42 	. A B 
-	dec de			;4db1	1b 	. 
-	ld a,(de)			;4db2	1a 	. 
-	cp 002h		;4db3	fe 02 	. . 
-	jr z,l4de2h		;4db5	28 2b 	( + 
-	call FlushSectorData		; Flush Sector Data to disk from both FCBs ;4db7	cd a5 4f 	. . O 
-	ld a,002h		;4dba	3e 02 	> . 
-	ld (de),a			;4dbc	12 	. 
-	ex de,hl			;4dbd	eb 	. 
-	ld de,0000ah		;4dbe	11 0a 00 	. . . 
-	add hl,de			;4dc1	19 	. 
-	ld a,(hl)			;4dc2	7e 	~ 
-	inc hl			;4dc3	23 	# 
-	ld (iy+TRCK),a		;4dc4	fd 77 12 	. w . 
-	ld a,(hl)			;4dc7	7e 	~ 
-	ld (iy+SCTR),a		;4dc8	fd 77 11 	. w . 
-	di			;4dcb	f3 	. 
-	call PWRON		; Disk power ON			;4dcc	cd 41 5f 	. A _ 
-	push bc			;4dcf	c5 	. 
-	ld bc,50		; bc - number of miliseconds to delay							;4dd0	01 32 00 	. 2 . 
-	call DLY		; delay 50 ms								;4dd3	cd be 5e 	. . ^ 
-	pop bc			;4dd6	c1 	. 
-	call READ		; Read a sector from disk						;4dd7	cd 27 5b 	. ' [ 
-	or a			;4dda	b7 	. 
-	jp nz,ERROR		; Error handling routine	;4ddb	c2 41 42 	. A B 
-	ei			;4dde	fb 	. 
-	call PWROFF		; Disk power OFF		;4ddf	cd 52 5f 	. R _ 
-l4de2h:
+	cp 08							; was it Error 08   FILE ALREADY OPEN (means OK)?				;4da2	fe 08 	. . 
+	ld a,05							; a - Error 05   FILE NOT OPEN for return						;4da4	3e 05 	> . 
+	jp nz,ERROR						; no (was other error) go to Error handling routine				;4da6	c2 41 42 	. A B 
+
+; -- check if file is opened for read
+	inc de							; de - address of Accress field in FCB							;4da9	13 	. 
+	ld a,(de)						; a - Open Access mode (read/write)								;4daa	1a 	. 
+	or a							; is it 0 (read)?												;4dab	b7 	. 
+	ld a,15							; a - Error 15   ILLEGAL READ									;4dac	3e 0f 	> . 
+	jp nz,ERROR						; no - go to Error handling routine	---------------------------	;4dae	c2 41 42 	. A B 
+
+; -- check if data from file already loaded into buffer
+	dec de							; de - address of Open flag in FCB								;4db1	1b 	. 
+	ld a,(de)						; a - open flag (file active/inactive)							;4db2	1a 	. 
+	cp 2							; is it active (sector already loaded to buffer)?				;4db3	fe 02 	. . 
+	jr z,.readyToRead				; yes - skip loading sector into buffer							;4db5	28 2b 	( + 
+
+; -- flush data from buffers to disk if needed
+	call FlushSectorData			; Flush Sector Data to disk from both FCBs 						;4db7	cd a5 4f 	. . O 
+
+; -- set open flag as file opened and active
+	ld a,2							; a - open flag "active" value									;4dba	3e 02 	> . 
+	ld (de),a						; set as Open flag in FCB										;4dbc	12 	. 
+
+; -- set Track and Sector Number to read
+	ex de,hl						; hl - address of FCB											;4dbd	eb 	. 
+	ld de,10						; de - offset to Track Number (TRK#) field in FCB				;4dbe	11 0a 00 	. . . 
+	add hl,de						; hl - address of Track Number (TRK#) field in FCB				;4dc1	19 	. 
+	ld a,(hl)						; a - Track Number from FCB										;4dc2	7e 	~ 
+	inc hl							; hl - address of Sector Number (SCTR#) field in FCB			;4dc3	23 	# 
+	ld (iy+TRCK),a					; set as Track Number to read									;4dc4	fd 77 12 	. w . 
+	ld a,(hl)						; a - Sector Number from FCB									;4dc7	7e 	~ 
+	ld (iy+SCTR),a					; set as Sector Number to read									;4dc8	fd 77 11 	. w . 
+
+; -- disable interrupt and read Sector into buffer
+	di								; disable interrupts											;4dcb	f3 	. 
+
+; -- turn on Disk Drive and wait 50 ms
+	call PWRON						; Disk power ON													;4dcc	cd 41 5f 	. A _ 
+	push bc							; save bc														;4dcf	c5 	. 
+	ld bc,50						; bc - number of miliseconds to delay							;4dd0	01 32 00 	. 2 . 
+	call DLY						; delay 50 ms													;4dd3	cd be 5e 	. . ^ 
+	pop bc							; restore bc													;4dd6	c1 	. 
+
+; -- read Sector
+	call READ						; Read a sector from disk										;4dd7	cd 27 5b 	. ' [ 
+	or a							; was any error?												;4dda	b7 	. 
+	jp nz,ERROR						; yes - go to Error handling routine --------------------------	;4ddb	c2 41 42 	. A B 
+
+; -- enable interrupts and turn Disk Power Off
+	ei								; enable interrupts												;4dde	fb 	. 
+	call PWROFF						; Disk power OFF												;4ddf	cd 52 5f 	. R _ 
+
+
+.readyToRead:
 	ld b,0c7h		;4de2	06 c7 	. . 
 	ld hl,(078a7h)		;4de4	2a a7 78 	* . x 
 l4de7h:
