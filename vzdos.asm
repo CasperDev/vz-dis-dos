@@ -366,8 +366,8 @@ DOSInit:
 	ld (iy+PHASE),%00010001			; Stepper Phase 0001-0001										;40b3	fd 36 38 11 	. 6 8 . 
 
 ; -- set address of Sector Data as operation Buffer
-	push iy							; copy IY register (DOS Base) to HL								;40b7	fd e5 	. . 
-	pop hl																							;40b9	e1 	. 
+	push iy							; iy - DOS base address											;40b7	fd e5 	. . 
+	pop hl							; copy to hl													;40b9	e1 	. 
 	ld de,SectorBuffer				; offset from DOS Base to Sector Buffer							;40ba	11 4d 00 	. M . 
 	add hl,de						; hl - absolute address of Sector Data Buffer					;40bd	19 	. 
 	ld (iy+DBFR),l					; store as Data Buffer (low byte)								;40be	fd 75 31 	. u 1 
@@ -383,8 +383,8 @@ DOSInit:
 	ldir							; copy template data											;40cf	ed b0 	. . 
 
 ; --set address for Disk Allocation Map Buffer
-	push iy							; copy IY register (DOS base) to HL								;40d1	fd e5 	. . 
-	pop hl																							;40d3	e1 	. 
+	push iy							; iy - DOS base address											;40d1	fd e5 	. . 
+	pop hl							; copy to hl													;40d3	e1 	. 
 	ld de,MapBuffer					; offset from DOS base to Alloc Map Buffer area					;40d4	11 e7 00 	. . . 
 	add hl,de						; hl - absolute address of Alloc Map Buffer						;40d7	19 	. 
 	ld (iy+MAPADR),l				; store low byte												;40d8	fd 75 34 	. u 4 
@@ -715,7 +715,7 @@ ParseCmdText:
 ; -- found start of command
 	inc b							; b - number of command (00..0d)								;42fb	04 	. 
 	ld a,(hl)						; a - 1st char of DOS Command									;42fc	7e 	~ 
-	and %01111111					; clear 7th bit (convert to ascii) - end of table if was $80?	;42fd	e6 7f 	.  
+	and %01111111					; clear 7th bit (convert to ascii) - end of table if was $80?	;42fd	e6 7f 	.  
 	jr z,TryParseMixedSyntax		; yes - try parse "mixed" format BRUN or DCOPY					;42ff	28 c8 	( . 
 ; -- compare 1st chars 
 	cp c							; is 1st char of DOS command equal to parsed char?				;4301	b9 	. 
@@ -1369,147 +1369,197 @@ DCmdOPEN:
 ; -- File is already opened or both FCB are used
 	jp nz,ERROR						; no - go to Error handling routine	---------------------------	;4617	c2 41 42 	. A B 
 
-; -- 
-	push hl			;461a	e5 	. 
-	call sub_4fa5h		;461b	cd a5 4f 	. . O 
-	pop hl			;461e	e1 	. 
-	ld (hl),001h		;461f	36 01 	6 . 
-	inc hl			;4621	23 	# 
-	ld a,(iy+RQST)		; access type ;4622	fd 7e 0c 	. ~ . 
-	ld (hl),a			;4625	77 	w 
-	inc hl			;4626	23 	# 
-	push iy		;4627	fd e5 	. . 
-	pop de			;4629	d1 	. 
-	inc de			;462a	13 	. 
-	ex de,hl			;462b	eb 	. 
-	ld bc,00008h		;462c	01 08 00 	. . . 
-	ldir		;462f	ed b0 	. . 
-	push de			;4631	d5 	. 
-	di			;4632	f3 	. 
-	call PWRON		; Disk power ON			;4633	cd 41 5f 	. A _ 
-	push bc			;4636	c5 	. 
-	ld bc,50		; bc - number of miliseconds to delay							;4637	01 32 00 	. 2 . 
-	call DLY		; delay 50 ms								;463a	cd be 5e 	. . ^ 
-	pop bc			;463d	c1 	. 
-	call SEARCH		; Search for file in directory					;463e	cd 13 59 	. . Y 
-	cp 02			; file found? (Error 02 - FILE ALREADY EXISTS?) ;4641	fe 02 	. . 
-	jp nz,l466bh		;4643	c2 6b 46 	. k F 
-	ld a,(iy+TYPE+1)		;4646	fd 7e 0a 	. ~ . 
-	cp 'D'		;4649	fe 44 	. D 
-	ld a,00ch		;464b	3e 0c 	> . 
-	jp nz,ERROR		; Error handling routine	;464d	c2 41 42 	. A B 
-	pop hl			;4650	e1 	. 
-	ld a,(de)			;4651	1a 	. 
-	ld (hl),a			;4652	77 	w 
-	ld (iy+TRCK),a		;4653	fd 77 12 	. w . 
-	inc de			;4656	13 	. 
-	inc hl			;4657	23 	# 
-	ld a,(de)			;4658	1a 	. 
-	ld (hl),a			;4659	77 	w 
-	ld (iy+SCTR),a		;465a	fd 77 11 	. w . 
-	xor a			;465d	af 	. 
-	inc hl			;465e	23 	# 
-	ld (hl),a			;465f	77 	w 
-	ld a,(iy+RQST)		; access type ;4660	fd 7e 0c 	. ~ . 
-	or a			;4663	b7 	. 
-	jr nz,l46b9h		;4664	20 53 	  S 
-	call PWROFF		; Disk power OFF		;4666	cd 52 5f 	. R _ 
-	pop hl			;4669	e1 	. 
-	ret			;466a	c9 	. 
-l466bh:
-	ld c,a			;466b	4f 	O 
-	ld a,(iy+RQST)		; access type ;466c	fd 7e 0c 	. ~ . 
-	or a			;466f	b7 	. 
-	ld a,c			;4670	79 	y 
-	jp z,l46a8h		;4671	ca a8 46 	. . F 
+; -- flush sector data if any FCB has file Opened for Write
+	push hl							; save hl - address of File Control Block to use				;461a	e5 	. 
+	call FlushSectorData			; Flush Sector Data to disk from both FCBs 						;461b	cd a5 4f 	. . O 
+	pop hl							; restore hl - FCB to use										;461e	e1 	. 
 
-; -- check if Disk is not Write-Protected
+; -- set FCB is used
+	ld (hl),1						; set FCB flag - used but file not active						;461f	36 01 	6 . 
+	inc hl							; hl - address of Access type field								;4621	23 	# 
+; -- set Access type (read/write)
+	ld a,(iy+RQST)					; a - requested access type (read.write)						;4622	fd 7e 0c 	. ~ . 
+	ld (hl),a						; set Access type in FCB										;4625	77 	w 
+	inc hl							; hl - address of Filename field 								;4626	23 	# 
+; -- set Filename (FNAM)
+	push iy							; iy - DOS base address											;4627	fd e5 	. . 
+	pop de							; copy to de													;4629	d1 	. 
+	inc de							; de - address of FNAM in DOS Structure							;462a	13 	. 
+	ex de,hl						; de - FNAM field in FCB, hl - FNAM field in DOS structure 		;462b	eb 	. 
+	ld bc,8							; bc - 8 chars of filename 										;462c	01 08 00 	. . . 
+	ldir							; copy filename to FCB											;462f	ed b0 	. . 
+; -- 	
+	push de							; save de - address of TRK# field in FCB						;4631	d5 	. 
+	di								; disable interrupts											;4632	f3 	. 
+
+; -- turn Disk power ON 
+	call PWRON						; Disk power ON													;4633	cd 41 5f 	. A _ 
+	push bc							; save bc														;4636	c5 	. 
+	ld bc,50						; bc - number of miliseconds to delay							;4637	01 32 00 	. 2 . 
+	call DLY						; delay 50 ms													;463a	cd be 5e 	. . ^ 
+	pop bc							; restore bc													;463d	c1 	. 
+
+; -- check if file exists
+	call SEARCH						; Search for file in directory									;463e	cd 13 59 	. . Y 
+	cp 02							; file found? (Error 02 - FILE ALREADY EXISTS?) 				;4641	fe 02 	. . 
+	jp nz,.fileNotExists			; no - create if mode=Write, error if mode=read					;4643	c2 6b 46 	. k F 
+
+; -- file exists already - must be 'D' type (data)
+	ld a,(iy+TYPE+1)				; a - file type of found file									;4646	fd 7e 0a 	. ~ . 
+	cp 'D'							; is it type 'D' (data)?										;4649	fe 44 	. D 
+	ld a,12							; a - Error 12   FILE TYPE MISMATCH								;464b	3e 0c 	> . 
+	jp nz,ERROR						; no - go to Error handling routine								;464d	c2 41 42 	. A B 
+
+; -- file exists and is type 'D' - fill 1st sector data in FCB
+	pop hl							; pop hl - address of TRK# field in FCB							;4650	e1 	. 
+; -- set Track from Directory Entry of found file
+	ld a,(de)						; a - Track Number from disk Directory Entry 					;4651	1a 	. 
+	ld (hl),a						; set as Track Number in FCB									;4652	77 	w 
+	ld (iy+TRCK),a					; set as Track Number in DOS Structure							;4653	fd 77 12 	. w . 
+	inc de							; de - address of Sector Number in Directory Entry				;4656	13 	. 
+	inc hl							; hl - address of Sector Number in FCB							;4657	23 	# 
+; -- set Sector from Directory Entry of found file
+	ld a,(de)						; a - Sector Number from disk Directory Entry 					;4658	1a 	. 
+	ld (hl),a						; set as Sector Number in FCB									;4659	77 	w 
+	ld (iy+SCTR),a					; set as Sector Number in DOS Structure							;465a	fd 77 11 	. w . 
+; -- set Byte-in-Sector Index (PTR)
+	xor a							; a - index of current byte in Sector = 0						;465d	af 	. 
+	inc hl							; hl - address of PTR field in FCB								;465e	23 	# 
+	ld (hl),a						; set Index (PTR) to 0											;465f	77 	w 
+
+; -- if mode = read we are done, if mode = write we have to read whole file and find end of data
+	ld a,(iy+RQST)					; a - requested access type (mode) (read/write)					;4660	fd 7e 0c 	. ~ . 
+	or a							; is it 0 (read)?												;4663	b7 	. 
+	jr nz,.seekEndOfFile			; no - seek End of file and setup point of write				;4664	20 53 	  S 
+
+; -- file is ready to read from - turn driive power off and exit
+	call PWROFF						; Disk power OFF												;4666	cd 52 5f 	. R _ 
+	pop hl							; restore hl - address of next char in BASIC					;4669	e1 	. 
+	ret								; -------------------- End of Proc ----------------------------	;466a	c9 	. 
+
+
+.fileNotExists:
+; -- file not exists - error if mode=read	
+	ld c,a							; save a - previous error code (FILE NOT EXISTS)				;466b	4f 	O 
+	ld a,(iy+RQST)					; requested access type (read/write)							;466c	fd 7e 0c 	. ~ . 
+	or a							; is it 0 (read)?												;466f	b7 	. 
+	ld a,c							; a - restore previous error code								;4670	79 	y 
+	jp z,.exitError						; yes - release FCB and exit with Error 						;4671	ca a8 46 	. . F 
+
+; -- mode=write - need to create file - check if Disk is not Write-Protected
 	in a,(FLWRPROT)					; a - read Write Protected flag from FDC						;4674	db 13 	. . 
 	or a							; is bit 7 set? (write protected)								;4676	b7 	. 
 	ld c,04							; c - Error 04 - DISK WRITE PROTECTED							;4677	0e 04 	. . 
-	jp m,l46a8h						;4679	fa a8 46 	. . F 
-	call RDMAP		; Read the track map of the disk				;467c	cd 17 47 	. . G 
-	ld (iy+TYPE),'D'		;467f	fd 36 09 44 	. 6 . D 
-	call CREATE		; Create an entry in directory					;4683	cd 7b 58 	. { X 
-	or a			;4686	b7 	. 
-	jp nz,ERROR		; Error handling routine	;4687	c2 41 42 	. A B 
-	pop hl			;468a	e1 	. 
-	ld a,(iy+NTRK)		;468b	fd 7e 16 	. ~ . 
-	ld (iy+TRCK),a		;468e	fd 77 12 	. w . 
-	ld (hl),a			;4691	77 	w 
-	inc hl			;4692	23 	# 
-	ld a,(iy+NSCT)			;4693	fd 7e 15 	. ~ . 
-	ld (iy+SCTR),a		;4696	fd 77 11 	. w . 
-	ld (hl),a			;4699	77 	w 
-	inc hl			;469a	23 	# 
-	ld (hl),000h		;469b	36 00 	6 . 
-	call CLEAR		; Clear a sector of the disk					;469d	cd 49 47 	. I G 
-	call SVMAP		; Save the track map to the disk				;46a0	cd 54 47 	. T G 
-	call PWROFF		; Disk power OFF		;46a3	cd 52 5f 	. R _ 
-	pop hl			;46a6	e1 	. 
-	ret			;46a7	c9 	. 
-l46a8h:
-	pop hl			;46a8	e1 	. 
-	ld de,0fff6h		;46a9	11 f6 ff 	. . . 
-	add hl,de			;46ac	19 	. 
-	ld (hl),000h		;46ad	36 00 	6 . 
-	ld a,c			;46af	79 	y 
-	or a			;46b0	b7 	. 
-	jp nz,ERROR		; Error handling routine	;46b1	c2 41 42 	. A B 
-	ld a,00dh		;46b4	3e 0d 	> . 
-	jp ERROR		; Error handling routine	;46b6	c3 41 42 	. A B 
-l46b9h:
-	push hl			;46b9	e5 	. 
-l46bah:
-	call READ		; Read a sector from disk						;46ba	cd 27 5b 	. ' [ 
-	or a			;46bd	b7 	. 
-	jp nz,ERROR		; Error handling routine	;46be	c2 41 42 	. A B 
-	ld l,(iy+DBFR)			;46c1	fd 6e 31 	. n 1 
-	ld h,(iy+DBFR+1)		;46c4	fd 66 32 	. f 2 
-	ld de,0007eh		;46c7	11 7e 00 	. ~ . 
-	add hl,de			;46ca	19 	. 
-	ld a,(hl)			;46cb	7e 	~ 
-	or a			;46cc	b7 	. 
-	jr z,l46d9h		;46cd	28 0a 	( . 
-	inc hl			;46cf	23 	# 
-	ld (iy+TRCK),a		;46d0	fd 77 12 	. w . 
-	ld a,(hl)			;46d3	7e 	~ 
-	ld (iy+SCTR),a		;46d4	fd 77 11 	. w . 
-	jr l46bah		;46d7	18 e1 	. . 
-l46d9h:
-	ld b,126		;46d9	06 7e 	. ~ 
-	ld l,(iy+DBFR)		;46db	fd 6e 31 	. n 1 
-	ld h,(iy+DBFR+1)		;46de	fd 66 32 	. f 2 
-l46e1h:
-	ld a,(hl)			;46e1	7e 	~ 
-	inc hl			;46e2	23 	# 
-	or a			;46e3	b7 	. 
-	jr z,l4703h		;46e4	28 1d 	( . 
-	djnz l46e1h		;46e6	10 f9 	. . 
-	call RDMAP		; Read the track map of the disk				;46e8	cd 17 47 	. . G 
-	call MAP		; Search for empty sector and alloacte it					;46eb	cd bf 58 	. . X 
-	or a			;46ee	b7 	. 
-	jp nz,ERROR		; Error handling routine	;46ef	c2 41 42 	. A B 
-	ld a,(iy+NTRK)		;46f2	fd 7e 16 	. ~ . 
-	ld (iy+TRCK),a		;46f5	fd 77 12 	. w . 
-	ld a,(iy+NSCT)		;46f8	fd 7e 15 	. ~ . 
-	ld (iy+SCTR),a		;46fb	fd 77 11 	. w . 
-	call CLEAR		; Clear a sector of the disk					;46fe	cd 49 47 	. I G 
-	ld b,07eh		;4701	06 7e 	. ~ 
-l4703h:
-	ld a,07eh		;4703	3e 7e 	> ~ 
-	sub b			;4705	90 	. 
-	pop hl			;4706	e1 	. 
-	ld (hl),a			;4707	77 	w 
-	dec hl			;4708	2b 	+ 
-	ld a,(iy+SCTR)		;4709	fd 7e 11 	. ~ . 
-	ld (hl),a			;470c	77 	w 
-	dec hl			;470d	2b 	+ 
-	ld a,(iy+TRCK)		;470e	fd 7e 12 	. ~ . 
-	ld (hl),a			;4711	77 	w 
-	call PWROFF		; Disk power OFF		;4712	cd 52 5f 	. R _ 
-	pop hl			;4715	e1 	. 
-	ret			;4716	c9 	. 
+	jp m,.exitError						; yes - release FCB and exit with Error 						;4679	fa a8 46 	. . F 
+
+; -- create file type 'D'	
+	call RDMAP						; Read the allocation map of the disk							;467c	cd 17 47 	. . G 
+	ld (iy+TYPE),'D'				; set file type 'D' (data)										;467f	fd 36 09 44 	. 6 . D 
+	call CREATE						; Create an entry in directory									;4683	cd 7b 58 	. { X 
+	or a							; was any error?												;4686	b7 	. 
+	jp nz,ERROR						; yes - go to Error handling routine --------------------------	;4687	c2 41 42 	. A B 
+
+; -- file created update - properities of allocated 1st Sector
+	pop hl							; restore hl - address of TRK# field in FCB						;468a	e1 	. 
+	ld a,(iy+NTRK)					; a - Track number of allocated Sector							;468b	fd 7e 16 	. ~ . 
+	ld (iy+TRCK),a					; set as Track Number in DOS structure							;468e	fd 77 12 	. w . 
+	ld (hl),a						; set as Track Number in FCB									;4691	77 	w 
+	inc hl							; hl - address of SCTR# field in FCB							;4692	23 	# 
+	ld a,(iy+NSCT)					; a - Sector Number of allocated Sector							;4693	fd 7e 15 	. ~ . 
+	ld (iy+SCTR),a					; set as Sector Number in DOS structure							;4696	fd 77 11 	. w . 
+	ld (hl),a						; set as Sector Number in FCB									;4699	77 	w 
+	inc hl							; hl - address of PTR field in FCB								;469a	23 	# 
+	ld (hl),0						; set Byte-in-Sector Index (PTR) to 0							;469b	36 00 	6 . 
+; -- clear Sector buffer and write it to Disk 
+	call CLEAR						; Clear a sector of the disk									;469d	cd 49 47 	. I G 
+; -- update Disk Allocation Map
+	call SVMAP						; Save allocation Map to the disk								;46a0	cd 54 47 	. T G 
+
+; -- file is ready to write to - turn driive power off and exit
+	call PWROFF						; Disk power OFF												;46a3	cd 52 5f 	. R _ 
+	pop hl							; restore hl - address of next char in BASIC					;46a6	e1 	. 
+	ret								; -------------------- End of Proc ----------------------------	;46a7	c9 	. 
+
+
+.exitError:
+; -- release FCB (set flag to "not used"
+	pop hl							; restore hl - address of TRK# field in FCB						;46a8	e1 	. 
+	ld de,-10						; de - offset to FCB Open flag from TRK# field					;46a9	11 f6 ff 	. . . 
+	add hl,de						; hl - address of FCB Open flag									;46ac	19 	. 
+	ld (hl),0						; set Flag to 0 - FCB not used									;46ad	36 00 	6 . 
+; -- exit with previous error (if was any)
+	ld a,c							; a - previous Error code										;46af	79 	y 
+	or a							; was any error?												;46b0	b7 	. 
+	jp nz,ERROR						; yes - go to Error handling routine --------------------------	; Error handling routine	;46b1	c2 41 42 	. A B 
+
+; -- no previous code - exit with Error 13 - FILE NOT FOUND
+	ld a,13							; a - Error 13 - FILE NOT FOUND									;46b4	3e 0d 	> . 
+	jp ERROR						; go to Error handling routine --------------------------------	;46b6	c3 41 42 	. A B 
+
+
+.seekEndOfFile:
+; -- file exists and requested mode=write - read sector into buffer
+	push hl							; save hl - address of PTR field in FCB							;46b9	e5 	. 
+.readNextSector:
+	call READ						; Read a sector from disk										;46ba	cd 27 5b 	. ' [ 
+	or a							; was any error?												;46bd	b7 	. 
+	jp nz,ERROR						; yes - goto Error handling routine								;46be	c2 41 42 	. A B 
+; -- get next sector params from file
+	ld l,(iy+DBFR)					; hl - address of sector data buffer							;46c1	fd 6e 31 	. n 1 
+	ld h,(iy+DBFR+1)																				;46c4	fd 66 32 	. f 2 
+	ld de,126						; de - offset in sector to next track/sector data				;46c7	11 7e 00 	. ~ . 
+	add hl,de						; hl - address of Next Track Number of file						;46ca	19 	. 
+	ld a,(hl)						; a - Next Track Number											;46cb	7e 	~ 
+	or a							; is it 0? (it was last sector of this file)?					;46cc	b7 	. 
+	jr z,.lastSecFound				; yes - find end of data in this sector 						;46cd	28 0a 	( . 
+; -- set next sector params to read
+	inc hl							; hl - address of Next Sector Number of file					;46cf	23 	# 
+	ld (iy+TRCK),a					; set Track NUmber to read next									;46d0	fd 77 12 	. w . 
+	ld a,(hl)						; a - Next Sector Number 										;46d3	7e 	~ 
+	ld (iy+SCTR),a					; set Sector Number to read next								;46d4	fd 77 11 	. w . 
+	jr .readNextSector				; read next sector --------------------------------------------	;46d7	18 e1 	. . 
+
+.lastSecFound:
+; -- check how many bytes are used in this sector
+	ld b,126						; b - 126 bytes of data in buffer								;46d9	06 7e 	. ~ 
+	ld l,(iy+DBFR)					; hl - address of buffer with sector data						;46db	fd 6e 31 	. n 1 
+	ld h,(iy+DBFR+1)																				;46de	fd 66 32 	. f 2 
+.nextByte:
+	ld a,(hl)						; a - data byte from last sector								;46e1	7e 	~ 
+	inc hl							; hl - address of next byte										;46e2	23 	# 
+	or a							; is daba byte = 0? (end of data)?								;46e3	b7 	. 
+	jr z,.updateFCBexit				; yes - update FCB with this sector params and exit				;46e4	28 1d 	( . 
+	djnz .nextByte					; no - check all 126 bytes ------------------------------------	;46e6	10 f9 	. . 
+
+; -- all 126 bytes are used - need to create 1 more sector
+	call RDMAP						; Read disk allocation Map										;46e8	cd 17 47 	. . G 
+	call MAP						; Search for empty sector and alloacte it						;46eb	cd bf 58 	. . X 
+	or a							; was any error?												;46ee	b7 	. 
+	jp nz,ERROR						; yes - go to Error handling routine --------------------------	;46ef	c2 41 42 	. A B 
+; -- no error - set new sector track and Sector Number
+	ld a,(iy+NTRK)					; a - Track Number of new sector								;46f2	fd 7e 16 	. ~ . 
+	ld (iy+TRCK),a					; set as Track Number in DOS structure							;46f5	fd 77 12 	. w . 
+	ld a,(iy+NSCT)					; a - Sector Number of new sector								;46f8	fd 7e 15 	. ~ . 
+	ld (iy+SCTR),a					; set as Sector Number in DOS structure							;46fb	fd 77 11 	. w . 
+; -- clear buffer and write empty sector to disk
+	call CLEAR						; Clear a sector of the disk									;46fe	cd 49 47 	. I G 
+
+	ld b,126						; b - 126 free bytes in this sector								;4701	06 7e 	. ~ 
+.updateFCBexit:
+	ld a,126						; a - total 126 bytes can be stored in one sector				;4703	3e 7e 	> ~ 
+	sub b							; subtract number of free bytes (index of 1st byte to use)		;4705	90 	. 
+	pop hl							; restore hl - address of PTR field in FCB						;4706	e1 	. 
+	ld (hl),a						; set as Byte-inSector Index (PTR) in FCB						;4707	77 	w 
+	dec hl							; hl - address of Sector Number (SCTR#) in FCB					;4708	2b 	+ 
+	ld a,(iy+SCTR)					; a - Sector Number from DOS Structure							;4709	fd 7e 11 	. ~ . 
+	ld (hl),a						; set as Sector Number in FCB									;470c	77 	w 
+	dec hl							; hl - address of Track Number (TRK#) in FCB					;470d	2b 	+ 
+	ld a,(iy+TRCK)					; a - Track Number from DOS Structure							;470e	fd 7e 12 	. ~ . 
+	ld (hl),a						; set as Track Number in FCB									;4711	77 	w 
+; -- file is ready to write to - turn driive power off and exit 
+	call PWROFF						; Disk power OFF												;4712	cd 52 5f 	. R _ 
+	pop hl							; restore hl - address of next char in BASIC					;4715	e1 	. 
+	ret								; -------------------- End of Proc ----------------------------	;4716	c9 	. 
 
 
 
@@ -1612,10 +1662,11 @@ SVMAP:
 ; IN: hl - parse point 
 ;     (iy+FNAM) - filename to close
 ; OUT: a - error/status codes: 8 - FILE ALREADY OPEN or 5 - FILE NOT OPEN
-;      de - address of FCB (if file is Open)
+;      de - address of FCB (if file is Opened)
+;      hl - address of FCB to use (if file is not Opened)
 FindFCBForOpen:
-	push iy							; copy iy to hl													;4778	fd e5 	. . 
-	pop hl							; hl -  DOS base pointer										;477a	e1 	. 
+	push iy							; iy - DOS base address											;4778	fd e5 	. . 
+	pop hl							; copy to hl													;477a	e1 	. 
 
 ; -- check if file is open and use FCB Block 1
 	ld (iy+FILNO),0					; set File # to 0 - current used FCB Block 1					;477b	fd 36 00 00 	. 6 . . 
@@ -1642,8 +1693,8 @@ FindFCBForOpen:
 
 ; -- file is not Open - return FILE NOT OPEN
 ;    de - will contain free FCB to use 
-	push iy							; copy iy to hl													;4798	fd e5 	. . 
-	pop hl							; hl -  DOS base pointer										;479a	e1 	. 
+	push iy							; iy - DOS base address											;4798	fd e5 	. . 
+	pop hl							; copy to hl													;479a	e1 	. 
 	ld de,FCB1						; de - offset to 1st FCB Block									;479b	11 17 00 	. . . 
 	add hl,de						; hl - address of FCB Block	1									;479e	19 	. 
 	ld a,(iy+FILNO)					; a - FCB block used											;479f	fd 7e 00 	. ~ . 
@@ -1716,52 +1767,62 @@ FCBHandlesFile:
 ; Filename may have no more than 8 characters.
 ; IN: hl - parse point (just after 'CLOSE' text)
 DCmdCLOSE:
-; -- parse required filename
+; -- parse required filename (must be terminated with 0 or ':')
 	call CSI						; parse filename and copy it to (iy+FNAM)						;47dd	cd 67 53 	. g S 
 	or a							; was any Error?												;47e0	b7 	. 
 	jp nz,ERROR						; yes - go to Error handling routine --------------------------	;47e1	c2 41 42 	. A B 
-	push hl							; save hl - parse point											;47e4	e5 	. 
+	push hl							; save hl - address of next character in BASIC					;47e4	e5 	. 
+
 ; -- test if command is called from BASIC program or direct 
 	ld hl,(BasicLineNumber)			; hl - Current line being processed by BASIC					;47e5	2a a2 78 	* . x 
 	inc hl							; if was -1 (oxffff) then now will be 0							;47e8	23 	# 
 	ld a,h																							;47e9	7c 	| 
-	or l							; is hl = 0 (called as direct command)							;47ea	b5 	. 
-	jr nz,.fromBasicProg			; no - continue ;47eb	20 0a 	  . 
+	or l							; is hl = 0 (called as direct command)?							;47ea	b5 	. 
+	jr nz,.fromBasicProg			; no - continue 												;47eb	20 0a 	  . 
 
 ; -- called from direct command 
-	call FindFCBForOpen				; Find FCB Block to use or get one if file already opened		;47ed	cd 78 47 	. x G 
-	pop hl			;47f0	e1 	. 
-	cp 008h		;47f1	fe 08 	. . 
-	ret nz			;47f3	c0 	. 
-	xor a			;47f4	af 	. 
-	ld (de),a			;47f5	12 	. 
-	ret			;47f6	c9 	. 
+	call FindFCBForOpen				; Find FCB Block used by this file if file already opened		;47ed	cd 78 47 	. x G 
+	pop hl							; restore hl - address of next character in BASIC				;47f0	e1 	. 
+	cp 08							; is file Opened? (Error 08   FILE ALREADY OPEN)				;47f1	fe 08 	. . 
+	ret nz							; no ------------------- End of Proc --------------------------	;47f3	c0 	. 
+; -- file was Opened - release FCB
+	xor a							; a - error code 00 - OK (and also FCB not used flag)			;47f4	af 	. 
+	ld (de),a						; set FCB Open flag as "not used"								;47f5	12 	. 
+	ret								; --------------------- End of Proc --------------------------	;47f6	c9 	. 
 
-; -- called from BASIC Program
+; -- called from BASIC Program - needs extra cleanup
 .fromBasicProg:
-	call FindFCBForOpen				; Find FCB Block to use or get one if file already opened		;47f7	cd 78 47 	. x G 
-	pop hl			;47fa	e1 	. 
-	cp 008h		;47fb	fe 08 	. . 
-	ret nz			;47fd	c0 	. 
-	ld a,(de)			;47fe	1a 	. 
-	cp 002h		;47ff	fe 02 	. . 
-	ld a,000h		;4801	3e 00 	> . 
-	ld (de),a			;4803	12 	. 
-	ret nz			;4804	c0 	. 
-	inc de			;4805	13 	. 
-	ld a,(de)			;4806	1a 	. 
-	or a			;4807	b7 	. 
-	ret z			;4808	c8 	. 
-	push hl			;4809	e5 	. 
-	ex de,hl			;480a	eb 	. 
-	ld de,00009h		;480b	11 09 00 	. . . 
-	add hl,de			;480e	19 	. 
-	ld a,(hl)			;480f	7e 	~ 
-	inc hl			;4810	23 	# 
-	ld (iy+TRCK),a		;4811	fd 77 12 	. w . 
-	ld a,(hl)			;4814	7e 	~ 
-	ld (iy+SCTR),a		;4815	fd 77 11 	. w . 
-	di			;4818	f3 	. 
+	call FindFCBForOpen				; Find FCB Block used by this file if file already opened		;47f7	cd 78 47 	. x G 
+	pop hl							; restore hl - address of next character in BASIC				;47fa	e1 	. 
+	cp 08							; is file Opened? (Error 08   FILE ALREADY OPEN)				;47fb	fe 08 	. . 
+	ret nz							; no ------------------- End of Proc --------------------------	;47fd	c0 	. 
+
+; -- file was Opened - release FCB
+	ld a,(de)						; a - FCB Open flag												;47fe	1a 	. 
+	cp 2							; is file opened and active?									;47ff	fe 02 	. . 
+	ld a,0							; a - "not used" value 											;4801	3e 00 	> . 
+	ld (de),a						; set as FCB Open flag (release FCB)							;4803	12 	. 
+	ret nz							; no ------------------- End of Proc --------------------------	;4804	c0 	. 
+
+; -- file is opened and active (data in sector buffer)
+	inc de							; de - address of Access type (read/write) in FCB				;4805	13 	. 
+	ld a,(de)						; a - access type (read/write)									;4806	1a 	. 
+	or a							; is it 0 (read)?												;4807	b7 	. 
+	ret z							; yes ------------------ End of Proc --------------------------	;4808	c8 	. 
+
+; -- file was opened to write - need to flush data from buffer to disk
+	push hl							; save hl - address of next character in BASIC					;4809	e5 	. 
+	ex de,hl						; hl - address of Access type (read/write) in FCB				;480a	eb 	. 
+	ld de,9							; de - offset from Access field to TRK# field in FCB			;480b	11 09 00 	. . . 
+	add hl,de						; hl - address of Track Number (TRK#) in FCB					;480e	19 	. 
+	ld a,(hl)						; a - Track Number from FCB										;480f	7e 	~ 
+	inc hl							; hl - address of Sector Number (TRK#) in FCB					;4810	23 	# 
+	ld (iy+TRCK),a					; set as Track Number to write									;4811	fd 77 12 	. w . 
+	ld a,(hl)						; a - Sector Number from FCB									;4814	7e 	~ 
+	ld (iy+SCTR),a					; set as Sector Number to write									;4815	fd 77 11 	. w . 
+
+; -- write data from sector buffer to disk
+	di								; enable interrupts												;4818	f3 	. 
 
 ; -- turn on Disk Drive and wait 50 ms
 	call PWRON						; Disk power ON													;4819	cd 41 5f 	. A _ 
@@ -1776,13 +1837,18 @@ DCmdCLOSE:
 	ld a,04							; a - Error 04 - DISK WRITE PROTECTED							;4827	3e 04 	> . 
 	jp m,ERROR						; yes - go to Error handling routine --------------------------	;4829	fa 41 42 	. A B 
 
-	call WRITE		; Write a sector to disk						;482c	cd a1 59 	. . Y 
-	or a			;482f	b7 	. 
-	jp nz,ERROR		; Error handling routine	;4830	c2 41 42 	. A B 
-	ei			;4833	fb 	. 
-	call PWROFF		; Disk power OFF		;4834	cd 52 5f 	. R _ 
-	pop hl			;4837	e1 	. 
-	ret			;4838	c9 	. 
+; -- write sector to disk
+	call WRITE						; Write a sector to disk										;482c	cd a1 59 	. . Y 
+	or a							; was any error?												;482f	b7 	. 
+	jp nz,ERROR						; yes - go to Error handling routine --------------------------	;4830	c2 41 42 	. A B 
+
+; -- no error - power off and exit
+	ei								; enable interrupts												;4833	fb 	. 
+	call PWROFF						; Disk power OFF												;4834	cd 52 5f 	. R _ 
+	pop hl							; restore hl - address of next character in BASIC				;4837	e1 	. 
+	ret								; ---------------------- End of Proc --------------------------	;4838	c9 	. 
+
+
 
 
 ;***************************************************************************************************
@@ -2396,8 +2462,8 @@ INIT:
 
 ; -- prepeare sector data to copy on disk 
 	push hl							; save hl 														;4b1c	e5 	. 
-	push iy							; move iy (DOS base) to hl										;4b1d	fd e5 	. . 
-	pop hl							; hl - DOS base address											;4b1f	e1 	. 
+	push iy							; iy - DOS base address											;4b1d	fd e5 	. . 
+	pop hl							; copy to hl													;4b1f	e1 	. 
 	ld de,SectorBuffer				; offset to Sector Buffer										;4b20	11 4d 00 	. M . 
 	add hl,de						; hl - address of Sector Buffer									;4b23	19 	. 
 	ld (iy+TRCK),0					; set Track Number 0											;4b24	fd 36 12 00 	. 6 . . 
@@ -2895,7 +2961,7 @@ DCmdIN#:
 	ld a,(de)			;4db2	1a 	. 
 	cp 002h		;4db3	fe 02 	. . 
 	jr z,l4de2h		;4db5	28 2b 	( + 
-	call sub_4fa5h		;4db7	cd a5 4f 	. . O 
+	call FlushSectorData		; Flush Sector Data to disk from both FCBs ;4db7	cd a5 4f 	. . O 
 	ld a,002h		;4dba	3e 02 	> . 
 	ld (de),a			;4dbc	12 	. 
 	ex de,hl			;4dbd	eb 	. 
@@ -3095,7 +3161,7 @@ sub_4ecah:
 	ld a,(hl)			;4edb	7e 	~ 
 	cp 002h		;4edc	fe 02 	. . 
 	jr z,l4f0ch		;4ede	28 2c 	( , 
-	call sub_4fa5h		;4ee0	cd a5 4f 	. . O 
+	call FlushSectorData		; Flush Sector Data to disk from both FCBs ;4ee0	cd a5 4f 	. . O 
 	ld de,0000ah		;4ee3	11 0a 00 	. . . 
 	add hl,de			;4ee6	19 	. 
 	ld a,(hl)			;4ee7	7e 	~ 
@@ -3208,40 +3274,61 @@ l4f9ch:
 	pop de			;4fa2	d1 	. 
 	pop hl			;4fa3	e1 	. 
 	ret			;4fa4	c9 	. 
-sub_4fa5h:
-	push hl			;4fa5	e5 	. 
-	push de			;4fa6	d5 	. 
-	push iy		;4fa7	fd e5 	. . 
-	pop hl			;4fa9	e1 	. 
-	ld de,FCB1		;4faa	11 17 00 	. . . 
-	add hl,de			;4fad	19 	. 
-	call sub_4fbbh		;4fae	cd bb 4f 	. . O 
-	ld de,0000dh		;4fb1	11 0d 00 	. . . 
-	add hl,de			;4fb4	19 	. 
-	call sub_4fbbh		;4fb5	cd bb 4f 	. . O 
-	pop de			;4fb8	d1 	. 
-	pop hl			;4fb9	e1 	. 
-	ret			;4fba	c9 	. 
-sub_4fbbh:
-	ld a,(hl)			;4fbb	7e 	~ 
-	or a			;4fbc	b7 	. 
-	ret z			;4fbd	c8 	. 
-	cp 002h		;4fbe	fe 02 	. . 
-	ret nz			;4fc0	c0 	. 
-	ld (hl),001h		;4fc1	36 01 	6 . 
-	inc hl			;4fc3	23 	# 
-	ld a,(hl)			;4fc4	7e 	~ 
-	or a			;4fc5	b7 	. 
-	dec hl			;4fc6	2b 	+ 
-	ret z			;4fc7	c8 	. 
-	ld de,0000ah		;4fc8	11 0a 00 	. . . 
-	add hl,de			;4fcb	19 	. 
-	ld a,(hl)			;4fcc	7e 	~ 
-	ld (iy+TRCK),a		;4fcd	fd 77 12 	. w . 
-	inc hl			;4fd0	23 	# 
-	ld a,(hl)			;4fd1	7e 	~ 
-	ld (iy+SCTR),a		;4fd2	fd 77 11 	. w . 
-	di			;4fd5	f3 	. 
+
+
+;***************************************************************************************************
+; Flush Sector Data to disk from both File Control Blocks
+FlushSectorData:
+; -- save registers
+	push hl							; save hl  													;4fa5	e5 	. 
+	push de							; save de 													;4fa6	d5 	. 
+; -- calculate address of FCB1
+	push iy							; iy - DOS base address										;4fa7	fd e5 	. . 
+	pop hl							; copy to hl												;4fa9	e1 	. 
+	ld de,FCB1						; de - offset to File Control Block 1						;4faa	11 17 00 	. . . 
+	add hl,de						; hl - address of File Control Block 1						;4fad	19 	. 
+
+; -- flush sector data used by FCB1
+	call .flushSector				; flush sector data if file is opened to write				;4fae	cd bb 4f 	. . O 
+; -- calculate address of FCB2
+	ld de,13						; de - size of FCB - offset to FCB2 from FCB1				;4fb1	11 0d 00 	. . . 
+	add hl,de						; hl - address of File Control Block 2						;4fb4	19 	. 
+
+; -- flush sector data used by FCB2
+	call .flushSector				; flush sector data if file is opened to write				;4fb5	cd bb 4f 	. . O 
+; -- restore registers and exit
+	pop de							; restore de												;4fb8	d1 	. 
+	pop hl							; restore hl 												;4fb9	e1 	. 
+	ret								; ------------------------- End Of Proc -------------------	;4fba	c9 	. 
+
+
+.flushSector:
+; -- check if FCB is used 
+	ld a,(hl)						; a - FCB Open flag												;4fbb	7e 	~ 
+	or a							; is FCB used?													;4fbc	b7 	. 
+	ret z							; no ---------------------- End Of Proc -----------------------	;4fbd	c8 	. 
+; -- return if FCB is used but file is not currently active (1)
+	cp 2							; is FCB used and file active?									;4fbe	fe 02 	. . 
+	ret nz							; no ---------------------- End Of Proc -----------------------	;4fc0	c0 	. 
+; -- return if file open and active but for read only
+	ld (hl),1						; set FCB used but file is not active							;4fc1	36 01 	6 . 
+	inc hl							; hl - point to Access type field								;4fc3	23 	# 
+	ld a,(hl)						; a - access type												;4fc4	7e 	~ 
+	or a							; is it opened for read?										;4fc5	b7 	. 
+	dec hl							; hl - address of FCB											;4fc6	2b 	+ 
+	ret z							; yes --------------------- End Of Proc -----------------------	;4fc7	c8 	. 
+
+; -- set Track and Sector Number to Write Sector 
+	ld de,10						; de - offset to Track Number (in FCB)							;4fc8	11 0a 00 	. . . 
+	add hl,de						; hl - address of Track Number 									;4fcb	19 	. 
+	ld a,(hl)						; a - Track Number												;4fcc	7e 	~ 
+	ld (iy+TRCK),a					; set as Track Number for write									;4fcd	fd 77 12 	. w . 
+	inc hl							; hl - address of Sector NUmber (in FCB)						;4fd0	23 	# 
+	ld a,(hl)						; a - Sector Number												;4fd1	7e 	~ 
+	ld (iy+SCTR),a					; set as Sector Number for Write								;4fd2	fd 77 11 	. w . 
+
+; -- disable interrupt and write Sector data to Disk
+	di								; disable interrupts											;4fd5	f3 	. 
 
 ; -- turn on Disk Drive and wait 50 ms
 	call PWRON						; Disk power ON													;4fd6	cd 41 5f 	. A _ 
@@ -3255,16 +3342,21 @@ sub_4fbbh:
 	or a							; is bit 7 set? (write protected)								;4fe3	b7 	. 
 	ld a,04							; a - Error 04 - DISK WRITE PROTECTED							;4fe4	3e 04 	> . 
 	jp m,ERROR						; yes - go to Error handling routine --------------------------	;4fe6	fa 41 42 	. A B 
-	push hl			;4fe9	e5 	. 
-	call WRITE		; Write a sector to disk						;4fea	cd a1 59 	. . Y 
-	pop hl			;4fed	e1 	. 
-	or a			;4fee	b7 	. 
-	jp nz,ERROR		; Error handling routine	;4fef	c2 41 42 	. A B 
-	ld de,0fff5h		;4ff2	11 f5 ff 	. . . 
-	add hl,de			;4ff5	19 	. 
-	call PWROFF		; Disk power OFF		;4ff6	cd 52 5f 	. R _ 
-	ei			;4ff9	fb 	. 
-	ret			;4ffa	c9 	. 
+
+; -- flush sector to Disk
+	push hl							; save hl														;4fe9	e5 	. 
+	call WRITE						; Write a sector to disk										;4fea	cd a1 59 	. . Y 
+	pop hl							; restore hl													;4fed	e1 	. 
+	or a							; was any Error?												;4fee	b7 	. 
+	jp nz,ERROR						; yes - go to Error handling routine --------------------------	;4fef	c2 41 42 	. A B 
+; -- restore address of FCB in register hl
+	ld de,-11						; de - offset back to FCB flag 									;4ff2	11 f5 ff 	. . . 
+	add hl,de						; hl - address of FCB											;4ff5	19 	. 
+; -- turn drive power off and exit
+	call PWROFF						; Disk power OFF												;4ff6	cd 52 5f 	. R _ 
+	ei								; enable interrupts												;4ff9	fb 	. 
+	ret								; ------------------------- End Of Proc -----------------------	;4ffa	c9 	. 
+
 
 
 
@@ -3335,7 +3427,7 @@ l505dh:
 	ld (iy+TRKPTR),0		;5071	fd 36 37 00 	. 6 7 . 
 	ld (iy+TRCK),0		;5075	fd 36 12 00 	. 6 . . 
 	ld (iy+SCTR),0		;5079	fd 36 11 00 	. 6 . . 
-	call sub_4fa5h		;507d	cd a5 4f 	. . O 
+	call FlushSectorData		; Flush Sector Data to disk from both FCBs ;507d	cd a5 4f 	. . O 
 	call sub_5168h		;5080	cd 68 51 	. h Q 
 l5083h:
 	ld de,SYS_BASIC_PRG		; address of first byte of BASIC program ;5083	11 e9 7a 	. . z 
