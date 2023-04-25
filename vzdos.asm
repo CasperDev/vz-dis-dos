@@ -3223,32 +3223,47 @@ l4ec1h:
 	call sub_4ecah		;4ec4	cd ca 4e 	. . N 
 	inc bc			;4ec7	03 	. 
 	jr l4ec1h		;4ec8	18 f7 	. . 
+
+
 sub_4ecah:
-	push hl			;4eca	e5 	. 
-	push de			;4ecb	d5 	. 
-	push bc			;4ecc	c5 	. 
-	push af			;4ecd	f5 	. 
+; -- save registers
+	push hl							; save hl														;4eca	e5 	. 
+	push de							; save de														;4ecb	d5 	. 
+	push bc							; save bc														;4ecc	c5 	. 
+	push af							; save af														;4ecd	f5 	. 
+
+; -- get File Control Block used for this file
 	call FindFCBForOpen				; Find FCB Block to use or get one if file already opened		;4ece	cd 78 47 	. x G 
-	ex de,hl			;4ed1	eb 	. 
-	inc hl			;4ed2	23 	# 
-	ld a,(hl)			;4ed3	7e 	~ 
-	or a			;4ed4	b7 	. 
-	ld a,010h		;4ed5	3e 10 	> . 
-	jp z,ERROR		; Error handling routine	;4ed7	ca 41 42 	. A B 
-	dec hl			;4eda	2b 	+ 
-	ld a,(hl)			;4edb	7e 	~ 
-	cp 002h		;4edc	fe 02 	. . 
-	jr z,l4f0ch		;4ede	28 2c 	( , 
-	call FlushSectorData		; Flush Sector Data to disk from both FCBs ;4ee0	cd a5 4f 	. . O 
-	ld de,0000ah		;4ee3	11 0a 00 	. . . 
-	add hl,de			;4ee6	19 	. 
-	ld a,(hl)			;4ee7	7e 	~ 
-	inc hl			;4ee8	23 	# 
-	ld (iy+TRCK),a		;4ee9	fd 77 12 	. w . 
-	ld a,(hl)			;4eec	7e 	~ 
-	inc hl			;4eed	23 	# 
-	ld (iy+SCTR),a		;4eee	fd 77 11 	. w . 
-	di			;4ef1	f3 	. 
+	ex de,hl						; hl - address of FCB											;4ed1	eb 	. 
+
+; -- throw Error 16 ILLEGAL WRITE if file is open for read 
+	inc hl							; hl - address of Access (read/write) field of FCB 				;4ed2	23 	# 
+	ld a,(hl)						; a - Access mode used 											;4ed3	7e 	~ 
+	or a							; is it 0 (read)?												;4ed4	b7 	. 
+	ld a,16							; a - Error 16   ILLEGAL WRITE									;4ed5	3e 10 	> . 
+	jp z,ERROR						; yes - go to Error handling routine --------------------------	;4ed7	ca 41 42 	. A B 
+
+; -- 
+	dec hl							; hl - address of Open flag in FCB								;4eda	2b 	+ 
+	ld a,(hl)						; a - Open flag													;4edb	7e 	~ 
+	cp 2							; is it 2? (open and active - sector data in buffer)			;4edc	fe 02 	. . 
+	jr z,.writeByte					; yes - skip read sector into buffer							;4ede	28 2c 	( , 
+
+; -- flush data from buffers to disk before load new sector
+	call FlushSectorData			; Flush Sector Data to disk from both FCBs 						;4ee0	cd a5 4f 	. . O 
+
+; -- set Track and Sector Number to read
+	ld de,10						; de - offset to Track Number in FCB							;4ee3	11 0a 00 	. . . 
+	add hl,de						; hl - address of Track Number in FCB							;4ee6	19 	. 
+	ld a,(hl)						; a - Track Number from FCB										;4ee7	7e 	~ 
+	inc hl							; hl - address of Sector Number in FCB							;4ee8	23 	# 
+	ld (iy+TRCK),a					; set Track Number of Sector to read							;4ee9	fd 77 12 	. w . 
+	ld a,(hl)						; a - Sector Number from FCB									;4eec	7e 	~ 
+	inc hl							; hl - address of Index (PTR) field in FCB						;4eed	23 	# 
+	ld (iy+SCTR),a					; set Sector Number of Sectr to read							;4eee	fd 77 11 	. w . 
+
+; -- disable interrupt and read data from sector into buffer
+	di								; disable interrupts											;4ef1	f3 	. 
 
 ; -- turn on Disk Drive 
 	call PWRON						; Disk power ON													;4ef2	cd 41 5f 	. A _ 
@@ -3258,32 +3273,43 @@ sub_4ecah:
 	or a							; is bit 7 set? (write protected)								;4ef7	b7 	. 
 	ld a,04							; a - Error 04 - DISK WRITE PROTECTED							;4ef8	3e 04 	> . 
 	jp m,ERROR						; yes - go to Error handling routine --------------------------	;4efa	fa 41 42 	. A B 
-	push hl			;4efd	e5 	. 
-	call READ		; Read a sector from disk						;4efe	cd 27 5b 	. ' [ 
-	or a			;4f01	b7 	. 
-	jp nz,ERROR		; Error handling routine	;4f02	c2 41 42 	. A B 
-	pop hl			;4f05	e1 	. 
-	ld de,0fff4h		;4f06	11 f4 ff 	. . . 
-	add hl,de			;4f09	19 	. 
-	ld (hl),002h		;4f0a	36 02 	6 . 
-l4f0ch:
-	ld de,0000ch		;4f0c	11 0c 00 	. . . 
-	add hl,de			;4f0f	19 	. 
-	ld e,(hl)			;4f10	5e 	^ 
-	inc (hl)			;4f11	34 	4 
-	ld d,000h		;4f12	16 00 	. . 
-	ld l,(iy+DBFR)		;4f14	fd 6e 31 	. n 1 
-	ld h,(iy+DBFR+1)		;4f17	fd 66 32 	. f 2 
-	add hl,de			;4f1a	19 	. 
-	pop af			;4f1b	f1 	. 
-	push af			;4f1c	f5 	. 
-	ld (hl),a			;4f1d	77 	w 
-	ld a,e			;4f1e	7b 	{ 
-	inc a			;4f1f	3c 	< 
-	cp 07eh		;4f20	fe 7e 	. ~ 
-	jr nz,l4f9ch		;4f22	20 78 	  x 
 
-	di			;4f24	f3 	. 
+; -- read data from sector
+	push hl							; save hl - address of Index (PTR) field in FCB					;4efd	e5 	. 
+	call READ						; Read a sector from disk										;4efe	cd 27 5b 	. ' [ 
+	or a							; was any error?												;4f01	b7 	. 
+	jp nz,ERROR						; yes - go to Error handling routine --------------------------	;4f02	c2 41 42 	. A B 
+
+; -- update FCB Open flag - sector data in buffer
+	pop hl							; restore hl - address of Index (PTR) field in FCB				;4f05	e1 	. 
+	ld de,-12						; de - offset to Open flag in FCB								;4f06	11 f4 ff 	. . . 
+	add hl,de						; hl - address of Open flag in FCB								;4f09	19 	. 
+	ld (hl),2						; set Open flag - file opened and active						;4f0a	36 02 	6 . 
+
+.writeByte:
+;-- increment byte-in-sector index (PTR))
+	ld de,12						; de - offset to Index (PTR) field in FCB						;4f0c	11 0c 00 	. . . 
+	add hl,de						; de - address of Index (PTR) field in FCB						;4f0f	19 	. 
+	ld e,(hl)						; e - index of first not used byte in Sector 					;4f10	5e 	^ 
+	inc (hl)						; increment index (for next use)								;4f11	34 	4 
+	ld d,0							; de - offset to first not used byte in Sector					;4f12	16 00 	. . 
+
+; -- store given byte into sector buffer
+	ld l,(iy+DBFR)					; hl - address of sector buffer									;4f14	fd 6e 31 	. n 1 
+	ld h,(iy+DBFR+1)																				;4f17	fd 66 32 	. f 2 
+	add hl,de						; hl - address of first not used byte in sector					;4f1a	19 	. 
+	pop af							; restore a - given byte to write								;4f1b	f1 	. 
+	push af							; save af														;4f1c	f5 	. 
+	ld (hl),a						; store byte in sector buffer									;4f1d	77 	w 
+
+; -- check if all 126 data bytes of sector are used already
+	ld a,e							; a - index of byte we just used								;4f1e	7b 	{ 
+	inc a							; increment by 1												;4f1f	3c 	< 
+	cp 126							; is it 126 (all bytes used)?									;4f20	fe 7e 	. ~ 
+	jr nz,.exit						; no - restre registers and return								;4f22	20 78 	  x 
+
+; -- whole sector used - create new one
+	di								; disable interrupts											;4f24	f3 	. 
 
 ; -- turn on Disk Drive and wait 2 ms
 	call PWRON						; Disk power ON													;4f25	cd 41 5f 	. A _ 
@@ -3297,61 +3323,76 @@ l4f0ch:
 	or a							; is bit 7 set? (write protected)								;4f32	b7 	. 
 	ld a,04							; a - Error 04 - DISK WRITE PROTECTED							;4f33	3e 04 	> . 
 	jp m,ERROR						; yes - go to Error handling routine --------------------------	;4f35	fa 41 42 	. A B 
-	ld e,(iy+SCTR)		;4f38	fd 5e 11 	. ^ . 
-	ld d,(iy+TRCK)		;4f3b	fd 56 12 	. V . 
-	push de			;4f3e	d5 	. 
-	call WRITE		; Write a sector to disk						;4f3f	cd a1 59 	. . Y 
-	or a			;4f42	b7 	. 
-sub_4f43h:
-	jp nz,ERROR		; Error handling routine	;4f43	c2 41 42 	. A B 
-	call RDMAP		; Read the track map of the disk				;4f46	cd 17 47 	. . G 
-	or a			;4f49	b7 	. 
-	jp nz,ERROR		; Error handling routine	;4f4a	c2 41 42 	. A B 
-	call MAP		; Search for empty sector and allocate it						;4f4d	cd bf 58 	. . X 
-	or a			;4f50	b7 	. 
-	jp nz,ERROR		; Error handling routine	;4f51	c2 41 42 	. A B 
-	call SVMAP		; Save the track map to the disk				;4f54	cd 54 47 	. T G 
-	pop de			;4f57	d1 	. 
-	ld (iy+SCTR),e		;4f58	fd 73 11 	. s . 
-	ld (iy+TRCK),d		;4f5b	fd 72 12 	. r . 
-	call READ		; Read a sector from disk						;4f5e	cd 27 5b 	. ' [ 
-	or a			;4f61	b7 	. 
-	jp nz,ERROR		; Error handling routine	;4f62	c2 41 42 	. A B 
-	ld l,(iy+DBFR)		;4f65	fd 6e 31 	. n 1 
-	ld h,(iy+DBFR+1)		;4f68	fd 66 32 	. f 2 
-	ld de,0007eh		;4f6b	11 7e 00 	. ~ . 
-	add hl,de			;4f6e	19 	. 
-	ld a,(iy+NTRK)		;4f6f	fd 7e 16 	. ~ . 
-	ld (hl),a			;4f72	77 	w 
-	inc hl			;4f73	23 	# 
-	ld a,(iy+NSCT)		;4f74	fd 7e 15 	. ~ . 
-	ld (hl),a			;4f77	77 	w 
-	call WRITE		; Write a sector to disk						;4f78	cd a1 59 	. . Y 
-	or a			;4f7b	b7 	. 
-	jp nz,ERROR		; Error handling routine	;4f7c	c2 41 42 	. A B 
+
+; -- write sector data from buffer to disk
+	ld e,(iy+SCTR)					; e - Sector Number												;4f38	fd 5e 11 	. ^ . 
+	ld d,(iy+TRCK)					; d - Track Number												;4f3b	fd 56 12 	. V . 
+	push de							; save de - Track and Sector Numbers							;4f3e	d5 	. 
+	call WRITE						; Write a sector to disk										;4f3f	cd a1 59 	. . Y 
+	or a							; was any error?												;4f42	b7 	. 
+	jp nz,ERROR						; yes - go to Error handling routine --------------------------	;4f43	c2 41 42 	. A B 
+
+; -- read Sector Allocation Map
+	call RDMAP						; Read disk allocation Map										;4f46	cd 17 47 	. . G 
+	or a							; was any error?												;4f49	b7 	. 
+	jp nz,ERROR						; yes - go to Error handling routine --------------------------	;4f4a	c2 41 42 	. A B 
+
+; -- Allocate new Sector
+	call MAP						; Search for empty sector and allocate it						;4f4d	cd bf 58 	. . X 
+	or a							; was any error?												;4f50	b7 	. 
+	jp nz,ERROR						; yes - go to Error handling routine --------------------------	;4f51	c2 41 42 	. A B 
+	call SVMAP						; Save the track map to the disk								;4f54	cd 54 47 	. T G 
+
+; -- read again old sector we just used for update links to new sector
+	pop de							; restore de - Track and Sector Number							;4f57	d1 	. 
+	ld (iy+SCTR),e					; set Sector Number to read										;4f58	fd 73 11 	. s . 
+	ld (iy+TRCK),d					; set Track Number to read										;4f5b	fd 72 12 	. r . 
+	call READ						; Read a sector from disk										;4f5e	cd 27 5b 	. ' [ 
+	or a							; was any error?												;4f61	b7 	. 
+	jp nz,ERROR						; yes - go to Error handling routine --------------------------	;4f62	c2 41 42 	. A B 
+
+; -- update sector buffer with next Track and Sector of this file
+	ld l,(iy+DBFR)					; hl - address of sector buffer									;4f65	fd 6e 31 	. n 1 
+	ld h,(iy+DBFR+1)																				;4f68	fd 66 32 	. f 2 
+	ld de,126						; de - offset to Next Track byte in Sector						;4f6b	11 7e 00 	. ~ . 
+	add hl,de						; hl - address of Next Track byte in Sector						;4f6e	19 	. 
+	ld a,(iy+NTRK)					; a - Next Track of sector allocated by MAP routine				;4f6f	fd 7e 16 	. ~ . 
+	ld (hl),a						; store Next Track Number in buffer								;4f72	77 	w 
+	inc hl							; hl - address of Next Sector byte in Sector					;4f73	23 	# 
+	ld a,(iy+NSCT)					; a - Next Sector NUmber of sector allocated by MAP routine		;4f74	fd 7e 15 	. ~ . 
+	ld (hl),a						; store Next Sector Number in buffer							;4f77	77 	w 
+; -- write back sector to disk
+	call WRITE						; Write a sector to disk										;4f78	cd a1 59 	. . Y 
+	or a							; was any error?												;4f7b	b7 	. 
+	jp nz,ERROR						; yes - go to Error handling routine --------------------------	;4f7c	c2 41 42 	. A B 
+
+; -- update FCB and DOS structure with properties of new Sector
 	call FindFCBForOpen				; Find FCB Block to use or get one if file already opened		;4f7f	cd 78 47 	. x G 
-	ex de,hl			;4f82	eb 	. 
-	ld de,0000ah		;4f83	11 0a 00 	. . . 
-	add hl,de			;4f86	19 	. 
-	ld a,(iy+NTRK)		;4f87	fd 7e 16 	. ~ . 
-	ld (iy+TRCK),a		;4f8a	fd 77 12 	. w . 
-	ld (hl),a			;4f8d	77 	w 
-	inc hl			;4f8e	23 	# 
-	ld a,(iy+NSCT)		;4f8f	fd 7e 15 	. ~ . 
-	ld (iy+SCTR),a		;4f92	fd 77 11 	. w . 
-	ld (hl),a			;4f95	77 	w 
-	inc hl			;4f96	23 	# 
-	xor a			;4f97	af 	. 
-	ld (hl),a			;4f98	77 	w 
-	call CLEAR		; Clear a sector of the disk					;4f99	cd 49 47 	. I G 
-l4f9ch:
-	call PWROFF		; Disk power OFF		;4f9c	cd 52 5f 	. R _ 
-	ei			;4f9f	fb 	. 
-	pop af			;4fa0	f1 	. 
-	pop bc			;4fa1	c1 	. 
-	pop de			;4fa2	d1 	. 
-	pop hl			;4fa3	e1 	. 
-	ret			;4fa4	c9 	. 
+	ex de,hl						; hl - address of FCB											;4f82	eb 	. 
+	ld de,10						; de - offset to Track Number (TRK#) field in FCB				;4f83	11 0a 00 	. . . 
+	add hl,de						; hl - address of Track Number (TRK#) field in FCB				;4f86	19 	. 
+	ld a,(iy+NTRK)					; a - Track Number of sector allocated by MAP routine			;4f87	fd 7e 16 	. ~ . 
+	ld (iy+TRCK),a					; set as current Track Number in DOS structure					;4f8a	fd 77 12 	. w . 
+	ld (hl),a						; set as current Track Number in FCB							;4f8d	77 	w 
+	inc hl							; hl - address of Sector Number (SCTR#) field in FCB			;4f8e	23 	# 
+	ld a,(iy+NSCT)					; a - Sector Number of sector allocated by MAP routine			;4f8f	fd 7e 15 	. ~ . 
+	ld (iy+SCTR),a					; set as current Sector Number in DOS structure					;4f92	fd 77 11 	. w . 
+	ld (hl),a						; set as current Sector Number in FCB							;4f95	77 	w 
+	inc hl							; hl - address of Byte-in-Sector Index (PTR) field in FCB		;4f96	23 	# 
+	xor a							; a - 0 - index 												;4f97	af 	. 
+	ld (hl),a						; set as index to first not used byte in sector					;4f98	77 	w 
+; -- clear sector buffer - fill with 0
+	call CLEAR						; Clear a sector of the disk									;4f99	cd 49 47 	. I G 
+.exit:
+; -- turn disk power off and enable interrupts
+	call PWROFF						; Disk power OFF												;4f9c	cd 52 5f 	. R _ 
+	ei								; enable interrupts												;4f9f	fb 	. 
+; -- restore registers and exit
+	pop af							; restore af													;4fa0	f1 	. 
+	pop bc							; restore bc													;4fa1	c1 	. 
+	pop de							; restore de													;4fa2	d1 	. 
+	pop hl							; restore hl													;4fa3	e1 	. 
+	ret								; -------------------- End of Proc ----------------------------	;4fa4	c9 	. 
 
 
 ;***************************************************************************************************
