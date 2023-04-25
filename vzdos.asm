@@ -44,7 +44,7 @@ CmdINPUTSrcFlag		equ     $78a9	; Source for DATA/INPUT - 0 if cassete input else
 ErrorLineNumber		equ		$78ea	; BASIC Line where Error occoured
 EditLineNumber		equ		$78ec	; BASIC Line currently edited
 
-
+SYS_ACC				equ		$7921	; BASIC Accumulator starts here (double 8 bytes, single 4 bytes, int 2 bytes, string 3 bytes) 
 ;***************************************************************************************************
 ;
 ;   S Y S T E M   R O U T I N E S
@@ -66,7 +66,11 @@ SysSetPrgReady		equ		$1ae8	; Reset BASIC and set BASIC Program ready to run (sta
 SysCheckIllegalDirect equ	$2828	; Throw ILLEGAL DIRECT Error if current BASIC line <> FFFF
 
 SysEvalByteExpr		equ		$2b1c	; Evaluate Integer expression and places it in ACC and register de
+SysEvalBasicExpr	equ		$2337	; Evaluate any BASIC expression and place result in ACC			
 
+SysNumToStr			equ		$0fbd	; Convert Numeric value from ACC to String (hl will point to start of string)
+
+SysStrToACC			equ		$2865	; Create String Vector from (hl) and store in ACC
 SysExecINPUTProc	equ		$21bd	; Execute part of BASIC INPUT command to evaluate Variable value 
 SysErrRaiseFuncCode equ		$1e4a	; Raise BASIC FUNCTION CODE	Error
 TXT_READY			equ		$1929	; 'READY' text
@@ -3146,34 +3150,46 @@ DCmdPR#:
 ; -- parse first argument - filename
 	call ParseFilename				; Verify syntax and copy filename to DOS Filename Buffer		;4e67	cd 78 53 	. x S 
 	or a							; was any Error?												;4e6a	b7 	. 
-	jp nz,ERROR						; yes - go to Error handling routine							;4e6b	c2 41 42 	. A B 
-	push hl			;4e6e	e5 	. 
+	jp nz,ERROR						; yes - go to Error handling routine --------------------------	;4e6b	c2 41 42 	. A B 
+
+; -- get File Control Block used to open this file
+	push hl							; save hl - address of next char in BASIC expression			;4e6e	e5 	. 
 	call FindFCBForOpen				; Find FCB Block to use or get one if file already opened		;4e6f	cd 78 47 	. x G 
-	cp 008h		;4e72	fe 08 	. . 
-	ld a,005h		;4e74	3e 05 	> . 
-	jp nz,ERROR		; Error handling routine	;4e76	c2 41 42 	. A B 
-	pop hl			;4e79	e1 	. 
+	cp 08							; was it Error 08   FILE ALREADY OPEN (means OK)?				;4e72	fe 08 	. . 
+	ld a,05							; a - Error 05   FILE NOT OPEN for return						;4e74	3e 05 	> . 
+	jp nz,ERROR						; no (was other error) go to Error handling routine				;4e76	c2 41 42 	. A B 
+	pop hl							; restore hl - address of next char in BASIC expression			;4e79	e1 	. 
+
+; -- parse next char - must be ','
 	rst 8							; verify this char is ',' (commx) and point hl to next			;4e7a	cf 	. 
 	defb ','						; expected char													;4e7b	2c 	, 
+
 l4e7ch:
-	dec hl			;4e7c	2b 	+ 
-	rst 10h			;4e7d	d7 	. 
-	call z,sub_4each		;4e7e	cc ac 4e 	. . N 
+	dec hl							; hl - addres before variable/value expression 					;4e7c	2b 	+ 
+	rst $10							; call system NextToken routine - check expression				;4e7d	d7 	. 
+	call z,sub_4each		; if no more expressions ;4e7e	cc ac 4e 	. . N 
 l4e81h:
-	ret z			;4e81	c8 	. 
-	push hl			;4e82	e5 	. 
-	cp 02ch		;4e83	fe 2c 	. , 
-	jp z,l4eb3h		;4e85	ca b3 4e 	. . N 
-	cp 03ah		;4e88	fe 3a 	. : 
-	jr z,l4eb7h		;4e8a	28 2b 	( + 
-	pop bc			;4e8c	c1 	. 
-	call 02337h		;4e8d	cd 37 23 	. 7 # 
-	push hl			;4e90	e5 	. 
-	rst 20h			;4e91	e7 	. 
-	jr z,l4ea6h		;4e92	28 12 	( . 
-	call 00fbdh		;4e94	cd bd 0f 	. . . 
-	call 02865h		;4e97	cd 65 28 	. e ( 
-	ld hl,(07921h)		;4e9a	2a 21 79 	* ! y 
+	ret z							; no more expression ---------- End of Proc ------------------- ;4e81	c8 	. 
+
+; --
+	push hl							; save hl - address of next BASIC char							;4e82	e5 	. 
+	cp ','							; is it ',' (variable/value separator)?							;4e83	fe 2c 	. , 
+	jp z,l4eb3h				; yes - ;4e85	ca b3 4e 	. . N 
+	cp ':'							; is it ':' (end of this PR# command)?							;4e88	fe 3a 	. : 
+	jr z,l4eb7h				; yes - ;4e8a	28 2b 	( + 
+	pop bc							; restore bc - address of next BASIC char						;4e8c	c1 	. 
+
+; -- calculate value from given BASIC expression
+	call SysEvalBasicExpr			; evaluate BASIC expression and place result in ACC				;4e8d	cd 37 23 	. 7 # 
+; -- test variable type stored in ACC 
+	push hl							; save hl - address of next BASIC char							;4e90	e5 	. 
+	rst $20							; test type of variable in ACC (NTF)							;4e91	e7 	. 
+	jr z,l4ea6h						; jump if it is STRING variable	(store as it is)								;4e92	28 12 	( . 
+
+; -- numeric variable - convert to string
+	call SysNumToStr				; convert numeric value from ACC to String (hl points to start)	;4e94	cd bd 0f 	. . . 
+	call SysStrToACC				; Create String Vector from (hl) and store in ACC				;4e97	cd 65 28 	. e ( 
+	ld hl,(SYS_ACC)					; hl - integer ;4e9a	2a 21 79 	* ! y 
 	call sub_4ebah		;4e9d	cd ba 4e 	. . N 
 	ld a,020h		;4ea0	3e 20 	>   
 	call sub_4ecah		;4ea2	cd ca 4e 	. . N 
@@ -3193,6 +3209,9 @@ l4eb3h:
 l4eb7h:
 	rst 10h			;4eb7	d7 	. 
 	jr l4e81h		;4eb8	18 c7 	. . 
+
+
+
 sub_4ebah:
 	call 029dah		;4eba	cd da 29 	. . ) 
 	call 009c4h		;4ebd	cd c4 09 	. . . 
