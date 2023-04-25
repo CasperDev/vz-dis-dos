@@ -38,6 +38,9 @@ SYS_BASIC_END_PTR	equ 	$78f9	; 16bit pointer to end of current BASIC Program
 SYS_ARR_START_PTR	equ 	$78fb	; 16bit pointer to start of area for BASIC arrays
 SYS_ARR_END_PTR		equ 	$78fd	; 16bit pointer to end of area for BASIC arrays
 BasicLineNumber		equ		$78a2	; Current line being processed by BASIC.
+BasicLineBufPtr		equ		$78a7	; Current line being processed by BASIC.
+
+CmdINPUTSrcFlag		equ     $78a9	; Source for DATA/INPUT - 0 if cassete input else non zero
 ErrorLineNumber		equ		$78ea	; BASIC Line where Error occoured
 EditLineNumber		equ		$78ec	; BASIC Line currently edited
 
@@ -64,6 +67,7 @@ SysCheckIllegalDirect equ	$2828	; Throw ILLEGAL DIRECT Error if current BASIC li
 
 SysEvalByteExpr		equ		$2b1c	; Evaluate Integer expression and places it in ACC and register de
 
+SysExecINPUTProc	equ		$21bd	; Execute part of BASIC INPUT command to evaluate Variable value 
 SysErrRaiseFuncCode equ		$1e4a	; Raise BASIC FUNCTION CODE	Error
 TXT_READY			equ		$1929	; 'READY' text
 
@@ -3006,92 +3010,125 @@ DCmdIN#:
 
 
 .readyToRead:
-	ld b,0c7h		;4de2	06 c7 	. . 
-	ld hl,(078a7h)		;4de4	2a a7 78 	* . x 
-l4de7h:
-	call sub_4df9h		;4de7	cd f9 4d 	. . M 
-	ld (hl),a			;4dea	77 	w 
-	inc hl			;4deb	23 	# 
-	cp 00dh		;4dec	fe 0d 	. . 
-	jr z,l4df2h		;4dee	28 02 	( . 
-	djnz l4de7h		;4df0	10 f5 	. . 
-l4df2h:
-	xor a			;4df2	af 	. 
-	ld (078a9h),a		;4df3	32 a9 78 	2 . x 
-	jp 021bdh		;4df6	c3 bd 21 	. . ! 
-sub_4df9h:
-	push hl			;4df9	e5 	. 
-	push de			;4dfa	d5 	. 
-	push bc			;4dfb	c5 	. 
-	call FindFCBForOpen				; Find FCB Block to use or get one if file already opened		;4dfc	cd 78 47 	. x G 
-	ld hl,0000ch		;4dff	21 0c 00 	! . . 
-	ex de,hl			;4e02	eb 	. 
-	add hl,de			;4e03	19 	. 
-	ld a,(hl)			;4e04	7e 	~ 
-	ex de,hl			;4e05	eb 	. 
-	ld l,(iy+DBFR)		;4e06	fd 6e 31 	. n 1 
-	ld h,(iy+DBFR+1)		;4e09	fd 66 32 	. f 2 
-	add a,l			;4e0c	85 	. 
-	ld l,a			;4e0d	6f 	o 
-	ld a,000h		;4e0e	3e 00 	> . 
-	adc a,h			;4e10	8c 	. 
-	ld h,a			;4e11	67 	g 
-	ld a,(hl)			;4e12	7e 	~ 
-	or a			;4e13	b7 	. 
-	jr nz,l4e1ah		;4e14	20 04 	  . 
-	ld c,00dh		;4e16	0e 0d 	. . 
-	jr l4e5ah		;4e18	18 40 	. @ 
-l4e1ah:
-	ld c,a			;4e1a	4f 	O 
-	ld a,(de)			;4e1b	1a 	. 
-	inc a			;4e1c	3c 	< 
-	ld (de),a			;4e1d	12 	. 
-	cp 07eh		;4e1e	fe 7e 	. ~ 
-	jr nz,l4e5ah		;4e20	20 38 	  8 
-	xor a			;4e22	af 	. 
-	ld (de),a			;4e23	12 	. 
-	ld l,(iy+DBFR)		;4e24	fd 6e 31 	. n 1 
-	ld h,(iy+DBFR+1)		;4e27	fd 66 32 	. f 2 
-	push de			;4e2a	d5 	. 
-	ld de,0007eh		;4e2b	11 7e 00 	. ~ . 
-	add hl,de			;4e2e	19 	. 
-	pop de			;4e2f	d1 	. 
-	ld a,(hl)			;4e30	7e 	~ 
-	or a			;4e31	b7 	. 
-	jr z,l4e5fh		;4e32	28 2b 	( + 
-	ld (iy+TRCK),a		;4e34	fd 77 12 	. w . 
-	dec de			;4e37	1b 	. 
-	dec de			;4e38	1b 	. 
-	ld (de),a			;4e39	12 	. 
-	inc hl			;4e3a	23 	# 
-	ld a,(hl)			;4e3b	7e 	~ 
-	ld (iy+SCTR),a		;4e3c	fd 77 11 	. w . 
-	inc de			;4e3f	13 	. 
-	ld (de),a			;4e40	12 	. 
-	di			;4e41	f3 	. 
-	call PWRON		; Disk power ON			;4e42	cd 41 5f 	. A _ 
-l4e45h:
-	push bc			;4e45	c5 	. 
-	ld bc,50		; bc - number of miliseconds to delay							;4e46	01 32 00 	. 2 . 
-	call DLY		; delay 50 ms 								;4e49	cd be 5e 	. . ^ 
-	pop bc			;4e4c	c1 	. 
-	push bc			;4e4d	c5 	. 
-	call READ		; Read a sector from disk						;4e4e	cd 27 5b 	. ' [ 
-	pop bc			;4e51	c1 	. 
-	or a			;4e52	b7 	. 
-	jp nz,ERROR		; Error handling routine	;4e53	c2 41 42 	. A B 
-	call PWROFF		; Disk power OFF		;4e56	cd 52 5f 	. R _ 
-	ei			;4e59	fb 	. 
-l4e5ah:
-	ld a,c			;4e5a	79 	y 
-	pop bc			;4e5b	c1 	. 
-	pop de			;4e5c	d1 	. 
-	pop hl			;4e5d	e1 	. 
-	ret			;4e5e	c9 	. 
-l4e5fh:
-	ld a,07fh		;4e5f	3e 7f 	>  
-	ld (de),a			;4e61	12 	. 
-	jr l4e5ah		;4e62	18 f6 	. . 
+	ld b,199						; b - max length of string to read from disk 					;4de2	06 c7 	. . 
+	ld hl,(BasicLineBufPtr)			; hl - address of BASIC Line buffer								;4de4	2a a7 78 	* . x 
+.nextChar:
+	call .getCharFromFile			; read char from file											;4de7	cd f9 4d 	. . M 
+	ld (hl),a						; store char into BASIC line buffer								;4dea	77 	w 
+	inc hl							; hl - address in BASIC line Buffer for next char				;4deb	23 	# 
+	cp CR							; is it end of data ?		 									;4dec	fe 0d 	. . 
+	jr z,.evalExprToVariable		; yes - terminate string and convert to value via BASIC proc	;4dee	28 02 	( . 
+	djnz .nextChar					; read chars until CR or max length ---------------------------	;4df0	10 f5 	. . 
+
+.evalExprToVariable:
+	xor a							; a - Source flag for BASIC DATA/INPUT command					;4df2	af 	. 
+	ld (CmdINPUTSrcFlag),a			; set BASIC Source flag as stream								;4df3	32 a9 78 	2 . x 
+	jp SysExecINPUTProc				; Execute part of BASIC INPUT cmd to evaluate Variable value	;4df6	c3 bd 21 	. . ! 
+
+
+.getCharFromFile:
+; -- save registers
+	push hl							; save hl														;4df9	e5 	. 
+	push de							; save de														;4dfa	d5 	. 
+	push bc							; save bc														;4dfb	c5 	. 
+
+; -- get File Control Block
+	call FindFCBForOpen				; Find FCB Block used for this file 							;4dfc	cd 78 47 	. x G 
+
+; -- get index of current byte in sector
+	ld hl,12						; hl - offset to Byte-in-Sector index (PTR) in FCB				;4dff	21 0c 00 	! . . 
+	ex de,hl						; hl - address of FCB, de - offset to PTR						;4e02	eb 	. 
+	add hl,de						; hl - address of Byte-in-Sector index (PTR) in FCB				;4e03	19 	. 
+	ld a,(hl)						; a - index to current byte in sector							;4e04	7e 	~ 
+
+; -- calculate absolute addres of byte
+	ex de,hl						; de - address of Byte-in-Sector index (PTR) in FCB				;4e05	eb 	. 
+	ld l,(iy+DBFR)					; hl - address of buffer with Sector data						;4e06	fd 6e 31 	. n 1 
+	ld h,(iy+DBFR+1)																				;4e09	fd 66 32 	. f 2 
+	add a,l							; add index to LSB of buffer addres								;4e0c	85 	. 
+	ld l,a							; store back LSB												;4e0d	6f 	o 
+	ld a,0							; a - 0 (MSB of index)											;4e0e	3e 00 	> . 
+	adc a,h							; add Carry to MSB of buffer address							;4e10	8c 	. 
+	ld h,a							; store back MSB												;4e11	67 	g 
+
+; -- get byte - check if end of data (0)
+	ld a,(hl)						; a - data byte from file										;4e12	7e 	~ 
+	or a							; is it 0 (end of data)?										;4e13	b7 	. 
+	jr nz,.continue					; no - advance FCB state to read next char						;4e14	20 04 	  . 
+	ld c,CR							; c - End of Line char as result								;4e16	0e 0d 	. . 
+	jr .returnByte					; return CR char as end of data 								;4e18	18 40 	. @ 
+
+
+.continue:
+	ld c,a							; c - data byte from file										;4e1a	4f 	O 
+; -- increment byte-in-sector index 
+	ld a,(de)						; a - index														;4e1b	1a 	. 
+	inc a							; increment by 1												;4e1c	3c 	< 
+	ld (de),a						; store back to PTR field in FCB								;4e1d	12 	. 
+; -- check if all 126 bytes from sector consumed
+	cp 126							; is it end of sector data?										;4e1e	fe 7e 	. ~ 
+	jr nz,.returnByte				; no - return byte saved in c									;4e20	20 38 	  8 
+
+; -- all sector data consumed - need to read next sector of file
+	xor a							; a - byte in sector index = 0									;4e22	af 	. 
+	ld (de),a						; update new PTR value in FCB									;4e23	12 	. 
+
+; -- determine next sector of file
+	ld l,(iy+DBFR)					; hl - address of buffer with current Sector data				;4e24	fd 6e 31 	. n 1 
+	ld h,(iy+DBFR+1)																				;4e27	fd 66 32 	. f 2 
+	push de							; save de - address of PTR field in FCB							;4e2a	d5 	. 
+	ld de,126						; de - offset in sector to next Track Number					;4e2b	11 7e 00 	. ~ . 
+	add hl,de						; hl - address of next Track Number								;4e2e	19 	. 
+	pop de							; restore de - address of PTR field in FCB						;4e2f	d1 	. 
+	ld a,(hl)						; a - next Track Number											;4e30	7e 	~ 
+	or a							; is it 0? (no more sectors in this file)?						;4e31	b7 	. 
+	jr z,.returnLastByte			; yes - set PTR to 127 and return (end of data)					;4e32	28 2b 	( + 
+
+; -- we can read 1 more sector - setup DOS structure and update FCB
+	ld (iy+TRCK),a					; set Track Number in DOS structure								;4e34	fd 77 12 	. w . 
+	dec de							; de - address of Sector Number (SCTR#) field in FCB			;4e37	1b 	. 
+	dec de							; de - address of Track Number (TRK#) field in FCB				;4e38	1b 	. 
+	ld (de),a						; set new Track Number in FCB									;4e39	12 	. 
+	inc hl							; hl - address of byte with next Sector Number					;4e3a	23 	# 
+	ld a,(hl)						; a - next Sector Number										;4e3b	7e 	~ 
+	ld (iy+SCTR),a					; set Sector Number in DOS structure							;4e3c	fd 77 11 	. w . 
+	inc de							; de - address of Sector Number (SCTR#) field in FCB			;4e3f	13 	. 
+	ld (de),a						; set new Sector Number in FCB									;4e40	12 	. 
+
+; -- disable interrupt and read Sector from Disk into buffer
+	di								; disable interrupts											;4e41	f3 	. 
+
+; -- turn disk power ON and wait 50 ms
+	call PWRON						; Disk power ON													;4e42	cd 41 5f 	. A _ 
+	push bc							; save bc														;4e45	c5 	. 
+	ld bc,50						; bc - number of miliseconds to delay							;4e46	01 32 00 	. 2 . 
+	call DLY						; delay 50 ms 													;4e49	cd be 5e 	. . ^ 
+	pop bc							; restore bc 													;4e4c	c1 	. 
+
+; -- read Sector from disk
+	push bc							; save bc 														;4e4d	c5 	. 
+	call READ						; Read a sector from disk										;4e4e	cd 27 5b 	. ' [ 
+	pop bc							; restore bc													;4e51	c1 	. 
+	or a							; was any error?												;4e52	b7 	. 
+	jp nz,ERROR						; yes - go to Error handling routine --------------------------	;4e53	c2 41 42 	. A B 
+
+; -- turn disk power off and enable interrupts
+	call PWROFF						; Disk power OFF												;4e56	cd 52 5f 	. R _ 
+	ei								; enable interrupts												;4e59	fb 	. 
+
+.returnByte:
+	ld a,c							; a - byte from file											;4e5a	79 	y 
+; -- restore registers
+	pop bc							; restore bc													;4e5b	c1 	. 
+	pop de							; restore de													;4e5c	d1 	. 
+	pop hl							; restore hl													;4e5d	e1 	. 
+	ret								; ----------------------- End of Proc -------------------------	;4e5e	c9 	. 
+
+.returnLastByte:
+; -- set Byte-in-sector index to 127 - next read will be 0 (since next Track is 0)
+	ld a,127						; a - index 127 (pointing to 0)									;4e5f	3e 7f 	>  
+	ld (de),a						; set byte-in-sector index (PTR) field in FCB					;4e61	12 	. 
+	jr .returnByte					; return last byte -------------------------------------------- ;4e62	18 f6 	. . 
 
 
 ;***************************************************************************************************

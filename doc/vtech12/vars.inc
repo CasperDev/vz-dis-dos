@@ -184,7 +184,7 @@ PrgStartPtr     equ     $78a4       ; (word)
 CURSORPOS    equ     $78a6       ; (byte) Cursor in Line Position
 
 LINEBUFPTR   equ     $78a7       ; thru 7a28 (65 bytes)
-TapeInputFlag         equ     $78a9       ;(byte) 0 if cassete input else non zero
+CmdINPUTSrcFlag         equ     $78a9       ;(byte) 0 if cassete input else non zero
 
 ; Funkcja BASIC RANDOM zapisuje tu aktualna wartość rejestru odświeżania 
 ; pamięci RAM (R) - wartość przypadkowa zależna od czasu jaki upłynął od
