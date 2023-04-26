@@ -69,8 +69,9 @@ SysEvalByteExpr		equ		$2b1c	; Evaluate Integer expression and places it in ACC a
 SysEvalBasicExpr	equ		$2337	; Evaluate any BASIC expression and place result in ACC			
 
 SysNumToStr			equ		$0fbd	; Convert Numeric value from ACC to String (hl will point to start of string)
-
+SysStrVarToBCD		equ		$09c4	; Copy String Vector to BCD (BC=chars address, D=length)
 SysStrToACC			equ		$2865	; Create String Vector from (hl) and store in ACC
+SysGetStrVarPtr		equ		$29da	; Get VARPTR of string stored in ACC
 SysExecINPUTProc	equ		$21bd	; Execute part of BASIC INPUT command to evaluate Variable value 
 SysErrRaiseFuncCode equ		$1e4a	; Raise BASIC FUNCTION CODE	Error
 TXT_READY			equ		$1929	; 'READY' text
@@ -3164,19 +3165,19 @@ DCmdPR#:
 	rst 8							; verify this char is ',' (commx) and point hl to next			;4e7a	cf 	. 
 	defb ','						; expected char													;4e7b	2c 	, 
 
-l4e7ch:
+.nextExpression:
 	dec hl							; hl - addres before variable/value expression 					;4e7c	2b 	+ 
 	rst $10							; call system NextToken routine - check expression				;4e7d	d7 	. 
-	call z,sub_4each		; if no more expressions ;4e7e	cc ac 4e 	. . N 
-l4e81h:
-	ret z							; no more expression ---------- End of Proc ------------------- ;4e81	c8 	. 
+	call z,.writeCR					; if no more expressions - write CR to file 					;4e7e	cc ac 4e 	. . N 
+.nextOrExit:
+	ret z							; if no more expression ------- End of Proc ------------------- ;4e81	c8 	. 
 
-; --
+; -- check if next char in statement is separator
 	push hl							; save hl - address of next BASIC char							;4e82	e5 	. 
 	cp ','							; is it ',' (variable/value separator)?							;4e83	fe 2c 	. , 
-	jp z,l4eb3h				; yes - ;4e85	ca b3 4e 	. . N 
+	jp z,.writeComma				; yes - write ',' char to data file continue with next char		;4e85	ca b3 4e 	. . N 
 	cp ':'							; is it ':' (end of this PR# command)?							;4e88	fe 3a 	. : 
-	jr z,l4eb7h				; yes - ;4e8a	28 2b 	( + 
+	jr z,.parseNextChar				; yes - dont write anything to file - parse next char			;4e8a	28 2b 	( + 
 	pop bc							; restore bc - address of next BASIC char						;4e8c	c1 	. 
 
 ; -- calculate value from given BASIC expression
@@ -3184,48 +3185,60 @@ l4e81h:
 ; -- test variable type stored in ACC 
 	push hl							; save hl - address of next BASIC char							;4e90	e5 	. 
 	rst $20							; test type of variable in ACC (NTF)							;4e91	e7 	. 
-	jr z,l4ea6h						; jump if it is STRING variable	(store as it is)								;4e92	28 12 	( . 
+	jr z,.writeStringFromACC		; jump if it is STRING variable	(write to file as it is)		;4e92	28 12 	( . 
 
 ; -- numeric variable - convert to string
 	call SysNumToStr				; convert numeric value from ACC to String (hl points to start)	;4e94	cd bd 0f 	. . . 
 	call SysStrToACC				; Create String Vector from (hl) and store in ACC				;4e97	cd 65 28 	. e ( 
-	ld hl,(SYS_ACC)					; hl - integer ;4e9a	2a 21 79 	* ! y 
-	call sub_4ebah		;4e9d	cd ba 4e 	. . N 
-	ld a,020h		;4ea0	3e 20 	>   
-	call sub_4ecah		;4ea2	cd ca 4e 	. . N 
-	or a			;4ea5	b7 	. 
-l4ea6h:
-	call z,sub_4ebah		;4ea6	cc ba 4e 	. . N 
-	pop hl			;4ea9	e1 	. 
-	jr l4e7ch		;4eaa	18 d0 	. . 
-sub_4each:
-	ld a,00dh		;4eac	3e 0d 	> . 
-	call sub_4ecah		;4eae	cd ca 4e 	. . N 
-	xor a			;4eb1	af 	. 
-	ret			;4eb2	c9 	. 
-l4eb3h:
-	call sub_4ecah		;4eb3	cd ca 4e 	. . N 
-	pop hl			;4eb6	e1 	. 
-l4eb7h:
-	rst 10h			;4eb7	d7 	. 
-	jr l4e81h		;4eb8	18 c7 	. . 
+	ld hl,(SYS_ACC)					; hl - string value from BASIC Accumulator	(ACC)				;4e9a	2a 21 79 	* ! y 
+	call WriteStrToDataFile			; write string from ACC to data file							;4e9d	cd ba 4e 	. . N 
+	ld a,' '						; a - space char												;4ea0	3e 20 	>   
+	call WriteCharToDataFile		; write ' ' to file												;4ea2	cd ca 4e 	. . N 
+	or a							; always non-zero to skip next WriteStrToDataFile call			;4ea5	b7 	. 
+.writeStringFromACC:
+	call z,WriteStrToDataFile		; write string to file 											;4ea6	cc ba 4e 	. . N 
+	pop hl							; restore hl - address of next BASIC char						;4ea9	e1 	. 
+	jr .nextExpression		;4eaa	18 d0 	. . 
 
 
-
-sub_4ebah:
-	call 029dah		;4eba	cd da 29 	. . ) 
-	call 009c4h		;4ebd	cd c4 09 	. . . 
-	inc d			;4ec0	14 	. 
-l4ec1h:
-	dec d			;4ec1	15 	. 
-	ret z			;4ec2	c8 	. 
-	ld a,(bc)			;4ec3	0a 	. 
-	call sub_4ecah		;4ec4	cd ca 4e 	. . N 
-	inc bc			;4ec7	03 	. 
-	jr l4ec1h		;4ec8	18 f7 	. . 
+.writeCR:
+	ld a,CR							; a - CR char (end of record)									;4eac	3e 0d 	> . 
+	call WriteCharToDataFile		; write CR do file												;4eae	cd ca 4e 	. . N 
+	xor a							; a = 0 (end of BASIC statement/line) 							;4eb1	af 	. 
+	ret								; ---------------- End of Proc --------------------------------	;4eb2	c9 	. 
 
 
-sub_4ecah:
+.writeComma:
+	call WriteCharToDataFile		; write char to file											;4eb3	cd ca 4e 	. . N 
+	pop hl							; restore hl - address of next BASIC char						;4eb6	e1 	. 
+.parseNextChar:
+	rst $10							; call system NextToken routine - check expression				;4eb7	d7 	. 
+	jr .nextOrExit		;4eb8	18 c7 	. . 
+
+
+;***************************************************************************************************
+; Write String to Data File
+; IN: ACC - string variable to write
+WriteStrToDataFile:
+; -- get VARPTR of string stored in ACC
+	call SysGetStrVarPtr			; get VARPTR of string stored in ACC							;4eba	cd da 29 	. . ) 
+; -- get string address and length
+	call SysStrVarToBCD				; Copy String Variable to BCD (BC=chars address, D=length)		;4ebd	cd c4 09 	. . . 
+	inc d							; preincrement char-to-write counter							;4ec0	14 	. 
+.next:
+	dec d							; decrement chars-to-write counter - all was written?			;4ec1	15 	. 
+	ret z							; yes -------------------- End of Proc ------------------------	;4ec2	c8 	. 
+; -- write one char to data file
+	ld a,(bc)						; a - next char of string  to write								;4ec3	0a 	. 
+	call WriteCharToDataFile		; write char to file											;4ec4	cd ca 4e 	. . N 
+	inc bc							; bc - address of next char										;4ec7	03 	. 
+	jr .next						; write next char if any left ---------------------------------	;4ec8	18 f7 	. . 
+
+
+;***************************************************************************************************
+; Write Char to Data File
+; IN: a - char to write
+WriteCharToDataFile:
 ; -- save registers
 	push hl							; save hl														;4eca	e5 	. 
 	push de							; save de														;4ecb	d5 	. 
