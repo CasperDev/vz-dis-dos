@@ -253,7 +253,7 @@ DCmdDCOPY.cleanAndExit: EQU 0x00005137
 SelectDstDrive: EQU 0x00005275
 ClearAndError: EQU 0x00005162
 DCmdDCOPY.fileFound: EQU 0x00005039
-sub_5168h: EQU 0x00005168
+AskUserForSrcAndDst: EQU 0x00005168
 DCmdDCOPY.copyWholeDisk: EQU 0x0000505D
 WriteCharToDataFile.exit: EQU 0x00004F9C
 WriteCharToDataFile.writeByte: EQU 0x00004F0C
