@@ -14,6 +14,7 @@
 CR					EQU		$0d			; CR char
 UP					EQU		$1b			; Cursor Up			
 
+SYS_INT_STATE		equ		$6800		; Hardware INT line on bit 7 
 SpaceKeyRow			equ		$68ef		; Address of Keyboard Row with SPACE key
 SpaceKeyCol			equ		4			; Bit Number of Keyboard Column with SPACE key
 BreakKeybRow		equ		$68df		; Address of Keyboard Row with BREAK key
@@ -28,6 +29,7 @@ BreakKeyCol			equ		2			; Bit Number of Keyboard Column with BREAK key
 ;  
 ;---------------------------------------------------------------------------------------------------
 SysVecParse			equ		$7804	; 
+SysCursorAddr		equ		$7820	; Address of Cursor position on Screen 
 SYS_BASIC_STACK		EQU		$78a0	
 SYS_MEMTOP_PTR    	EQU     $78B1   ; Address of highest available RAM 
 SYS_STRING_SPACE	EQU		$78d6 	; String space pointer (current location).
@@ -43,6 +45,7 @@ BasicLineBufPtr		equ		$78a7	; Current line being processed by BASIC.
 CmdINPUTSrcFlag		equ     $78a9	; Source for DATA/INPUT - 0 if cassete input else non zero
 ErrorLineNumber		equ		$78ea	; BASIC Line where Error occoured
 EditLineNumber		equ		$78ec	; BASIC Line currently edited
+EditBufCounter		equ		$7aaf	; Number of characters in Edit Buffer left to process		
 
 SYS_ACC				equ		$7921	; BASIC Accumulator starts here (double 8 bytes, single 4 bytes, int 2 bytes, string 3 bytes) 
 ;***************************************************************************************************
@@ -3746,7 +3749,7 @@ AskUserForSrcAndDst:
 	call SysMsgOut					; print text on screen											;516b	cd a7 28 	. . ( 
 
 ; --
-	call sub_5192h		;516e	cd 92 51 	. . Q 
+	call GetDriveNoInput		;516e	cd 92 51 	. . Q 
 ; -- echo back user choice
 	ld a,c							; a - char from user											;5171	79 	y 
 	call SysPrintChar				; print char on screen											;5172	cd 2a 03 	. * . 
@@ -3758,7 +3761,7 @@ AskUserForSrcAndDst:
 	ld hl,TXT_ASKDESTDISK			; hl - text "DESTINATION DISK(1/2)? " 							;517a	21 00 52 	! . R 
 	call SysMsgOut					; print text on screen											;517d	cd a7 28 	. . ( 
 ; -- 
-	call sub_5192h		;5180	cd 92 51 	. . Q 
+	call GetDriveNoInput		;5180	cd 92 51 	. . Q 
 ; -- echo back user choice
 	ld a,c							; a - char from user											;5183	79 	y 
 	call SysPrintChar				; print char on screen											;5184	cd 2a 03 	. * . 
@@ -3772,20 +3775,23 @@ AskUserForSrcAndDst:
 	ret								; --------------------- End of Proc ---------------------------	;5191	c9 	. 
 
 ;***************************************************************************************************
-; Get User Input 
-sub_5192h:
-	ld a,(07aafh)					; a - number of characters in Edit Buffer left to process		;5192	3a af 7a 	: . z 
+; Get Drive Number from User (only 1 or 2)
+; User can press Ctrl+Break to cancel DCOPY command
+; OUT: c - char pressed by user ('1' or '2') 
+GetDriveNoInput:
+	ld a,(EditBufCounter)			; a - number of characters in Edit Buffer left to process		;5192	3a af 7a 	: . z 
 	or a							; is it 0 (buffer empty)?										;5195	b7 	. 
-	jr nz,sub_5192h					; no - wait until all are processed ---------------------------	;5196	20 fa 	  . 
+	jr nz,GetDriveNoInput			; no - wait until all are processed ---------------------------	;5196	20 fa 	  . 
 
-; -- 
+; -- disable System keyboard handler 
 	di								; disable interrupts											;5198	f3 	. 
-	ld e,010h		;5199	1e 10 	. . 
-	ld d,e			;519b	53 	S 
-	ld hl,(07820h)					; hl - address of Cursor position on Screen 					;519c	2a 20 78 	*   x 
+; -- setup to provide Cursor blinking on Screen
+	ld e,16							; e - inverse char under Cursor every 16 frames 				;5199	1e 10 	. . 
+	ld d,e							; d - frame counter												;519b	53 	S 
+	ld hl,(SysCursorAddr)			; hl - address of Cursor position on Screen 					;519c	2a 20 78 	*   x 
 l519fh:
-
-	ld a,(06800h)		;519f	3a 00 68 	: . h 
+; -- wait for interrupt (end of frame)
+	ld a,(SYS_INT_STATE)			; read hardware INT line										;519f	3a 00 68 	: . h 
 	or a			;51a2	b7 	. 
 	jp m,l519fh		;51a3	fa 9f 51 	. . Q 
 	dec d			;51a6	15 	. 
@@ -3795,7 +3801,8 @@ l519fh:
 	xor (hl)			;51ac	ae 	. 
 	ld (hl),a			;51ad	77 	w 
 l51aeh:
-	ld a,(06800h)		;51ae	3a 00 68 	: . h 
+; -- wait for end of interrupt (start new frame)
+	ld a,(SYS_INT_STATE)			; read hardware INT line										;51ae	3a 00 68 	: . h 
 	or a			;51b1	b7 	. 
 	jp p,l51aeh		;51b2	f2 ae 51 	. . Q 
 	ld a,(BreakKeybRow)		;51b5	3a df 68 	: . h 
@@ -3821,7 +3828,7 @@ l51dah:
 	call DLY		; delay 100 ms								;51de	cd be 5e 	. . ^ 
 	pop bc			;51e1	c1 	. 
 l51e2h:
-	ld a,(06800h)		;51e2	3a 00 68 	: . h 
+	ld a,(06800h)					; read hardware ;51e2	3a 00 68 	: . h 
 	or 080h		;51e5	f6 80 	. . 
 	inc a			;51e7	3c 	< 
 	jr nz,l51e2h		;51e8	20 f8 	  . 
@@ -3846,27 +3853,29 @@ l5226h:
 	ld hl,TXT_PRESSSPACEREADY		; hl - text "(PRESS SPACE WHEN READY)"							;5229	21 9d 52 	! . R 
 	call SysMsgOut					; print text on screen											;522c	cd a7 28 	. . ( 
 .wait:
-	ld a,(07aafh)					; a - number of chars in Edit Buffer							;522f	3a af 7a 	: . z 
-	or a							;5232	b7 	. 
-	jr nz,.wait		;5233	20 fa 	  . 
-	di			;5235	f3 	. 
-	ld e,010h		;5236	1e 10 	. . 
-	ld d,e			;5238	53 	S 
-	ld hl,(07820h)		;5239	2a 20 78 	*   x 
+; -- wait for system Edit Buffer is empty
+	ld a,(EditBufCounter)			; a - number of chars in Edit Buffer left to process			;522f	3a af 7a 	: . z 
+	or a							; is it 0? (buffer empty)										;5232	b7 	. 
+	jr nz,.wait						; no - wait for all characters in Edit Buffer be processed		;5233	20 fa 	  . 
+
+; -- disable System keyboard handler 
+	di								; disable interrupts											;5235	f3 	. 
+; -- setup to provide Cursor blinking on Screen
+	ld e,16							; e - inverse char under Cursor every 16 frames 				;5236	1e 10 	. . 
+	ld d,e							; d - frame counter												;5238	53 	S 
+	ld hl,(SysCursorAddr)			; hl - address of Cursor position on Screen 					;5239	2a 20 78 	*   x 
 l523ch:
-	ld a,(06800h)		;523c	3a 00 68 	: . h 
+	ld a,(06800h)					; read hardware INT line										;523c	3a 00 68 	: . h 
 	or a			;523f	b7 	. 
 	jp m,l523ch		;5240	fa 3c 52 	. < R 
 	dec d			;5243	15 	. 
-l5244h:
 	jr nz,l524bh		;5244	20 05 	  . 
 	ld d,e			;5246	53 	S 
 	ld a,040h		;5247	3e 40 	> @ 
-sub_5249h:
 	xor (hl)			;5249	ae 	. 
 	ld (hl),a			;524a	77 	w 
 l524bh:
-	ld a,(06800h)		;524b	3a 00 68 	: . h 
+	ld a,(06800h)					; read hardware INT line										;524b	3a 00 68 	: . h 
 	or a			;524e	b7 	. 
 	jp p,l524bh		;524f	f2 4b 52 	. K R 
 l5252h:
