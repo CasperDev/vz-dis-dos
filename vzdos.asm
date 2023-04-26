@@ -15,13 +15,17 @@ CR					EQU		$0d			; CR char
 UP					EQU		$1b			; Cursor Up			
 
 SYS_INT_STATE		equ		$6800		; Hardware INT line on bit 7 
+AllKeyRows			equ		$6800		; Address to read all keys at once
+CtrlKeyRow			equ		$68fd		; Address of Keyboard Row with CTRL key
+CtrlKeyCol			equ		2			; Bit Number of Keyboard Column with CTRL key
 SpaceKeyRow			equ		$68ef		; Address of Keyboard Row with SPACE key
 SpaceKeyCol			equ		4			; Bit Number of Keyboard Column with SPACE key
 BreakKeybRow		equ		$68df		; Address of Keyboard Row with BREAK key
-
 BreakKeybMask		equ		%00000100	; Bitmask of Keyboard Column with BREAK key
 BreakKeyCol			equ		2			; Bit Number of Keyboard Column with BREAK key
-
+NumsKeyRow			equ		$68f7		; Address of Keyboard Row with Numbers (keys: 1,2,3,4,5)
+Num1KeyCol			equ		4			; Bit Number of Keyboard Column with '1' key
+Num2KeyCol			equ		1			; Bit Number of Keyboard Column with '2' key
 
 ;***************************************************************************************************
 ;
@@ -30,6 +34,7 @@ BreakKeyCol			equ		2			; Bit Number of Keyboard Column with BREAK key
 ;---------------------------------------------------------------------------------------------------
 SysVecParse			equ		$7804	; 
 SysCursorAddr		equ		$7820	; Address of Cursor position on Screen 
+SysCursorChar		equ 	$783c	; holds oryginal char under screen Cursor
 SYS_BASIC_STACK		EQU		$78a0	
 SYS_MEMTOP_PTR    	EQU     $78B1   ; Address of highest available RAM 
 SYS_STRING_SPACE	EQU		$78d6 	; String space pointer (current location).
@@ -1703,7 +1708,7 @@ FindFCBForOpen:
 	add hl,de						; hl - address of FCB Block	2									;4793	19 	. 
 	ld a,(hl)						; a - Open Flag 												;4794	7e 	~ 
 	or a							; is file Opened using FCB 2?									;4795	b7 	. 
-	jr nz,l47ach					; yes - check if FCB Block 2 handles this file ----------------	;4796	20 14 	  . 
+	jr nz,.checkFilenameMatches		; yes - check if FCB Block 2 handles this file ----------------	;4796	20 14 	  . 
 
 ; -- file is not Open - return FILE NOT OPEN
 ;    de - will contain free FCB to use 
@@ -1722,7 +1727,7 @@ FindFCBForOpen:
 	ld a,5							; set Error 5 - FILE NOT OPEN									;47a9	3e 05 	> . 
 	ret								; ---------------------- End of Proc --------------------------	;47ab	c9 	. 
 
-l47ach:
+.checkFilenameMatches:
 ; -- check if FCB Block 2 handles this file
 	call FCBHandlesFile				; check if filenames in FCB and (iy+FNAM) match					;47ac	cd bf 47 	. . G 
 	cp 8							; is Error 8 - FILE ALREADY OPEN ?								;47af	fe 08 	. . 
@@ -3527,10 +3532,15 @@ DCmdDCOPY:
 	or a							; was any error?												;5012	b7 	. 
 	jp nz,ERROR						; yes - go to Error handling routine --------------------------	;5013	c2 41 42 	. A B 
 
+;    --------------------------------
 ; -- copy one file from disk to disk 
+;    --------------------------------
+
 	push hl							; save hl - address of next char after filename (parser point)	;5016	e5 	. 
 	call AskUserForSrcAndDst		; Ask user to choose source and destination disk number			;5017	cd 68 51 	. h Q 
-	call sub_5219h		;501a	cd 19 52 	. . R 
+
+; -- select source drive (ask user if the same as destination)
+	call SelectSrcDrive				; select source drive											;501a	cd 19 52 	. . R 
 
 ; -- turn disk power on and wait 50 ms
 	di								; disable interrupts											;501d	f3 	. 
@@ -3573,6 +3583,11 @@ DCmdDCOPY:
 	jp .cleanAndExit		;505a	c3 37 51 	. 7 Q 
 
 
+;    --------------------------------
+; -- copy disk to another disk 
+;    --------------------------------
+
+
 .copyWholeDisk:
 	push hl							; save hl - address of next char after filename (parser point)	;505d	e5 	. 
 ; -- allocate memory area for buffer + 58 extra bytes
@@ -3598,7 +3613,9 @@ DCmdDCOPY:
 .readTracks:
 	ld de,SYS_BASIC_PRG				; de - address first byte of free memory (Buffer) 				;5083	11 e9 7a 	. . z 
 	ld (SYS_BASIC_START_PTR),de		; set as current pointer 										;5086	ed 53 a4 78 	. S . x 
-	call sub_5219h		;508a	cd 19 52 	. . R 
+
+; -- select source drive (ask user if the same as destination)
+	call SelectSrcDrive				; select source drive											;508a	cd 19 52 	. . R 
 
 ; -- load whole track (16 sectors) into memory
 	di								; disable interrupts											;508d	f3 	. 
@@ -3639,7 +3656,9 @@ DCmdDCOPY:
 	ld (iy+TRCK),a					; set as current track to write									;50ce	fd 77 12 	. w . 
 ; -- turn disk power off and select destination drive
 	call PWROFF						; Disk power OFF												;50d1	cd 52 5f 	. R _ 
-	call SelectDstDrive				; select destination drive (ask user if the same as source)		;50d4	cd 75 52 	. u R 
+
+; -- select destination drive (ask user if the same as source)
+	call SelectDstDrive				; select destination drive 										;50d4	cd 75 52 	. u R 
 
 ; -- write all tracks from memory to destination Disk
 	di								; disable interrupts											;50d7	f3 	. 
@@ -3789,51 +3808,64 @@ GetDriveNoInput:
 	ld e,16							; e - inverse char under Cursor every 16 frames 				;5199	1e 10 	. . 
 	ld d,e							; d - frame counter												;519b	53 	S 
 	ld hl,(SysCursorAddr)			; hl - address of Cursor position on Screen 					;519c	2a 20 78 	*   x 
-l519fh:
+.waitForINT:
 ; -- wait for interrupt (end of frame)
 	ld a,(SYS_INT_STATE)			; read hardware INT line										;519f	3a 00 68 	: . h 
-	or a			;51a2	b7 	. 
-	jp m,l519fh		;51a3	fa 9f 51 	. . Q 
-	dec d			;51a6	15 	. 
-	jr nz,l51aeh		;51a7	20 05 	  . 
-	ld d,e			;51a9	53 	S 
-	ld a,040h		;51aa	3e 40 	> @ 
-	xor (hl)			;51ac	ae 	. 
-	ld (hl),a			;51ad	77 	w 
-l51aeh:
+	or a							; is INT line 0? (end of video frame)							;51a2	b7 	. 
+	jp m,.waitForINT				; no - wait for INT line low ----------------------------------	;51a3	fa 9f 51 	. . Q 
+
+; -- check frame counter for Cursor blink
+	dec d							; decrement frame counter - is 16 counted?						;51a6	15 	. 
+	jr nz,.waitForINTEnd			; no - read key from user -------------------------------------	;51a7	20 05 	  . 
+; -- reset counter and blink Cursor
+	ld d,e							; reset frame counter to 16										;51a9	53 	S 
+	ld a,$40						; a - bit 6 to toggle in char code (inverse)					;51aa	3e 40 	> @ 
+	xor (hl)						; inverse char under Cursor on screen							;51ac	ae 	. 
+	ld (hl),a						; put modified char on screen									;51ad	77 	w 
+
+.waitForINTEnd:
 ; -- wait for end of interrupt (start new frame)
 	ld a,(SYS_INT_STATE)			; read hardware INT line										;51ae	3a 00 68 	: . h 
-	or a			;51b1	b7 	. 
-	jp p,l51aeh		;51b2	f2 ae 51 	. . Q 
-	ld a,(BreakKeybRow)		;51b5	3a df 68 	: . h 
-	bit BreakKeyCol,a		;51b8	cb 57 	. W 
-	jr nz,l51cbh		;51ba	20 0f 	  . 
-	ld a,(068fdh)		;51bc	3a fd 68 	: . h 
-	bit 2,a		;51bf	cb 57 	. W 
-	jr nz,l51cbh		;51c1	20 08 	  . 
-	call ClearBASIC		;51c3	cd 44 51 	. D Q 
-	ld a,011h		;51c6	3e 11 	> . 
-	jp ERROR		; Error handling routine	;51c8	c3 41 42 	. A B 
-l51cbh:
-	ld a,(068f7h)		;51cb	3a f7 68 	: . h 
-	bit 4,a		;51ce	cb 67 	. g 
-	ld c,031h		;51d0	0e 31 	. 1 
-	jr z,l51dah		;51d2	28 06 	( . 
-	bit 1,a		;51d4	cb 4f 	. O 
-	ld c,032h		;51d6	0e 32 	. 2 
-	jr nz,l519fh		;51d8	20 c5 	  . 
-l51dah:
-	push bc			;51da	c5 	. 
-	ld bc,100		; bc - number of miliseconds to delay							;51db	01 64 00 	. d . 
-	call DLY		; delay 100 ms								;51de	cd be 5e 	. . ^ 
-	pop bc			;51e1	c1 	. 
-l51e2h:
-	ld a,(06800h)					; read hardware ;51e2	3a 00 68 	: . h 
-	or 080h		;51e5	f6 80 	. . 
-	inc a			;51e7	3c 	< 
-	jr nz,l51e2h		;51e8	20 f8 	  . 
-	ei			;51ea	fb 	. 
-	ret			;51eb	c9 	. 
+	or a							; is INT line 1? (start of video frame)							;51b1	b7 	. 
+	jp p,.waitForINTEnd				; no - wait for INT line high ---------------------------------	;51b2	f2 ae 51 	. . Q 
+
+; -- check if user pressed Ctrl+BREAK
+	ld a,(BreakKeybRow)				; read Keyboard Row with BREAK key								;51b5	3a df 68 	: . h 
+	bit BreakKeyCol,a				; test only BREAK key - is it 0? (key is pressed)				;51b8	cb 57 	. W 
+	jr nz,.test1or2KeyPress			; no - test if user pressed '1' or '2'							;51ba	20 0f 	  . 
+	ld a,(CtrlKeyRow)				; read Keyboard Row with CTRL key								;51bc	3a fd 68 	: . h 
+	bit CtrlKeyCol,a				; test only CTRL key - is it 0? (key is pressed)				;51bf	cb 57 	. W 
+	jr nz,.test1or2KeyPress			; no - test if user pressed '1' or '2'							;51c1	20 08 	  . 
+
+; -- user pressed CTRL+BREAK - cleanup and exit with error
+	call ClearBASIC					; clean BASIC variables											;51c3	cd 44 51 	. D Q 
+	ld a,17							; a - Error 17   BREAK											;51c6	3e 11 	> . 
+	jp ERROR						; go to Error handling routine --------------------------------	;51c8	c3 41 42 	. A B 
+
+.test1or2KeyPress:
+	ld a,(NumsKeyRow)				; read Keyboard Row with numbers (keys: 1,2,3,4,5)				;51cb	3a f7 68 	: . h 
+	bit Num1KeyCol,a				; test only '1' key - is it 0? (key is pressed)					;51ce	cb 67 	. g 
+	ld c,'1'						; c - '1' char as return										;51d0	0e 31 	. 1 
+	jr z,.exit						; yes - wait for key released and return '1' ------------------	;51d2	28 06 	( . 
+	bit Num2KeyCol,a				; test only '2' key - is it 0? (key is pressed)					;51d4	cb 4f 	. O 
+	ld c,'2'						; c - '2' char as return										;51d6	0e 32 	. 2 
+	jr nz,.waitForINT				; no - wait another video frame -------------------------------	;51d8	20 c5 	  . 
+
+.exit:
+; -- wait 100 ms delay
+	push bc							; save bc														;51da	c5 	. 
+	ld bc,100						; bc - number of miliseconds to delay							;51db	01 64 00 	. d . 
+	call DLY						; delay 100 ms													;51de	cd be 5e 	. . ^ 
+	pop bc							; restore bc													;51e1	c1 	. 
+.waitKeysReleased:
+; -- wait for all keys released
+	ld a,(AllKeyRows)				; read all keys at once 										;51e2	3a 00 68 	: . h 
+	or %10000000					; set bit 7 to ignore INT line									;51e5	f6 80 	. . 
+	inc a							; was it $FF? (no keys pressed)									;51e7	3c 	< 
+	jr nz,.waitKeysReleased			; no - wait for all keys released -----------------------------	;51e8	20 f8 	  . 
+; -- enable interrupts and return
+	ei								; enable interrupts												;51ea	fb 	. 
+	ret								; ---------------------- End of Proc --------------------------	;51eb	c9 	. 
 
 
 TXT_ASKSOURCEDISK:
@@ -3841,14 +3873,14 @@ TXT_ASKSOURCEDISK:
 TXT_ASKDESTDISK:
 	defm	CR,"DESTINATION DISK(1/2)? ", 0		;5200	0d 44 45 53 54 49 4e 41 54 49 4f 4e 20 44 49 53 4b 28 31 2f 32 29 3f 20 00 	  . 
 
-sub_5219h:
+SelectSrcDrive:
 	ld a,(iy+SOURCE)				; a - source drive (1 or 2) 									;5219	fd 7e 0d 	. ~ . 
 	call SelectDriveNo				; Set selected Drive (1 or 2)									;521c	cd 84 4d 	. . M 
 	cp (iy+DESTIN)					; is the same as destination Drive 								;521f	fd be 10 	. . . 
 	ret nz							; no - no need to ask user to exchange disks ------------------	;5222	c0 	. 
 ; -- prompt user to insert proper disk
 	ld hl,TXT_INSERTSRCDISK			; hl - text "INSERT SOURCE DISKETTE"							;5223	21 84 52 	! . R 
-l5226h:
+WaitUserReady:
 	call SysMsgOut					; print text on screen											;5226	cd a7 28 	. . ( 
 	ld hl,TXT_PRESSSPACEREADY		; hl - text "(PRESS SPACE WHEN READY)"							;5229	21 9d 52 	! . R 
 	call SysMsgOut					; print text on screen											;522c	cd a7 28 	. . ( 
@@ -3864,47 +3896,60 @@ l5226h:
 	ld e,16							; e - inverse char under Cursor every 16 frames 				;5236	1e 10 	. . 
 	ld d,e							; d - frame counter												;5238	53 	S 
 	ld hl,(SysCursorAddr)			; hl - address of Cursor position on Screen 					;5239	2a 20 78 	*   x 
-l523ch:
-	ld a,(06800h)					; read hardware INT line										;523c	3a 00 68 	: . h 
-	or a			;523f	b7 	. 
-	jp m,l523ch		;5240	fa 3c 52 	. < R 
-	dec d			;5243	15 	. 
-	jr nz,l524bh		;5244	20 05 	  . 
-	ld d,e			;5246	53 	S 
-	ld a,040h		;5247	3e 40 	> @ 
-	xor (hl)			;5249	ae 	. 
-	ld (hl),a			;524a	77 	w 
-l524bh:
-	ld a,(06800h)					; read hardware INT line										;524b	3a 00 68 	: . h 
-	or a			;524e	b7 	. 
-	jp p,l524bh		;524f	f2 4b 52 	. K R 
-l5252h:
-	ld a,(BreakKeybRow)		;5252	3a df 68 	: . h 
-	bit BreakKeyCol,a		;5255	cb 57 	. W 
-	jr nz,l5268h		;5257	20 0f 	  . 
-	ld a,(068fdh)		;5259	3a fd 68 	: . h 
-	bit 2,a		;525c	cb 57 	. W 
-	jr nz,l5268h		;525e	20 08 	  . 
-	call ClearBASIC		;5260	cd 44 51 	. D Q 
-	ld a,011h		;5263	3e 11 	> . 
-	jp ERROR		; Error handling routine	;5265	c3 41 42 	. A B 
-l5268h:
-	ld a,(SpaceKeyRow)		;5268	3a ef 68 	: . h 
-	bit SpaceKeyCol,a		;526b	cb 67 	. g 
-	jr nz,l523ch		;526d	20 cd 	  . 
-	ld a,(0783ch)		;526f	3a 3c 78 	: < x 
-	ld (hl),a			;5272	77 	w 
-	ei			;5273	fb 	. 
-	ret			;5274	c9 	. 
+
+.waitForINT:
+; -- wait for interrupt (end of frame)
+	ld a,(SYS_INT_STATE)			; read hardware INT line										;523c	3a 00 68 	: . h 
+	or a							; is INT line 0? (end of video frame)							;523f	b7 	. 
+	jp m,.waitForINT						; no - wait for INT line low ----------------------------------	;5240	fa 3c 52 	. < R 
+; -- check frame counter for Cursor blink
+	dec d							; decrement frame counter - is 16 counted?						;5243	15 	. 
+	jr nz,.waitForINTEnd			; no - read key from user -------------------------------------	;5244	20 05 	  . 
+; -- reset counter and blink Cursor
+	ld d,e							; reset frame counter to 16										;5246	53 	S 
+	ld a,$40						; a - bit 6 to toggle in char code (inverse)					;5247	3e 40 	> @ 
+	xor (hl)						; inverse char under Cursor on screen							;5249	ae 	. 
+	ld (hl),a						; put modified char on screen									;524a	77 	w 
+
+.waitForINTEnd:
+	ld a,(SYS_INT_STATE)			; read hardware INT line										;524b	3a 00 68 	: . h 
+	or a							; is INT line 1? (start of video frame)							;524e	b7 	. 
+	jp p,.waitForINTEnd				; no - wait for INT line high ---------------------------------	;524f	f2 4b 52 	. K R 
+
+; -- check if user pressed Ctrl+BREAK
+	ld a,(BreakKeybRow)				; read Keyboard Row with BREAK key								;5252	3a df 68 	: . h 
+	bit BreakKeyCol,a				; test only BREAK key - is it 0? (key is pressed)				;5255	cb 57 	. W 
+	jr nz,.testSpacePress			; no - test if user pressed SPACE								;5257	20 0f 	  . 
+	ld a,(CtrlKeyRow)				; read Keyboard Row with CTRL key								;5259	3a fd 68 	: . h 
+	bit CtrlKeyCol,a				; test only CTRL key - is it 0? (key is pressed)				;525c	cb 57 	. W 
+	jr nz,.testSpacePress			; no - test if user pressed SPACE								;525e	20 08 	  . 
+
+; -- user pressed CTRL+BREAK - cleanup and exit with error
+	call ClearBASIC					; clean BASIC variables											;5260	cd 44 51 	. D Q 
+	ld a,17							; a - Error 17   BREAK											;5263	3e 11 	> . 
+	jp ERROR						; go to Error handling routine --------------------------------	;5265	c3 41 42 	. A B 
+.testSpacePress:
+	ld a,(SpaceKeyRow)				; read Keyboard Row with SPACE key								;5268	3a ef 68 	: . h 
+	bit SpaceKeyCol,a				; test only SPACE key - is it 0? (key is pressed)				;526b	cb 67 	. g 
+	jr nz,.waitForINT				; no - wait another video frame -------------------------------	;526d	20 cd 	  . 
+
+; -- user pressed SPACE - restore Cursor character and exit
+	ld a,(SysCursorChar)			; a - oryginal char under screen Cursor							;526f	3a 3c 78 	: < x 
+	ld (hl),a						; put oryginal char on screen 									;5272	77 	w 
+	ei								; enable interrupts												;5273	fb 	. 
+	ret								; --------------------- End of Proc ---------------------------	;5274	c9 	. 
 
 
 SelectDstDrive:
+; -- select destination drive
 	ld a,(iy+DESTIN)				; a - destination Drive (1 or 2) 								;5275	fd 7e 10 	. ~ . 
 	call SelectDriveNo				; Set selected Drive (1 or 2)									;5278	cd 84 4d 	. . M 
+; -- check if only one drive used and user must insert destination disk
 	cp (iy+SOURCE)					; is the same as source drive? 									;527b	fd be 0d 	. . . 
-	ret nz			;527e	c0 	. 
+	ret nz							; no - 2 drive mode - no needs to ask user to put dest disk		;527e	c0 	. 
+; -- wait for user to insert destination diskette
 	ld hl,TXT_INSERTDSTDISK			; hl - text "INSERT DESTINATION DISKETTE"						;527f	21 b7 52 	! . R 
-	jr l5226h		;5282	18 a2 	. . 
+	jr WaitUserReady				; wait until user press SPACE --------------------------------- ;5282	18 a2 	. . 
 
 
 TXT_INSERTSRCDISK:
