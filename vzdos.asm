@@ -3993,8 +3993,8 @@ DCmdSTATUS:
 	call PWROFF						; Disk power OFF												;52f1	cd 52 5f 	. R _ 
 
 ; -- 
-	ld l,(iy+DBFR)		;52f4	fd 6e 31 	. n 1 
-	ld h,(iy+DBFR+1)		;52f7	fd 66 32 	. f 2 
+	ld l,(iy+DBFR)					; hl - address of sector buffer									;52f4	fd 6e 31 	. n 1 
+	ld h,(iy+DBFR+1)																				;52f7	fd 66 32 	. f 2 
 	ld e,000h		;52fa	1e 00 	. . 
 	ld d,000h		;52fc	16 00 	. . 
 	ld c,04eh		;52fe	0e 4e 	. N 
