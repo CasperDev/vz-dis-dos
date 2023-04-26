@@ -54,9 +54,11 @@ SysPrintChar		equ		$032a	; Prints char from register a to screen (also spec char
 SysNewLine			equ		$20f9	; Outputs CR to screen if cursor is not already at the beginning of line
 SysMsgOut			EQU		$28a7	; MsgOut(hl)
 SysStartBASIC		equ		$1a19	; Start BASIC
+SysRaiseError 		equ		$19a2	; Raise BASIC Error - Error number in A
 SysRaiseSyntaxError	equ		$1997	; Raise BASIC Syntax Error routine
 SysBASICStop		equ		$1da0	; BASIC STOP proc with Break Key pressed
 SysBASICReset		equ 	$1b9a	; Restart BASIC
+SysBASICDeletePrg	equ		$1b4d	; Wipe out BASIC variables and set BASIC Ready
 PrintMsg_IN_LINE	equ		$0fa7	; Print IN <line number from hl>
 SysCheckNextChar	equ 	$1d78	; BASIC Parser Main routine
 SysExecRUN			equ		$36e9	; Execute BASIC RUN command
@@ -3213,7 +3215,7 @@ DCmdPR#:
 	pop hl							; restore hl - address of next BASIC char						;4eb6	e1 	. 
 .parseNextChar:
 	rst $10							; call system NextToken routine - check expression				;4eb7	d7 	. 
-	jr .nextOrExit		;4eb8	18 c7 	. . 
+	jr .nextOrExit					; continure to write next expressions or exit if no more		;4eb8	18 c7 	. . 
 
 
 ;***************************************************************************************************
@@ -3501,100 +3503,143 @@ FlushSectorData:
 ; To transfer all files type DCOPY without filename argument.
 ; Filename may have no more than 8 characters
 DCmdDCOPY:
-	ld de,(078a2h)		;4ffb	ed 5b a2 78 	. [ . x 
-	inc de			;4fff	13 	. 
-	ld a,d			;5000	7a 	z 
-	or e			;5001	b3 	. 
-	ld e,016h		;5002	1e 16 	. . 
-	jp nz,019a2h		;5004	c2 a2 19 	. . . 
-	ld (iy+DCPYF),1		;5007	fd 36 39 01 	. 6 9 . 
-	dec hl			;500b	2b 	+ 
-	rst 10h			;500c	d7 	. 
-	jr z,l505dh		;500d	28 4e 	( N 
-	call CSI		; Command string interpreter					;500f	cd 67 53 	. g S 
-	or a			;5012	b7 	. 
-	jp nz,ERROR		; Error handling routine	;5013	c2 41 42 	. A B 
-	push hl			;5016	e5 	. 
-	call sub_5168h		;5017	cd 68 51 	. h Q 
+; -- check if invoked as direct command
+	ld de,(BasicLineNumber)			; de - current line number (ffff if direct command)				;4ffb	ed 5b a2 78 	. [ . x 
+	inc de							; de - 0 if direct command, non zero if BASIC program			;4fff	13 	. 
+	ld a,d							; a - LSB of result												;5000	7a 	z 
+	or e							; is de 0000? (direct command)?									;5001	b3 	. 
+	ld e,$16						; e - BASIC Error 16 - ILLEGAL DIRECT							;5002	1e 16 	. . 
+	jp nz,SysRaiseError				; no - raise BASIC Error --------------------------------------	;5004	c2 a2 19 	. . . 
+
+; -- set DCOPY command in progress flag
+	ld (iy+DCPYF),1					; set DCOPY flag - command in progress							;5007	fd 36 39 01 	. 6 9 . 
+
+; -- check command variant - with or without "filename"
+	dec hl							; decrement parser pointer										;500b	2b 	+ 
+	rst $10							; call system NextToken routine - is it end ? (no params)?		;500c	d7 	. 
+	jr z,.copyWholeDisk				; yes - copy all files from one disk to another					;500d	28 4e 	( N 
+
+; -- command with parameter - must be filename as only param
+	call CSI						; parse filename and copy it to (iy+FNAM)						;500f	cd 67 53 	. g S 
+	or a							; was any error?												;5012	b7 	. 
+	jp nz,ERROR						; yes - go to Error handling routine --------------------------	;5013	c2 41 42 	. A B 
+
+; -- copy one file from disk to disk 
+	push hl							; save hl - address of next char after filename (parser point)	;5016	e5 	. 
+	call AskUserForSrcAndDst		; Ask user to choose source and destination disk number			;5017	cd 68 51 	. h Q 
 	call sub_5219h		;501a	cd 19 52 	. . R 
-	di			;501d	f3 	. 
-	call PWRON		; Disk power ON			;501e	cd 41 5f 	. A _ 
-	push bc			;5021	c5 	. 
-	ld bc,50		; bc - number of miliseconds to delay							;5022	01 32 00 	. 2 . 
-	call DLY		; delay 50 ms								;5025	cd be 5e 	. . ^ 
-	pop bc			;5028	c1 	. 
-	call SEARCH		; Search for file in directory					;5029	cd 13 59 	. . Y 
-	cp 02			; was Error 02 - FILE ALREADY EXISTS?	;502c	fe 02 	. . 
-	jr z,l5039h		;502e	28 09 	( . 
-	or a			;5030	b7 	. 
-	jp nz,ERROR		; Error handling routine	;5031	c2 41 42 	. A B 
-	ld a,00dh		;5034	3e 0d 	> . 
-	jp ERROR		; Error handling routine	;5036	c3 41 42 	. A B 
-l5039h:
-	ld a,(iy+TYPE+1)		;5039	fd 7e 0a 	. ~ . 
-	ld (iy+TYPE),a		;503c	fd 77 09 	. w . 
-	cp 'D'		;503f	fe 44 	. D 
-	ld a,00ch		;5041	3e 0c 	> . 
-	jp z,ERROR		; Error handling routine	;5043	ca 41 42 	. A B 
-	call LoadProgramData		;5046	cd d3 43 	. . C 
-	or a			;5049	b7 	. 
-	jp nz,l5162h		;504a	c2 62 51 	. b Q 
-	call sub_5275h		;504d	cd 75 52 	. u R 
-	call PWRON		; Disk power ON			;5050	cd 41 5f 	. A _ 
-	call SAVE		; Save a file to disk							;5053	cd 6e 44 	. n D 
-	or a			;5056	b7 	. 
-	jp nz,l5162h		;5057	c2 62 51 	. b Q 
-	jp l5137h		;505a	c3 37 51 	. 7 Q 
-l505dh:
-	push hl			;505d	e5 	. 
-	ld hl,0ffc6h		;505e	21 c6 ff 	! . . 
-	add hl,sp			;5061	39 	9 
-	ld de,SYS_BASIC_PRG		; address of first byte of BASIC program ;5062	11 e9 7a 	. . z 
-	or a			;5065	b7 	. 
-	sbc hl,de		;5066	ed 52 	. R 
-	srl h		;5068	cb 3c 	. < 
-	srl h		;506a	cb 3c 	. < 
-	srl h		;506c	cb 3c 	. < 
-	ld (iy+TRKCNT),h		;506e	fd 74 36 	. t 6 
-	ld (iy+TRKPTR),0		;5071	fd 36 37 00 	. 6 7 . 
-	ld (iy+TRCK),0		;5075	fd 36 12 00 	. 6 . . 
-	ld (iy+SCTR),0		;5079	fd 36 11 00 	. 6 . . 
-	call FlushSectorData		; Flush Sector Data to disk from both FCBs ;507d	cd a5 4f 	. . O 
-	call sub_5168h		;5080	cd 68 51 	. h Q 
-l5083h:
-	ld de,SYS_BASIC_PRG		; address of first byte of BASIC program ;5083	11 e9 7a 	. . z 
-	ld (SYS_BASIC_START_PTR),de		; start of current BASIC Program ;5086	ed 53 a4 78 	. S . x 
+
+; -- turn disk power on and wait 50 ms
+	di								; disable interrupts											;501d	f3 	. 
+	call PWRON						; Disk power ON													;501e	cd 41 5f 	. A _ 
+	push bc							; save bc 														;5021	c5 	. 
+	ld bc,50						; bc - number of miliseconds to delay							;5022	01 32 00 	. 2 . 
+	call DLY						; delay 50 ms													;5025	cd be 5e 	. . ^ 
+	pop bc							; restore bc													;5028	c1 	. 
+
+; -- search for file on disk
+	call SEARCH						; Search for file in directory									;5029	cd 13 59 	. . Y 
+	cp 02							; was Error 02 - FILE ALREADY EXISTS? (means OK)				;502c	fe 02 	. . 
+	jr z,.fileFound					; yes - continue												;502e	28 09 	( . 
+; -- file not found or other error
+	or a							; was any other error?											;5030	b7 	. 
+	jp nz,ERROR						; yes - go to Error handling routine --------------------------	;5031	c2 41 42 	. A B 
+	ld a,13							; a - Error 13   FILE NOT FOUND									;5034	3e 0d 	> . 
+	jp ERROR						; go to Error handling routine --------------------------------	;5036	c3 41 42 	. A B 
+
+.fileFound:
+; -- copy file type and verify it is 'B' (binary) or 'T' (BASIC)
+	ld a,(iy+TYPE+1)				; a - type of found file 										;5039	fd 7e 0a 	. ~ . 
+	ld (iy+TYPE),a					; set as destination file type									;503c	fd 77 09 	. w . 
+	cp 'D'							; is it type 'D' (data file)?									;503f	fe 44 	. D 
+	ld a,12							; a - Error 12   FILE TYPE MISMATCH								;5041	3e 0c 	> . 
+	jp z,ERROR						; yes - go to Error handling routine --------------------------	;5043	ca 41 42 	. A B 
+
+; -- load file as program into RAM
+	call LoadProgramData			; load program file into memory as normal						;5046	cd d3 43 	. . C 
+	or a							; was any error?												;5049	b7 	. 
+	jp nz,ClearAndError				; yes - Clear BASIC Program and raise Error -------------------	;504a	c2 62 51 	. b Q 
+
+; -- 
+	call SelectDstDrive		;504d	cd 75 52 	. u R 
+; -- save BASIC program from memory to disk
+	call PWRON						; Disk power ON													;5050	cd 41 5f 	. A _ 
+	call SAVE						; Save program  to disk											;5053	cd 6e 44 	. n D 
+	or a							; was any error?												;5056	b7 	. 
+	jp nz,ClearAndError				; yes - Clear BASIC Program and raise Error -------------------	;5057	c2 62 51 	. b Q 
+	jp .cleanAndExit		;505a	c3 37 51 	. 7 Q 
+
+
+.copyWholeDisk:
+	push hl							; save hl - address of next char after filename (parser point)	;505d	e5 	. 
+; -- allocate memory area for buffer + 58 extra bytes
+	ld hl,-58						; hl - 58 bytes to reserve on stack								;505e	21 c6 ff 	! . . 
+	add hl,sp						; allocate 58 bytes on CPU stack								;5061	39 	9 
+	ld de,SYS_BASIC_PRG				; address of first byte of BASIC program 						;5062	11 e9 7a 	. . z 
+	or a							; clear Carry flag												;5065	b7 	. 
+	sbc hl,de						; hl - number of bytes free above program and below CPU Stack	;5066	ed 52 	. R 
+; -- allocate memory buffer for X tracks
+;    1 track = 16 sectors  x 128 bytes = 8 memory pages = 2kB
+	srl h							; h - number of memory pages x 2								;5068	cb 3c 	. < 
+	srl h							; h - number of memory pages x 4								;506a	cb 3c 	. < 
+	srl h							; h - number of memory pages x 8								;506c	cb 3c 	. < 
+	ld (iy+TRKCNT),h				; set as number of tracks we can load into memory at once		;506e	fd 74 36 	. t 6 
+	ld (iy+TRKPTR),0				; set 0 as number of tracks loaded								;5071	fd 36 37 00 	. 6 7 . 
+
+; -- copying starts from Track 0 Sector 0
+	ld (iy+TRCK),0					; set Track Number to 0											;5075	fd 36 12 00 	. 6 . . 
+	ld (iy+SCTR),0					; set Sector Number to 0										;5079	fd 36 11 00 	. 6 . . 
+	call FlushSectorData			; Flush Sector Data to disk from both FCBs 						;507d	cd a5 4f 	. . O 
+	call AskUserForSrcAndDst		; Ask user to choose source and destination disk number			;5080	cd 68 51 	. h Q 
+
+.readTracks:
+	ld de,SYS_BASIC_PRG				; de - address first byte of free memory (Buffer) 				;5083	11 e9 7a 	. . z 
+	ld (SYS_BASIC_START_PTR),de		; set as current pointer 										;5086	ed 53 a4 78 	. S . x 
 	call sub_5219h		;508a	cd 19 52 	. . R 
-	di			;508d	f3 	. 
-	call PWRON		; Disk power ON			;508e	cd 41 5f 	. A _ 
-l5091h:
-	call READ		; Read a sector from disk						;5091	cd 27 5b 	. ' [ 
-	or a			;5094	b7 	. 
-	jp nz,l5162h		;5095	c2 62 51 	. b Q 
-	ld l,(iy+DBFR)		;5098	fd 6e 31 	. n 1 
-	ld h,(iy+DBFR+1)		;509b	fd 66 32 	. f 2 
-	ld de,(SYS_BASIC_START_PTR)		; start of current BASIC Program ;509e	ed 5b a4 78 	. [ . x 
-	ld bc,00080h		;50a2	01 80 00 	. . . 
-	ldir		;50a5	ed b0 	. . 
-	ld (SYS_BASIC_START_PTR),de		; start of current BASIC Program ;50a7	ed 53 a4 78 	. S . x 
-	inc (iy+SCTR)		;50ab	fd 34 11 	. 4 . 
-	ld a,(iy+SCTR)		;50ae	fd 7e 11 	. ~ . 
-	cp 010h		;50b1	fe 10 	. . 
-	jr nz,l5091h		;50b3	20 dc 	  . 
-	ld (iy+SCTR),0		;50b5	fd 36 11 00 	. 6 . . 
-	inc (iy+TRCK)		;50b9	fd 34 12 	. 4 . 
-	ld a,(iy+TRCK)		;50bc	fd 7e 12 	. ~ . 
-	cp 40		;50bf	fe 28 	. ( 
-	jr z,l50cbh		;50c1	28 08 	( . 
-	sub (iy+TRKPTR)		;50c3	fd 96 37 	. . 7 
-	sub (iy+TRKCNT)		;50c6	fd 96 36 	. . 6 
-	jr nz,l5091h		;50c9	20 c6 	  . 
-l50cbh:
-	ld a,(iy+TRKPTR)		;50cb	fd 7e 37 	. ~ 7 
-	ld (iy+TRCK),a		;50ce	fd 77 12 	. w . 
-	call PWROFF		; Disk power OFF		;50d1	cd 52 5f 	. R _ 
-	call sub_5275h		;50d4	cd 75 52 	. u R 
-	di			;50d7	f3 	. 
+
+; -- load whole track (16 sectors) into memory
+	di								; disable interrupts											;508d	f3 	. 
+	call PWRON						; Disk power ON													;508e	cd 41 5f 	. A _ 
+.readNextSector:
+; -- read one sector
+	call READ						; Read a sector from disk										;5091	cd 27 5b 	. ' [ 
+	or a							; was any error?												;5094	b7 	. 
+	jp nz,ClearAndError				; yes - Clear BASIC Program and raise Error -------------------	;5095	c2 62 51 	. b Q 
+; -- copy sector buffer to copy buffer
+	ld l,(iy+DBFR)					; hl - address of Sector Buffer (source)						;5098	fd 6e 31 	. n 1 
+	ld h,(iy+DBFR+1)																				;509b	fd 66 32 	. f 2 
+	ld de,(SYS_BASIC_START_PTR)		; de - address in allocated Track buffer (destination) 			;509e	ed 5b a4 78 	. [ . x 
+	ld bc,128						; bc - 128 bytes to copy (sector data)							;50a2	01 80 00 	. . . 
+	ldir							; copy data														;50a5	ed b0 	. . 
+
+; -- advance destination pointer and sector number
+	ld (SYS_BASIC_START_PTR),de		; update current pointer in Track Buffer 						;50a7	ed 53 a4 78 	. S . x 
+	inc (iy+SCTR)					; increment Sector Number by 1									;50ab	fd 34 11 	. 4 . 
+	ld a,(iy+SCTR)					; a - next Sector Number										;50ae	fd 7e 11 	. ~ . 
+	cp 16							; is it 16? (all 16 sectors loaded into memory)					;50b1	fe 10 	. . 
+	jr nz,.readNextSector					; no - read next sector ---------------------------------------	;50b3	20 dc 	  . 
+
+; -- advance track number 
+	ld (iy+SCTR),0					; set Sector Number to 0										;50b5	fd 36 11 00 	. 6 . . 
+	inc (iy+TRCK)					; increment Track number by 1									;50b9	fd 34 12 	. 4 . 
+	ld a,(iy+TRCK)					; a - next Track Number											;50bc	fd 7e 12 	. ~ . 
+	cp 40							; is it 40? (end of disk)										;50bf	fe 28 	. ( 
+	jr z,.writeTracks				; yes - write track from memory to destination disk				;50c1	28 08 	( . 
+; -- 
+	sub (iy+TRKPTR)					; subtract number of tracks already written 					;50c3	fd 96 37 	. . 7 
+	sub (iy+TRKCNT)					; subtract max number of tracks can be loaded - 0 left?			;50c6	fd 96 36 	. . 6 
+	jr nz,.readNextSector			; no - read next sector ---------------------------------------	;50c9	20 c6 	  . 
+
+.writeTracks:
+; -- set Track number to write
+	ld a,(iy+TRKPTR)				; a - first track loaded in memory								;50cb	fd 7e 37 	. ~ 7 
+	ld (iy+TRCK),a					; set as current track to write									;50ce	fd 77 12 	. w . 
+; -- turn disk power off and select destination drive
+	call PWROFF						; Disk power OFF												;50d1	cd 52 5f 	. R _ 
+	call SelectDstDrive				; select destination drive (ask user if the same as source)		;50d4	cd 75 52 	. u R 
+
+; -- write all tracks from memory to destination Disk
+	di								; disable interrupts											;50d7	f3 	. 
 
 ; -- turn on Disk Drive and wait 2 ms
 	call PWRON						; Disk power ON													;50d8	cd 41 5f 	. A _ 
@@ -3607,43 +3652,61 @@ l50cbh:
 	in a,(FLWRPROT)					; a - read Write Protected flag from FDC						;50e3	db 13 	. . 
 	or a							; is bit 7 set? (write protected)								;50e5	b7 	. 
 	ld a,04							; a - Error 04 - DISK WRITE PROTECTED							;50e6	3e 04 	> . 
-	jp m,l5162h						; yes - ;50e8	fa 62 51 	. b Q 
+	jp m,ClearAndError				; yes - Clear BASIC Program and raise Error						;50e8	fa 62 51 	. b Q 
 
-	ld hl,SYS_BASIC_PRG		; address of first byte of BASIC program ;50eb	21 e9 7a 	! . z 
-	ld (SYS_BASIC_START_PTR),hl		; start of current BASIC Program ;50ee	22 a4 78 	" . x 
-l50f1h:
-	ld hl,(SYS_BASIC_START_PTR)		; start of current BASIC Program ;50f1	2a a4 78 	* . x 
-	ld e,(iy+DBFR)		;50f4	fd 5e 31 	. ^ 1 
-	ld d,(iy+DBFR+1)		;50f7	fd 56 32 	. V 2 
-	ld bc,128		;50fa	01 80 00 	. . . 
-	ldir		;50fd	ed b0 	. . 
-	ld (SYS_BASIC_START_PTR),hl		; start of current BASIC Program ;50ff	22 a4 78 	" . x 
-	call WRITE		; Write a sector to disk						;5102	cd a1 59 	. . Y 
-	or a			;5105	b7 	. 
-	jr nz,l5162h		;5106	20 5a 	  Z 
-	inc (iy+SCTR)		;5108	fd 34 11 	. 4 . 
-	ld a,(iy+SCTR)		;510b	fd 7e 11 	. ~ . 
-	cp 010h		;510e	fe 10 	. . 
-	jr nz,l50f1h		;5110	20 df 	  . 
-	ld (iy+SCTR),0		;5112	fd 36 11 00 	. 6 . . 
-	inc (iy+TRCK)		;5116	fd 34 12 	. 4 . 
-	ld a,(iy+TRCK)		;5119	fd 7e 12 	. ~ . 
-	cp 40		;511c	fe 28 	. ( 
-	jr z,l5137h		;511e	28 17 	( . 
-	sub (iy+TRKPTR)		;5120	fd 96 37 	. . 7 
-	sub (iy+TRKCNT)		;5123	fd 96 36 	. . 6 
-	jr nz,l50f1h		;5126	20 c9 	  . 
-	ld a,(iy+TRKCNT)		;5128	fd 7e 36 	. ~ 6 
-	add a,(iy+TRKPTR)		;512b	fd 86 37 	. . 7 
-	ld (iy+TRKPTR),a		;512e	fd 77 37 	. w 7 
-	call PWROFF		; Disk power OFF		;5131	cd 52 5f 	. R _ 
-	jp l5083h		;5134	c3 83 50 	. . P 
-l5137h:
-	call PWROFF		; Disk power OFF		;5137	cd 52 5f 	. R _ 
-	call ClearBASIC		;513a	cd 44 51 	. D Q 
-	ld bc,SysStartBASIC		;513d	01 19 1a 	. . . 
-	push bc			;5140	c5 	. 
-	jp 01b4dh		;5141	c3 4d 1b 	. M . 
+; -- reset buffer pointer
+	ld hl,SYS_BASIC_PRG				; hl - address of first byte of free memory (buffer) 			;50eb	21 e9 7a 	! . z 
+	ld (SYS_BASIC_START_PTR),hl		; set as current pointer 										;50ee	22 a4 78 	" . x 
+
+.writeNextSector:
+; -- copy sector data from Tracks Buffer (memory) to Sector Buffer
+	ld hl,(SYS_BASIC_START_PTR)		; hl - address in allocated Track buffer (source)	 			;50f1	2a a4 78 	* . x 
+	ld e,(iy+DBFR)					; de - address of Sector BUffer (destination)					;50f4	fd 5e 31 	. ^ 1 
+	ld d,(iy+DBFR+1)																				;50f7	fd 56 32 	. V 2 
+	ld bc,128						; bc - 128 bytes to copy (sector data)							;50fa	01 80 00 	. . . 
+	ldir							; copy data														;50fd	ed b0 	. . 
+
+; -- advance source pointer
+	ld (SYS_BASIC_START_PTR),hl		; update current pointer in Track Buffer 						;50ff	22 a4 78 	" . x 
+; -- write sector 
+	call WRITE						; Write a sector to disk										;5102	cd a1 59 	. . Y 
+	or a							; was any error?												;5105	b7 	. 
+	jr nz,ClearAndError				; yes - Clear BASIC Program and raise Error ------------------- ;5106	20 5a 	  Z 
+
+; -- advance destination sector number
+	inc (iy+SCTR)					; increment Sector Number by 1									;5108	fd 34 11 	. 4 . 
+	ld a,(iy+SCTR)					; a - next Sector Number										;510b	fd 7e 11 	. ~ . 
+	cp 16							; is it 16? (all 16 sectors written to disk)					;510e	fe 10 	. . 
+	jr nz,.writeNextSector			; no - write next sector --------------------------------------	;5110	20 df 	  . 
+
+; -- advance track number 
+	ld (iy+SCTR),0					; set Sector Number to 0										;5112	fd 36 11 00 	. 6 . . 
+	inc (iy+TRCK)					; increment Track Number by 1									;5116	fd 34 12 	. 4 . 
+	ld a,(iy+TRCK)					; a - next Track Number											;5119	fd 7e 12 	. ~ . 
+	cp 40							; is it 40?  (end of disk)										;511c	fe 28 	. ( 
+	jr z,.cleanAndExit				; yes - cleanup and exit to BASIC								;511e	28 17 	( . 
+
+; -- check if there is free space in buffer for next track
+	sub (iy+TRKPTR)					; subtract number of tracks already written 					;5120	fd 96 37 	. . 7 
+	sub (iy+TRKCNT)					; subtract max number of tracks stored in buffer - 0 left?		;5123	fd 96 36 	. . 6 
+	jr nz,.writeNextSector			; no - write next sector										;5126	20 c9 	  . 
+
+; -- advance tracks-written counter
+	ld a,(iy+TRKCNT)				; a - number of tracks in Buffer								;5128	fd 7e 36 	. ~ 6 
+	add a,(iy+TRKPTR)				; add number of tracks already written							;512b	fd 86 37 	. . 7 
+	ld (iy+TRKPTR),a				; store as new number of tracks already written to disk			;512e	fd 77 37 	. w 7 
+
+; -- turn disk power OFF and continue copy remaining tracks
+	call PWROFF						; Disk power OFF												;5131	cd 52 5f 	. R _ 
+	jp .readTracks					; continue copy remaining tracks ------------------------------	;5134	c3 83 50 	. . P 
+
+.cleanAndExit:
+; -- cleanup BASIC memory and exit to BASIC
+	call PWROFF						; Disk power OFF												;5137	cd 52 5f 	. R _ 
+	call ClearBASIC					; clean BASIC variables											;513a	cd 44 51 	. D Q 
+	ld bc,SysStartBASIC				; bc - address of BASIC start routine to take control			;513d	01 19 1a 	. . . 
+	push bc							; push routine addres on stack									;5140	c5 	. 
+	jp SysBASICDeletePrg			; Wipe out BASIC variables and set BASIC Ready					;5141	c3 4d 1b 	. M . 
 
 
 
@@ -3668,36 +3731,60 @@ ClearBASIC:
 	ret								; --------------------- End of Proc ---------------------------	;5161	c9 	. 
 
 
-l5162h:
-	call ClearBASIC		;5162	cd 44 51 	. D Q 
-	jp ERROR		; Error handling routine	;5165	c3 41 42 	. A B 
-sub_5168h:
-	ld hl,l51ech		;5168	21 ec 51 	! . Q 
-	call SysMsgOut		;516b	cd a7 28 	. . ( 
+;***************************************************************************************************
+; Clear BASIC Program and raise Error
+ClearAndError:
+	call ClearBASIC					; clear BASIC Program from memory								;5162	cd 44 51 	. D Q 
+	jp ERROR						; go to Error handling routine --------------------------------	;5165	c3 41 42 	. A B 
+
+
+;***************************************************************************************************
+; Ask user to choose source and destination disk number
+AskUserForSrcAndDst:
+; -- print input string for Source Disk
+	ld hl,TXT_ASKSOURCEDISK			; hl - text "SOURCE DISK(1/2)? " 								;5168	21 ec 51 	! . Q 
+	call SysMsgOut					; print text on screen											;516b	cd a7 28 	. . ( 
+
+; --
 	call sub_5192h		;516e	cd 92 51 	. . Q 
-	ld a,c			;5171	79 	y 
-	call SysPrintChar		;5172	cd 2a 03 	. * . 
-	and %0011		;5175	e6 03 	. . 
-	ld (iy+SOURCE),a		; set source Drive number (1 or 2) ;5177	fd 77 0d 	. w . 
-	ld hl,l5200h		;517a	21 00 52 	! . R 
-	call SysMsgOut		;517d	cd a7 28 	. . ( 
+; -- echo back user choice
+	ld a,c							; a - char from user											;5171	79 	y 
+	call SysPrintChar				; print char on screen											;5172	cd 2a 03 	. * . 
+; -- store source disk number
+	and %0011						; convert from ASCII (31 -> 1, 32 -> 2)							;5175	e6 03 	. . 
+	ld (iy+SOURCE),a				; set source Drive number (1 or 2) 								;5177	fd 77 0d 	. w . 
+
+; -- print input string for Destination Disk
+	ld hl,TXT_ASKDESTDISK			; hl - text "DESTINATION DISK(1/2)? " 							;517a	21 00 52 	! . R 
+	call SysMsgOut					; print text on screen											;517d	cd a7 28 	. . ( 
+; -- 
 	call sub_5192h		;5180	cd 92 51 	. . Q 
-	ld a,c			;5183	79 	y 
-	call SysPrintChar		;5184	cd 2a 03 	. * . 
-	and %0011		;5187	e6 03 	. . 
-	ld (iy+DESTIN),a		; set destination Drive number (1 or 2) ;5189	fd 77 10 	. w . 
-	ld a,00dh		;518c	3e 0d 	> . 
-	call SysPrintChar		;518e	cd 2a 03 	. * . 
-	ret			;5191	c9 	. 
+; -- echo back user choice
+	ld a,c							; a - char from user											;5183	79 	y 
+	call SysPrintChar				; print char on screen											;5184	cd 2a 03 	. * . 
+; -- store destination disk number
+	and %0011						; convert from ASCII (31 -> 1, 32 -> 2)							;5187	e6 03 	. . 
+	ld (iy+DESTIN),a				; set destination Drive number (1 or 2) 						;5189	fd 77 10 	. w . 
+
+; -- print CR and exit
+	ld a,CR							; a - CR char 													;518c	3e 0d 	> . 
+	call SysPrintChar				; print char on screen											;518e	cd 2a 03 	. * . 
+	ret								; --------------------- End of Proc ---------------------------	;5191	c9 	. 
+
+;***************************************************************************************************
+; Get User Input 
 sub_5192h:
-	ld a,(07aafh)		;5192	3a af 7a 	: . z 
-	or a			;5195	b7 	. 
-	jr nz,sub_5192h		;5196	20 fa 	  . 
-	di			;5198	f3 	. 
+	ld a,(07aafh)					; a - number of characters in Edit Buffer left to process		;5192	3a af 7a 	: . z 
+	or a							; is it 0 (buffer empty)?										;5195	b7 	. 
+	jr nz,sub_5192h					; no - wait until all are processed ---------------------------	;5196	20 fa 	  . 
+
+; -- 
+	di								; disable interrupts											;5198	f3 	. 
 	ld e,010h		;5199	1e 10 	. . 
 	ld d,e			;519b	53 	S 
-	ld hl,(07820h)		;519c	2a 20 78 	*   x 
+	ld hl,(07820h)					; hl - address of Cursor position on Screen 					;519c	2a 20 78 	*   x 
 l519fh:
+
 	ld a,(06800h)		;519f	3a 00 68 	: . h 
 	or a			;51a2	b7 	. 
 	jp m,l519fh		;51a3	fa 9f 51 	. . Q 
@@ -3740,61 +3827,31 @@ l51e2h:
 	jr nz,l51e2h		;51e8	20 f8 	  . 
 	ei			;51ea	fb 	. 
 	ret			;51eb	c9 	. 
-l51ech:
-	dec c			;51ec	0d 	. 
-	ld d,e			;51ed	53 	S 
-	ld c,a			;51ee	4f 	O 
-	ld d,l			;51ef	55 	U 
-	ld d,d			;51f0	52 	R 
-	ld b,e			;51f1	43 	C 
-	ld b,l			;51f2	45 	E 
-	jr nz,l5239h		;51f3	20 44 	  D 
-	ld c,c			;51f5	49 	I 
-	ld d,e			;51f6	53 	S 
-	ld c,e			;51f7	4b 	K 
-	jr z,$+51		;51f8	28 31 	( 1 
-	cpl			;51fa	2f 	/ 
-	ld (03f29h),a		;51fb	32 29 3f 	2 ) ? 
-	jr nz,l5200h		;51fe	20 00 	  . 
-l5200h:
-	dec c			;5200	0d 	. 
-	ld b,h			;5201	44 	D 
-	ld b,l			;5202	45 	E 
-	ld d,e			;5203	53 	S 
-	ld d,h			;5204	54 	T 
-	ld c,c			;5205	49 	I 
-	ld c,(hl)			;5206	4e 	N 
-	ld b,c			;5207	41 	A 
-	ld d,h			;5208	54 	T 
-	ld c,c			;5209	49 	I 
-	ld c,a			;520a	4f 	O 
-	ld c,(hl)			;520b	4e 	N 
-	jr nz,l5252h		;520c	20 44 	  D 
-	ld c,c			;520e	49 	I 
-	ld d,e			;520f	53 	S 
-	ld c,e			;5210	4b 	K 
-	jr z,l5244h		;5211	28 31 	( 1 
-	cpl			;5213	2f 	/ 
-	ld (03f29h),a		;5214	32 29 3f 	2 ) ? 
-	jr nz,sub_5219h		;5217	20 00 	  . 
+
+
+TXT_ASKSOURCEDISK:
+	defm	CR,"SOURCE DISK(1/2)? ",0 			;51ec	0d 53 4f 55 52 43 45 20 44 49 53 4b 28 31 2f 32 29 3f 20 00 	  . 
+TXT_ASKDESTDISK:
+	defm	CR,"DESTINATION DISK(1/2)? ", 0		;5200	0d 44 45 53 54 49 4e 41 54 49 4f 4e 20 44 49 53 4b 28 31 2f 32 29 3f 20 00 	  . 
+
 sub_5219h:
 	ld a,(iy+SOURCE)				; a - source drive (1 or 2) 									;5219	fd 7e 0d 	. ~ . 
 	call SelectDriveNo				; Set selected Drive (1 or 2)									;521c	cd 84 4d 	. . M 
 	cp (iy+DESTIN)					; is the same as destination Drive 								;521f	fd be 10 	. . . 
-	ret nz			;5222	c0 	. 
-	ld hl,l5284h		;5223	21 84 52 	! . R 
+	ret nz							; no - no need to ask user to exchange disks ------------------	;5222	c0 	. 
+; -- prompt user to insert proper disk
+	ld hl,TXT_INSERTSRCDISK			; hl - text "INSERT SOURCE DISKETTE"							;5223	21 84 52 	! . R 
 l5226h:
-	call SysMsgOut		;5226	cd a7 28 	. . ( 
-	ld hl,l529dh		;5229	21 9d 52 	! . R 
-	call SysMsgOut		;522c	cd a7 28 	. . ( 
-l522fh:
-	ld a,(07aafh)		;522f	3a af 7a 	: . z 
-	or a			;5232	b7 	. 
-	jr nz,l522fh		;5233	20 fa 	  . 
+	call SysMsgOut					; print text on screen											;5226	cd a7 28 	. . ( 
+	ld hl,TXT_PRESSSPACEREADY		; hl - text "(PRESS SPACE WHEN READY)"							;5229	21 9d 52 	! . R 
+	call SysMsgOut					; print text on screen											;522c	cd a7 28 	. . ( 
+.wait:
+	ld a,(07aafh)					; a - number of chars in Edit Buffer							;522f	3a af 7a 	: . z 
+	or a							;5232	b7 	. 
+	jr nz,.wait		;5233	20 fa 	  . 
 	di			;5235	f3 	. 
 	ld e,010h		;5236	1e 10 	. . 
 	ld d,e			;5238	53 	S 
-l5239h:
 	ld hl,(07820h)		;5239	2a 20 78 	*   x 
 l523ch:
 	ld a,(06800h)		;523c	3a 00 68 	: . h 
@@ -3830,89 +3887,25 @@ l5268h:
 	ld (hl),a			;5272	77 	w 
 	ei			;5273	fb 	. 
 	ret			;5274	c9 	. 
-sub_5275h:
+
+
+SelectDstDrive:
 	ld a,(iy+DESTIN)				; a - destination Drive (1 or 2) 								;5275	fd 7e 10 	. ~ . 
 	call SelectDriveNo				; Set selected Drive (1 or 2)									;5278	cd 84 4d 	. . M 
 	cp (iy+SOURCE)					; is the same as source drive? 									;527b	fd be 0d 	. . . 
 	ret nz			;527e	c0 	. 
-	ld hl,l52b7h		;527f	21 b7 52 	! . R 
+	ld hl,TXT_INSERTDSTDISK			; hl - text "INSERT DESTINATION DISKETTE"						;527f	21 b7 52 	! . R 
 	jr l5226h		;5282	18 a2 	. . 
-l5284h:
-	dec c			;5284	0d 	. 
-	ld c,c			;5285	49 	I 
-	ld c,(hl)			;5286	4e 	N 
-	ld d,e			;5287	53 	S 
-	ld b,l			;5288	45 	E 
-	ld d,d			;5289	52 	R 
-	ld d,h			;528a	54 	T 
-	jr nz,$+85		;528b	20 53 	  S 
-	ld c,a			;528d	4f 	O 
-	ld d,l			;528e	55 	U 
-	ld d,d			;528f	52 	R 
-	ld b,e			;5290	43 	C 
-	ld b,l			;5291	45 	E 
-	jr nz,$+70		;5292	20 44 	  D 
-	ld c,c			;5294	49 	I 
-	ld d,e			;5295	53 	S 
-	ld c,e			;5296	4b 	K 
-	ld b,l			;5297	45 	E 
-	ld d,h			;5298	54 	T 
-	ld d,h			;5299	54 	T 
-	ld b,l			;529a	45 	E 
-	dec c			;529b	0d 	. 
-	nop			;529c	00 	. 
-l529dh:
-	jr z,$+82		;529d	28 50 	( P 
-	ld d,d			;529f	52 	R 
-	ld b,l			;52a0	45 	E 
-	ld d,e			;52a1	53 	S 
-	ld d,e			;52a2	53 	S 
-	jr nz,$+85		;52a3	20 53 	  S 
-	ld d,b			;52a5	50 	P 
-	ld b,c			;52a6	41 	A 
-	ld b,e			;52a7	43 	C 
-	ld b,l			;52a8	45 	E 
-	jr nz,l5302h		;52a9	20 57 	  W 
-	ld c,b			;52ab	48 	H 
-	ld b,l			;52ac	45 	E 
-	ld c,(hl)			;52ad	4e 	N 
-	jr nz,l5302h		;52ae	20 52 	  R 
-	ld b,l			;52b0	45 	E 
-	ld b,c			;52b1	41 	A 
-	ld b,h			;52b2	44 	D 
-	ld e,c			;52b3	59 	Y 
-	add hl,hl			;52b4	29 	) 
-	dec c			;52b5	0d 	. 
-	nop			;52b6	00 	. 
-l52b7h:
-	dec c			;52b7	0d 	. 
-	ld c,c			;52b8	49 	I 
-	ld c,(hl)			;52b9	4e 	N 
-	ld d,e			;52ba	53 	S 
-	ld b,l			;52bb	45 	E 
-	ld d,d			;52bc	52 	R 
-	ld d,h			;52bd	54 	T 
-	jr nz,$+70		;52be	20 44 	  D 
-	ld b,l			;52c0	45 	E 
-	ld d,e			;52c1	53 	S 
-	ld d,h			;52c2	54 	T 
-	ld c,c			;52c3	49 	I 
-	ld c,(hl)			;52c4	4e 	N 
-	ld b,c			;52c5	41 	A 
-	ld d,h			;52c6	54 	T 
-	ld c,c			;52c7	49 	I 
-	ld c,a			;52c8	4f 	O 
-	ld c,(hl)			;52c9	4e 	N 
-	jr nz,l5310h		;52ca	20 44 	  D 
-	ld c,c			;52cc	49 	I 
-	ld d,e			;52cd	53 	S 
-	ld c,e			;52ce	4b 	K 
-	ld b,l			;52cf	45 	E 
-	ld d,h			;52d0	54 	T 
-	ld d,h			;52d1	54 	T 
-	ld b,l			;52d2	45 	E 
-	dec c			;52d3	0d 	. 
-	nop			;52d4	00 	. 
+
+
+TXT_INSERTSRCDISK:
+	defm	CR,"INSERT SOURCE DISKETTE",CR,0  		;5284	0d 49 4e 53 45 52 54 20 53 4f 55 52 43 45 20 44 49 53 4b 45 54 54 45 0d 00 	. 
+TXT_PRESSSPACEREADY:
+	defm	"(PRESS SPACE WHEN READY)",CR,0			;529d	28 50 52 45 53 53 20 53 50 41 43 45 20 57 48 45 4e 20 52 45 41 44 59 29 0d 00 	. 
+TXT_INSERTDSTDISK:
+	defm 	CR,"INSERT DESTINATION DISKETTE",CR,0	;52b7	0d 49 4e 53 45 52 54 20 44 45 53 54 49 4e 41 54 49 4f 4e 20 44 49 53 4b 45 54 54 45 0d 00 	. 
+
+
 
 
 ;***************************************************************************************************
