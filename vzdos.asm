@@ -3971,19 +3971,28 @@ TXT_INSERTDSTDISK:
 ;  	624 RECORDS FREE
 ;  	78.0K BYTES FREE
 DCmdSTATUS:
-	push hl			;52d5	e5 	. 
-	di			;52d6	f3 	. 
-	call PWRON		; Disk power ON			;52d7	cd 41 5f 	. A _ 
-	push bc			;52da	c5 	. 
-	ld bc,50		; bc - number of miliseconds to delay							;52db	01 32 00 	. 2 . 
-	call DLY		; delay 50 ms 								;52de	cd be 5e 	. . ^ 
-	pop bc			;52e1	c1 	. 
-	ld (iy+TRCK),0		;52e2	fd 36 12 00 	. 6 . . 
-	ld (iy+SCTR),15		;52e6	fd 36 11 0f 	. 6 . . 
-	call READ		; Read a sector from disk						;52ea	cd 27 5b 	. ' [ 
-	or a			;52ed	b7 	. 
-	jp nz,ERROR		; Error handling routine	;52ee	c2 41 42 	. A B 
-	call PWROFF		; Disk power OFF		;52f1	cd 52 5f 	. R _ 
+; -- save parser point and disable interrupt
+	push hl							; save hl - address of next BASIC char							;52d5	e5 	. 
+	di								; disable interrupts											;52d6	f3 	. 
+
+; -- turn disk power on and wait 50 ms
+	call PWRON						; Disk power ON													;52d7	cd 41 5f 	. A _ 
+	push bc							; save bc														;52da	c5 	. 
+	ld bc,50						; bc - number of miliseconds to delay							;52db	01 32 00 	. 2 . 
+	call DLY						; delay 50 ms 													;52de	cd be 5e 	. . ^ 
+	pop bc							; restore bc													;52e1	c1 	. 
+
+; -- read Sector Allocation Map
+	ld (iy+TRCK),0					; set Track Number 0 to read									;52e2	fd 36 12 00 	. 6 . . 
+	ld (iy+SCTR),15					; set Sector Number 15 to read									;52e6	fd 36 11 0f 	. 6 . . 
+	call READ						; Read Allocation Map sector from disk							;52ea	cd 27 5b 	. ' [ 
+	or a							; was any error?												;52ed	b7 	. 
+	jp nz,ERROR						; yes - go to Error handling routine --------------------------	;52ee	c2 41 42 	. A B 
+
+; -- turn disk power off
+	call PWROFF						; Disk power OFF												;52f1	cd 52 5f 	. R _ 
+
+; -- 
 	ld l,(iy+DBFR)		;52f4	fd 6e 31 	. n 1 
 	ld h,(iy+DBFR+1)		;52f7	fd 66 32 	. f 2 
 	ld e,000h		;52fa	1e 00 	. . 
