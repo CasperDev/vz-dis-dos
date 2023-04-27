@@ -7850,7 +7850,7 @@ l217fh:
 	ld a,(BAS_ReadInSrc)	; [TRS] READ (non-zero) or INPUT (zero) 	;217f	3a de 78 	: . x 
 	or a			;2182	b7 	. 
 	jp nz,l1991h		;2183	c2 91 19 	. . . 
-	ld a,(CmdINPUTSrcFlag)	; a - input from tape Flag 							;2186	3a a9 78 	: . x 
+	ld a,(SysINPUTSrcFlag)	; a - input from tape Flag 							;2186	3a a9 78 	: . x 
 	or a					; is from Tape? 									;2189	b7 	. 
 	ld e,#2a				; ERROR 2A - BAD FILE DATA		;218a	1e 2a 	. * 
 	jp z,ErrRaiseError		; yes - Raise Error  ;218c	ca a2 19 	. . . 
@@ -7872,7 +7872,7 @@ CmdINPUT
 	ld a,(hl)			;219d	7e 	~ 
 	call SysExtInput		;219e	cd d6 79 	. . y 
 	sub '#'		;21a1	d6 23 	. # 
-	ld (CmdINPUTSrcFlag),a	; set as input from tape Flag (0-true, other-false)	;21a3	32 a9 78 	2 . x 
+	ld (SysINPUTSrcFlag),a	; set as input from tape Flag (0-true, other-false)	;21a3	32 a9 78 	2 . x 
 	ld a,(hl)			;21a6	7e 	~ 
 	jr nz,l21c9h		;21a7	20 20 	    
 	call sub_3b68h		;21a9	cd 68 3b 	. h ; 
@@ -7995,7 +7995,7 @@ l21fdh:
 	ld a,(BAS_ReadInSrc)	; [TRS] READ (non-zero) or INPUT (zero) 		;2207	3a de 78 	: . x 
 	or a			;220a	b7 	. 
 	jp nz,l2296h		;220b	c2 96 22 	. . " 
-	ld a,(CmdINPUTSrcFlag)	; a - input from tape Flag 									;220e	3a a9 78 	: . x 
+	ld a,(SysINPUTSrcFlag)	; a - input from tape Flag 									;220e	3a a9 78 	: . x 
 	or a					; is this from Tape? ;2211	b7 	. 
 	ld e,#06			; ERROR 06 - OUT OF DATA ;2212	1e 06 	. . 
 	jp z,ErrRaiseError	; yes - Raise Error 	;2214	ca a2 19 	. . . 

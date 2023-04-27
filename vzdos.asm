@@ -14,7 +14,7 @@
 CR					EQU		$0d			; CR char
 UP					EQU		$1b			; Cursor Up			
 
-SYS_INT_STATE		equ		$6800		; Hardware INT line on bit 7 
+SysHwINTState		equ		$6800		; Hardware INT line on bit 7 
 AllKeyRows			equ		$6800		; Address to read all keys at once
 CtrlKeyRow			equ		$68fd		; Address of Keyboard Row with CTRL key
 CtrlKeyCol			equ		2			; Bit Number of Keyboard Column with CTRL key
@@ -32,27 +32,27 @@ Num2KeyCol			equ		1			; Bit Number of Keyboard Column with '2' key
 ;   S Y S T E M   V A R I A B L E S
 ;  
 ;---------------------------------------------------------------------------------------------------
-SysVecParse			equ		$7804	; 
+SysVecParse			equ		$7803	; System Jump to Parser routine
 SysCursorAddr		equ		$7820	; Address of Cursor position on Screen 
 SysCursorChar		equ 	$783c	; holds oryginal char under screen Cursor
-SYS_BASIC_STACK		EQU		$78a0	
-SYS_MEMTOP_PTR    	EQU     $78B1   ; Address of highest available RAM 
-SYS_STRING_SPACE	EQU		$78d6 	; String space pointer (current location).
-SYS_BACKSP_STACK	EQU		$78e8   ; backspaced stack address
-SYS_BASIC_PRG		equ		$7ae9	; address of first byte of BASIC program
-SYS_BASIC_START_PTR	equ 	$78a4	; 16bit pointer to start of current BASIC Program
-SYS_BASIC_END_PTR	equ 	$78f9	; 16bit pointer to end of current BASIC Program
-SYS_ARR_START_PTR	equ 	$78fb	; 16bit pointer to start of area for BASIC arrays
-SYS_ARR_END_PTR		equ 	$78fd	; 16bit pointer to end of area for BASIC arrays
-BasicLineNumber		equ		$78a2	; Current line being processed by BASIC.
-BasicLineBufPtr		equ		$78a7	; Current line being processed by BASIC.
+SysBASICStack		EQU		$78a0	
+SysMemTopPtr    	EQU     $78B1   ; Address of highest available RAM 
+SysStrSpacePtr		EQU		$78d6 	; String space pointer (current location).
+SysBackupStack		EQU		$78e8   ; backspaced stack address
+SysBASICStartMem	equ		$7ae9	; address of first byte of BASIC program
+SysBASPrgStartPtr	equ 	$78a4	; 16bit pointer to start of current BASIC Program
+SysBASPrgEndPtr		equ 	$78f9	; 16bit pointer to end of current BASIC Program
+SysArrayStartPtr	equ 	$78fb	; 16bit pointer to start of area for BASIC arrays
+SysArrayEndPtr		equ 	$78fd	; 16bit pointer to end of area for BASIC arrays
+SysBASICLineNo		equ		$78a2	; Current line being processed by BASIC.
+SysBASICLineBufPtr	equ		$78a7	; Current line being processed by BASIC.
 
-CmdINPUTSrcFlag		equ     $78a9	; Source for DATA/INPUT - 0 if cassete input else non zero
-ErrorLineNumber		equ		$78ea	; BASIC Line where Error occoured
-EditLineNumber		equ		$78ec	; BASIC Line currently edited
-EditBufCounter		equ		$7aaf	; Number of characters in Edit Buffer left to process		
-
+SysINPUTSrcFlag		equ     $78a9	; Source for DATA/INPUT - 0 if cassete input else non zero
+SysErrorLineNo		equ		$78ea	; BASIC Line where Error occoured
+SysEditLineNo		equ		$78ec	; BASIC Line currently edited
+SysEditBufCnt		equ		$7aaf	; Number of characters in Edit Buffer left to process		
 SYS_ACC				equ		$7921	; BASIC Accumulator starts here (double 8 bytes, single 4 bytes, int 2 bytes, string 3 bytes) 
+
 ;***************************************************************************************************
 ;
 ;   S Y S T E M   R O U T I N E S
@@ -77,17 +77,22 @@ SysCheckIllegalDirect equ	$2828	; Throw ILLEGAL DIRECT Error if current BASIC li
 
 SysEvalByteExpr		equ		$2b1c	; Evaluate Integer expression and places it in ACC and register de
 SysEvalBasicExpr	equ		$2337	; Evaluate any BASIC expression and place result in ACC			
-
+SysPrintNum			equ		$0faf	; Print 16bit integer number from reg HL on screen
 SysNumToStr			equ		$0fbd	; Convert Numeric value from ACC to String (hl will point to start of string)
 SysStrVarToBCD		equ		$09c4	; Copy String Vector to BCD (BC=chars address, D=length)
 SysStrToACC			equ		$2865	; Create String Vector from (hl) and store in ACC
 SysGetStrVarPtr		equ		$29da	; Get VARPTR of string stored in ACC
 SysExecINPUTProc	equ		$21bd	; Execute part of BASIC INPUT command to evaluate Variable value 
 SysErrRaiseFuncCode equ		$1e4a	; Raise BASIC FUNCTION CODE	Error
-TXT_READY			equ		$1929	; 'READY' text
+SYS_TXT_READY		equ		$1929	; 'READY' text
+
 
 ;***************************************************************************************************
-
+;
+;   I / O   F L O P P Y   D I S K   C O N T R O L L E R   P O R T S
+;
+;---------------------------------------------------------------------------------------------------
+;
 ; Bit 0..Bit 3 : Stepper-motor control phases (active HIGH)
 ; Bit 4        : Drive 1 enable.(active HIGH)
 ; Bit 5        : Write Data (inverted, active LOW writes 1) => Output pulse when writing to diskette
@@ -109,15 +114,13 @@ FL_WRITE_REQ	equ	%01000000		; Bit 6 : Write Request (active LOW)
 FL_DRV_2_ENABLE	equ	%10000000		; Bit 7 : Drive 2 enable (active HIGH)
 
 
-FCB_OPENFLAG	equ	0
-FCB_ACCESS		equ	1
-FCB_FNAM		equ	2	
-FCB_TRKN0		equ	10
-FCB_SCTRNO		equ	11
-FCB_PTR			equ	12
 
-FCBLENGTH		equ 13
-
+;***************************************************************************************************
+;
+;  D O S   S T R U C T U R E   F I E L D S
+;
+;---------------------------------------------------------------------------------------------------
+;
 ; File number.
 ; When processing a data file, this is the number of the FCB block used.
 ;   0 = FCB1 
@@ -259,7 +262,7 @@ SectorCRCBuf		equ		205		; IY+CD	BUFFER DATA CRC (2 bytes)
 
 Unknown				equ     207  	; IY+CF ??? (24 bytes)
 
-MapBuffer		equ			231		; IY+e7 DISK ALLOCATION MAP BUFFER (80 bytes)
+MapBuffer			equ		231		; IY+e7 DISK ALLOCATION MAP BUFFER (80 bytes)
 
 
 
@@ -314,7 +317,7 @@ DOSInit:
 	out (FLCTRL),a					; set Flopy Control byte										;4049	d3 10 	. . 
 
 ; -- Allocate DOS memory - check top memory
-	ld hl,(SYS_MEMTOP_PTR)			; hl - current top memory address								;404b	2a b1 78 	* . x 
+	ld hl,(SysMemTopPtr)			; hl - current top memory address								;404b	2a b1 78 	* . x 
 	push hl							; save hl - top address											;404e	e5 	. 
 ; -- reserve 310 bytes
 	ld de,-310						; de = -310 bytes to substract									;404f	11 ca fe 	. . . 
@@ -339,25 +342,25 @@ DOSInit:
 
 
 ; **************************************************************************************************
-; Reserve 311 bytes for DOS
+; Reserve 311 bytes for DOS Structure
 ; Reallocate all BASIC pointers
 .continue:
 ; -- set new MEMTOP 311 bytes lower
 	add hl,de						; restore hl back to old top memory								;406a	19 	. 
 	ld de,311						; reserve 311 bytes of memory									;406b	11 37 01 	. 7 . 
 	sbc hl,de						; substract 311 bytes from old top mem							;406e	ed 52 	. R 
-	ld (SYS_MEMTOP_PTR),hl			; store as new MEMTOP											;4070	22 b1 78 	" . x 
+	ld (SysMemTopPtr),hl			; store as new MEMTOP											;4070	22 b1 78 	" . x 
 ; -- update BASIC String Space Pointer 
-	ld (SYS_STRING_SPACE),hl		; store as new String Space Pointer								;4073	22 d6 78 	" . x 
+	ld (SysStrSpacePtr),hl			; store as new String Space Pointer								;4073	22 d6 78 	" . x 
 ; -- update BASIC Stack Address
 	ld de,50						; 50 bytes of String Space										;4076	11 32 00 	. 2 . 
 	or a							; clear Carry Flag												;4079	b7 	. 
 	sbc hl,de						; calculate new address											;407a	ed 52 	. R 
-	ld (SYS_BASIC_STACK),hl			; store as new BASIC Stack Address								;407c	22 a0 78 	" . x 
+	ld (SysBASICStack),hl			; store as new BASIC Stack Address								;407c	22 a0 78 	" . x 
 ; -- update BASIC Backspaced Stack Address
 	dec hl																							;407f	2b 	+ 
 	dec hl							; decrement by 2												;4080	2b 	+ 
-	ld (SYS_BACKSP_STACK),hl		; store as new Backspaced Stack Address							;4081	22 e8 78 	" . x 
+	ld (SysBackupStack),hl			; store as new Backspaced Stack Address							;4081	22 e8 78 	" . x 
 ; -- set CPU Stack Pointer to new value
 	inc hl																							;4084	23 	# 
 	inc hl							; increment back by 2											;4085	23 	# 
@@ -418,7 +421,7 @@ DOSInit:
 
 ; -- Hook Up BASIC parser (RST 10) to allow DOS Commands
 	ld hl,DOSCheckNextChar			; NextToken replace routine										;40e9	21 93 42 	! . B 
-	ld (SysVecParse),hl				; set new jump address to intercept BASIC Parser				;40ec	22 04 78 	" . x 
+	ld (SysVecParse+1),hl			; set new jump address to intercept BASIC Parser				;40ec	22 04 78 	" . x 
 
 ; -- print DOS BASIC V1.2
 	ld hl,TxtDosBasic12				; text message "DOS BASIC V1.2"									;40ef	21 13 41 	! . A 
@@ -574,9 +577,9 @@ ERROR:
 	call SysMsgOut					; print error text												;426e	cd a7 28 	. . ( 
 
 ; -- set BASIC line number where Error was found
-	ld hl,(BasicLineNumber)			; hl - Current line being processed by BASIC or Command			;4271	2a a2 78 	* . x 
-	ld (ErrorLineNumber),hl			; set BASIC Line where Error occoured							;4274	22 ea 78 	" . x 
-	ld (EditLineNumber),hl			; BASIC Line currently edited									;4277	22 ec 78 	" . x 
+	ld hl,(SysBASICLineNo)			; hl - Current line being processed by BASIC or Command			;4271	2a a2 78 	* . x 
+	ld (SysErrorLineNo),hl			; set BASIC Line where Error occoured							;4274	22 ea 78 	" . x 
+	ld (SysEditLineNo),hl			; BASIC Line currently edited									;4277	22 ec 78 	" . x 
 
 ; -- check if error was found in program line or wrote on screen as direct command (-1)
 	inc hl							; hl will be 0 if outside of BASIC program						;427a	23 	# 
@@ -588,7 +591,7 @@ ERROR:
 .GotoBASICReady:
 ; -- transfer control to BASIC/ROM 
 	ld bc,SysStartBASIC				; address of BASICReady entry point routune to execute			;4281	01 19 1a 	. . . 
-	ld hl,(SYS_BACKSP_STACK)		; initial address of BASIC stack								;4284	2a e8 78 	* . x 
+	ld hl,(SysBackupStack)			; initial address of BASIC stack								;4284	2a e8 78 	* . x 
 	jp SysBASICReset				; reset BASIC variables and go to BASIC Ready -----------------	;4287	c3 9a 1b 	. . . 
 
 .GotoBASICBreak:
@@ -649,7 +652,7 @@ DOSCheckNextChar:
 ; Load one file specified by filename (which has the file type code "T") from a Floppy Disk 
 ; and RUN it (execute). Filename may have no more than 8 characters. If user typed just RUN command
 ; without filename then standard BASIC 'RUN' command will be parsed and executed. 
-.parse_RUN:
+DCmdRUN:
 	inc hl							; hl - next char or token										;42b0	23 	# 
 	ld a,(hl)						; a -  next char or token										;42b1	7e 	~ 
 	or a							; is it '\0' - end of BASIC line								;42b2	b7 	. 
@@ -657,7 +660,7 @@ DOSCheckNextChar:
 
 ; -- skip trailing spaces
 	cp ' '							; is it ' ' char?												;42b5	fe 20 	.   
-	jr z,.parse_RUN					; yes - ignore it - parse next char								;42b7	28 f7 	( . 
+	jr z,DCmdRUN					; yes - ignore it - parse next char								;42b7	28 f7 	( . 
 
 ; -- expected name of file enclosed in double quote chars '"'
 	cp '"'							; is it double quote char '"' ?									;42b9	fe 22 	. " 
@@ -860,10 +863,10 @@ DCmdLOAD:
 	jp nz,ERROR						; yes - go to Error handling routine --------------------------	;43a1	c2 41 42 	. A B 
 
 ; -- print 'READY' on screen
-	ld hl,TXT_READY					; hl - address of 'READY' text in ROM							;43a4	21 29 19 	! ) . 
+	ld hl,SYS_TXT_READY				; hl - address of 'READY' text in ROM							;43a4	21 29 19 	! ) . 
 	call SysMsgOut					; display text on screen										;43a7	cd a7 28 	. . ( 
 ; -- push on Stack address of 1st BASIC line and run it
-	ld hl,(SYS_BASIC_START_PTR)		; start of current BASIC Program 								;43aa	2a a4 78 	* . x 
+	ld hl,(SysBASPrgStartPtr)		; start of current BASIC Program 								;43aa	2a a4 78 	* . x 
 	push hl							; push hl on stack as next thing to parse and run				;43ad	e5 	. 
 	jp SysSetPrgReady				; Reset BASIC and set BASIC Program ready to run --------------	;43ae	c3 e8 1a 	. . . 
 
@@ -941,7 +944,7 @@ LoadProgramData:
 	inc hl							; point to LSB of end of memory area							;43e1	23 	# 
 
 ; -- set destination address as BASIC program Start and DOS Buffer
-	ld (SYS_BASIC_START_PTR),de		; store destination program start as BASIC Program Start 		;43e2	ed 53 a4 78 	. S . x 
+	ld (SysBASPrgStartPtr),de		; store destination program start as BASIC Program Start 		;43e2	ed 53 a4 78 	. S . x 
 	ld (iy+UBFR),e					; store destination program start as buffer address				;43e6	fd 73 0e 	. s . 
 	ld (iy+UBFR+1),d																				;43e9	fd 72 0f 	. r . 
 
@@ -949,7 +952,7 @@ LoadProgramData:
 	ld e,(hl)						; e - LSB of memory address where loaded file ends 				;43ec	5e 	^ 
 	inc hl							; point to MSB of memory address								;43ed	23 	# 
 	ld d,(hl)						; de - memory address where loaded file ends (excluded)			;43ee	56 	V 
-	ld (SYS_BASIC_END_PTR),de		; set address as BASIC Program End								;43ef	ed 53 f9 78 	. S . x 
+	ld (SysBASPrgEndPtr),de			; set address as BASIC Program End								;43ef	ed 53 f9 78 	. S . x 
 
 ;***************************************************************************************************
 ; File will be loaded chunk by chunk. Every chunk will be 126 bytes from Sector Data.
@@ -1003,7 +1006,7 @@ LoadProgramData:
 .loadLastChunk:
 ; -- calculate how many bytes left in last sector
 	push hl							; save hl - address of loaded sector data						;4430	e5 	. 
-	ld hl,(SYS_BASIC_END_PTR)		; hl - address of program end 									;4431	2a f9 78 	* . x 
+	ld hl,(SysBASPrgEndPtr)			; hl - address of program end 									;4431	2a f9 78 	* . x 
 	or a							; clear Carry flag												;4434	b7 	. 
 	sbc hl,de						; subtract address of program chunk start, hl - data size 		;4435	ed 52 	. R 
 	ld c,l							; copy hl to bc													;4437	4d 	M 
@@ -1019,13 +1022,13 @@ LoadProgramData:
 
 ; -- Clear BASIC Program addresses and Exit with error in a register
 .exitError:
-	ld hl,(SYS_BASIC_START_PTR)		; hl - start of BASIC Program									;4441	2a a4 78 	* . x 
+	ld hl,(SysBASPrgStartPtr)		; hl - start of BASIC Program									;4441	2a a4 78 	* . x 
 ; -- put 0000 as End of BASIC mark
 	ld (hl),0						; store LSB of 0000												;4444	36 00 	6 . 
 	inc hl							; point to next byte											;4446	23 	# 
 	ld (hl),0						; store MSB of 0000												;4447	36 00 	6 . 
 	inc hl							; hl - next address after End of BASIC							;4449	23 	# 
-	ld (SYS_BASIC_END_PTR),hl		; store as End of current BASIC Program address					;444a	22 f9 78 	" . x 
+	ld (SysBASPrgEndPtr),hl			; store as End of current BASIC Program address					;444a	22 f9 78 	" . x 
 	ret								; --------------- End of Proc (with Error) --------------------	;444d	c9 	. 
 
 
@@ -1079,9 +1082,9 @@ DCmdSAVE:
 ;***************************************************************************************************
 SAVE:
 ; -- save start and end of Program for future restore
-	ld de,(SYS_BASIC_END_PTR)		; end of current BASIC Program 									;446e	ed 5b f9 78 	. [ . x 
+	ld de,(SysBASPrgEndPtr)			; end of current BASIC Program 									;446e	ed 5b f9 78 	. [ . x 
 	push de							; save de - end of Program										;4472	d5 	. 
-	ld de,(SYS_BASIC_START_PTR)		; start of current BASIC Program 								;4473	ed 5b a4 78 	. [ . x 
+	ld de,(SysBASPrgStartPtr)		; start of current BASIC Program 								;4473	ed 5b a4 78 	. [ . x 
 	push de							; save de - start of Program									;4477	d5 	. 
 	push hl							; save hl - 													;4478	e5 	. 
 
@@ -1094,7 +1097,7 @@ DoSaveFile:
 	pop bc							; restore bc													;4481	c1 	. 
 
 ; -- setup address of Program as data source
-	ld de,(SYS_BASIC_START_PTR)		; de - start of current BASIC Program 							;4482	ed 5b a4 78 	. [ . x 
+	ld de,(SysBASPrgStartPtr)		; de - start of current BASIC Program 							;4482	ed 5b a4 78 	. [ . x 
 	ld (iy+UBFR),e					; store LSB of address											;4486	fd 73 0e 	. s . 
 	ld (iy+UBFR+1),d				; set Program address as Copy Buffer (source)					;4489	fd 72 0f 	. r . 
 
@@ -1103,7 +1106,7 @@ DoSaveFile:
 	ld (iy+SCTR),15					; Sector 15 (on track 0) contains Disk Map						;4490	fd 36 11 0f 	. 6 . . 
 	call READ						; Read Disk Map into Sector Buffer from disk					;4494	cd 27 5b 	. ' [ 
 	or a							; was any Error?												;4497	b7 	. 
-	jp nz,SAVE_ExitError			; yes -  exit with Error --------------------------------------	;4498	c2 9a 48 	. . H 
+	jp nz,SaveExitError			; yes -  exit with Error --------------------------------------	;4498	c2 9a 48 	. . H 
 
 ; -- no error - copy Disk Map from Sector Buffer to Map Buffer
 	ld e,(iy+MAPADR)																				;449b	fd 5e 34 	. ^ 4 
@@ -1115,7 +1118,7 @@ DoSaveFile:
 ; -- create Directory Entry for file
 	call CREATE						; Create an entry in directory									;44ac	cd 7b 58 	. { X 
 	or a							; was any Error?												;44af	b7 	. 
-	jp nz,SAVE_ExitError			; yes -  exit with Error --------------------------------------	;44b0	c2 9a 48 	. . H 
+	jp nz,SaveExitError			; yes -  exit with Error --------------------------------------	;44b0	c2 9a 48 	. . H 
 
 ; -- Directory Entry was created for this file
 ; NTRK and NSCT contains values for sector alloacated for chunk of file data
@@ -1140,7 +1143,7 @@ DoSaveFile:
 	call SEARCH						; Search for file in directory									;44c9	cd 13 59 	. . Y 
 	cp 2							; is Error 02 - FILE ALREADY EXISTS?							;44cc	fe 02 	. . 
 	ld a,6							; a - Error 6 - DISK I/O ERROR									;44ce	3e 06 	> . 
-	jp nz,SAVE_ExitError			; no - exit with Error 06 -------------------------------------	;44d0	c2 9a 48 	. . H 
+	jp nz,SaveExitError			; no - exit with Error 06 -------------------------------------	;44d0	c2 9a 48 	. . H 
 
 ; -- disk full but file exists on Disk - mark it as deleted
 	ex de,hl						; hl - address in Directory Entry (after filename)				;44d3	eb 	. 
@@ -1149,11 +1152,11 @@ DoSaveFile:
 	ld (hl),1						; set FileType as deleted										;44d8	36 01 	6 . 
 	call WRITE						; Write a sector with Directory to disk							;44da	cd a1 59 	. . Y 
 	ld a,7							; a - Error 07 - DISK FULL										;44dd	3e 07 	> . 
-	jp SAVE_ExitError				; exit with Error 07 ------------------------------------------	;44df	c3 9a 48 	. . H 
+	jp SaveExitError				; exit with Error 07 ------------------------------------------	;44df	c3 9a 48 	. . H 
 
 .checkOtherError:
 	or a							; was any Error (after Find Empty Sector)?						;44e2	b7 	. 
-	jp nz,SAVE_ExitError			; yes - exit with Error ---------------------------------------	;44e3	c2 9a 48 	. . H 
+	jp nz,SaveExitError			; yes - exit with Error ---------------------------------------	;44e3	c2 9a 48 	. . H 
 
 ; -- setup destination sector to write file chunk
 	ld (iy+TRCK),d					; set Track Number												;44e6	fd 72 12 	. r . 
@@ -1176,7 +1179,7 @@ DoSaveFile:
 	ld h,(iy+UBFR+1)				; 																;4500	fd 66 0f 	. f . 
 	push hl							; save hl - address of data chunk								;4503	e5 	. 
 ; -- determine chunk length
-	ld de,(SYS_BASIC_END_PTR)		; de - address of Program end 									;4504	ed 5b f9 78 	. [ . x 
+	ld de,(SysBASPrgEndPtr)			; de - address of Program end 									;4504	ed 5b f9 78 	. [ . x 
 	or a							; clear Carry flag												;4508	b7 	. 
 	sbc hl,de						; hl - negative offset from end of data to write				;4509	ed 52 	. R 
 	jp nc,.writeLastSector			; if it's positive or 0? (start >= end)							;450b	d2 3a 45 	. : E 
@@ -1188,7 +1191,7 @@ DoSaveFile:
 
 ; -- full sector with 126 bytes of data
 ; -- store start of next chunk 
-	ld de,(SYS_BASIC_END_PTR)		; end of data to write											;4515	ed 5b f9 78 	. [ . x 
+	ld de,(SysBASPrgEndPtr)			; end of data to write											;4515	ed 5b f9 78 	. [ . x 
 	add hl,de						; add negative offset - address of next chunk of data			;4519	19 	. 
 	ld (iy+UBFR),l					; store address of next chunk of data							;451a	fd 75 0e 	. u . 
 	ld (iy+UBFR+1),h																				;451d	fd 74 0f 	. t . 
@@ -1208,7 +1211,7 @@ DoSaveFile:
 .flushSector:
 	call WRITE						; Write a sector to disk										;4530	cd a1 59 	. . Y 
 	or a							; was any Error?												;4533	b7 	. 
-	jp nz,SAVE_ExitError			; yes - exit with Error ---------------------------------------	;4534	c2 9a 48 	. . H 
+	jp nz,SaveExitError			; yes - exit with Error ---------------------------------------	;4534	c2 9a 48 	. . H 
 	jp .writeNextChunk				; no - write next chunk of data -------------------------------	;4537	c3 b3 44 	. . D 
 
 
@@ -1266,13 +1269,13 @@ DoSaveFile:
 .finalizeSave:
 	call SEARCH						; Search for file in directory									;457c	cd 13 59 	. . Y 
 	cp 2							; was Error 2 - FILE ALREADY EXISTS								;457f	fe 02 	. . 
-	jp nz,SAVE_ExitError			; no - exit with Error ----------------------------------------	;4581	c2 9a 48 	. . H 
+	jp nz,SaveExitError			; no - exit with Error ----------------------------------------	;4581	c2 9a 48 	. . H 
 
 ; -- file found - update Directory Entry
 	inc de							; skip track number	byte 										;4584	13 	. 
 	inc de							; skip sector number byte										;4585	13 	. 
 ; -- update program start address 
-	ld hl,(SYS_BASIC_START_PTR)		; hk - start of current BASIC Program							;4586	2a a4 78 	* . x 
+	ld hl,(SysBASPrgStartPtr)		; hk - start of current BASIC Program							;4586	2a a4 78 	* . x 
 	ex de,hl						; de - program start, hl - address in Directory Entry 			;4589	eb 	. 
 	ld (hl),e						; store LSB of program start									;458a	73 	s 
 	inc hl							; point to MSB													;458b	23 	# 
@@ -1280,7 +1283,7 @@ DoSaveFile:
 	inc hl							; point to program end in Directory Entry						;458d	23 	# 
 ; -- update program end address
 	ex de,hl						; exchange de and hl											;458e	eb 	. 
-	ld hl,(SYS_BASIC_END_PTR)		; hl - end of current BASIC Program 							;458f	2a f9 78 	* . x 
+	ld hl,(SysBASPrgEndPtr)			; hl - end of current BASIC Program 							;458f	2a f9 78 	* . x 
 	ex de,hl						; de - program end, hl - address in Directory Entry 			;4592	eb 	. 
 	ld (hl),e						; store LSB of program end										;4593	73 	s 
 	inc hl							; point to MSB													;4594	23 	# 
@@ -1288,7 +1291,7 @@ DoSaveFile:
 ; -- write directory entry to Disk
 	call WRITE						; Write a sector with Directory to Disk							;4596	cd a1 59 	. . Y 
 	or a							; was any Error?												;4599	b7 	. 
-	jp nz,SAVE_ExitError			; yes - exit with Error ---------------------------------------	;459a	c2 9a 48 	. . H 
+	jp nz,SaveExitError			; yes - exit with Error ---------------------------------------	;459a	c2 9a 48 	. . H 
 
 ; -- update Disk Map sector
 
@@ -1321,9 +1324,9 @@ DoSaveFile:
 ; -- restore BASIC variables
 	pop hl							; restore hl - 													;45cb	e1 	. 
 	pop de							; restore de - BASIC Program Start								;45cc	d1 	. 
-	ld (SYS_BASIC_START_PTR),de		; store into start of current BASIC Program variable			;45cd	ed 53 a4 78 	. S . x 
+	ld (SysBASPrgStartPtr),de		; store into start of current BASIC Program variable			;45cd	ed 53 a4 78 	. S . x 
 	pop de							; restore de - BASIC Program End								;45d1	d1 	. 
-	ld (SYS_BASIC_END_PTR),de		; store into end of current BASIC Program variable				;45d2	ed 53 f9 78 	. S . x 
+	ld (SysBASPrgEndPtr),de			; store into end of current BASIC Program variable				;45d2	ed 53 f9 78 	. S . x 
 ; -- exit
 	or a							; was any Error after Write Disk Map to Disk?					;45d6	b7 	. 
 	jp nz,ERROR						; yes - go to Error handling routine							;45d7	c2 41 42 	. A B 
@@ -1341,7 +1344,7 @@ LoadAndRunFile:
 	call LOAD					; Load a file from disk											;45e7	cd b1 43 	. . C 
 	or a							; was any Error?												;45ea	b7 	. 
 	jp nz,ERROR						; yes - goto Error handling routine	---------------------------	;45eb	c2 41 42 	. A B 
-	ld de,(SYS_BASIC_START_PTR)		; de - start of current BASIC Program 							;45ee	ed 5b a4 78 	. [ . x 
+	ld de,(SysBASPrgStartPtr)		; de - start of current BASIC Program 							;45ee	ed 5b a4 78 	. [ . x 
 	jp SysExecRUN					; Execute BASIC RUN command - start from address in de --------	;45f2	c3 e9 36 	. . 6 
 	
 
@@ -1793,7 +1796,7 @@ DCmdCLOSE:
 	push hl							; save hl - address of next character in BASIC					;47e4	e5 	. 
 
 ; -- test if command is called from BASIC program or direct 
-	ld hl,(BasicLineNumber)			; hl - Current line being processed by BASIC					;47e5	2a a2 78 	* . x 
+	ld hl,(SysBASICLineNo)			; hl - Current line being processed by BASIC					;47e5	2a a2 78 	* . x 
 	inc hl							; if was -1 (oxffff) then now will be 0							;47e8	23 	# 
 	ld a,h																							;47e9	7c 	| 
 	or l							; is hl = 0 (called as direct command)?							;47ea	b5 	. 
@@ -1892,16 +1895,16 @@ DCmdBSAVE:
 	defb ','						; next char must be ','											;4843	2c 	, 
 
 ; -- save current addresses of BASIC program on stack
-	ld de,(SYS_BASIC_END_PTR)		; end of current BASIC Program 									;4844	ed 5b f9 78 	. [ . x 
+	ld de,(SysBASPrgEndPtr)			; end of current BASIC Program 									;4844	ed 5b f9 78 	. [ . x 
 	push de							; save de - end of program 										;4848	d5 	. 
-	ld de,(SYS_BASIC_START_PTR)		; start of current BASIC Program 								;4849	ed 5b a4 78 	. [ . x 
+	ld de,(SysBASPrgStartPtr)		; start of current BASIC Program 								;4849	ed 5b a4 78 	. [ . x 
 	push de							; save de - start of programm									;484d	d5 	. 
 
 ; -- convert hex text (4 chars) into 16bit address - start of memory to save
 	call HEX						; de - 16bit address from 4 chars of Hex text					;484e	cd b9 53 	. . S 
 	ld a,1							; a - Error 01 - SYNTAX ERROR									;4851	3e 01 	> . 
-	jp c,BS_ExitError				; if parse hex error - exit with Error 01 ---------------------	;4853	da b7 48 	. . H 
-	ld (SYS_BASIC_START_PTR),de		; no error - save as start of memory to save 					;4856	ed 53 a4 78 	. S . x 
+	jp c,RestoreExitError			; if parse hex error - exit with Error 01 ---------------------	;4853	da b7 48 	. . H 
+	ld (SysBASPrgStartPtr),de		; no error - save as start of memory to save 					;4856	ed 53 a4 78 	. S . x 
 
 ; -- expected ',' char 
 	rst $08							; Assert next char is ','										;485a	cf 	. 
@@ -1910,9 +1913,9 @@ DCmdBSAVE:
 ; -- convert hex text (4 chars) into 16bit address - end of memory to save
 	call HEX						; de - 16bit address from 4 chars of Hex text					;485c	cd b9 53 	. . S 
 	ld a,1							; a - Error 01 - SYNTAX ERROR									;485f	3e 01 	> . 
-	jp c,BS_ExitError				; if parse hex error - exit with Error 01 ---------------------	;4861	da b7 48 	. . H 
+	jp c,RestoreExitError			; if parse hex error - exit with Error 01 ---------------------	;4861	da b7 48 	. . H 
 	inc de							; de - next address after last byte to save						;4864	13 	. 
-	ld (SYS_BASIC_END_PTR),de		; save end of current BASIC Program 							;4865	ed 53 f9 78 	. S . x 
+	ld (SysBASPrgEndPtr),de			; save end of current BASIC Program 							;4865	ed 53 f9 78 	. S . x 
 
 ; -- verify syntax - must be end of line ('\0') or end of expression ':'
 	ld a,(hl)						; a - next parsed char											;4869	7e 	~ 
@@ -1920,7 +1923,7 @@ DCmdBSAVE:
 	jr z,.continue					; yes - continue												;486b	28 07 	( . 
 	cp ':'							; is it ':' (end of expression)?								;486d	fe 3a 	. : 
 	ld a,1							; a - Error 01 - SYNTAX ERROR									;486f	3e 01 	> . 
-	jp nz,BS_ExitError				; if not \0 nor ':' - exit with Error 01 ----------------------	;4871	c2 b7 48 	. . H 
+	jp nz,RestoreExitError			; if not \0 nor ':' - exit with Error 01 ----------------------	;4871	c2 b7 48 	. . H 
 
 .continue:
 ; -- set type of file as Binary Program ('B')
@@ -1928,11 +1931,11 @@ DCmdBSAVE:
 	push hl							; save hl - parse point											;4878	e5 	. 
 
 ; -- verify start addres is smaller than end address 
-	ld hl,(SYS_BASIC_START_PTR)		; hl - start of memory area to save, de - end of area 							;4879	2a a4 78 	* . x 
+	ld hl,(SysBASPrgStartPtr)		; hl - start of memory area to save, de - end of area 							;4879	2a a4 78 	* . x 
 	or a							; clear Carry flag												;487c	b7 	. 
 	sbc hl,de						; difference - is hl >= de ? 									;487d	ed 52 	. R 
 	ld a,1							; a - Error 01 - SYNTAX ERROR									;487f	3e 01 	> . 
-	jp nc,SAVE_ExitError			; if hl >= de - exit with Error 01 ----------------------------	;4881	d2 9a 48 	. . H 
+	jp nc,SaveExitError			; if hl >= de - exit with Error 01 ----------------------------	;4881	d2 9a 48 	. . H 
 
 ; -- no error - turn on Disk Drive and wait 2ms
 	call PWRON						; Disk power ON													;4884	cd 41 5f 	. A _ 
@@ -1945,11 +1948,11 @@ DCmdBSAVE:
 	in a,(FLWRPROT)					; a - read Write Protected flag from FDC						;488f	db 13 	. . 
 	or a							; is bit 7 set? (write protected)								;4891	b7 	. 
 	ld a,04							; a - Error 04 - DISK WRITE PROTECTED							;4892	3e 04 	> . 
-	jp m,SAVE_ExitError				; yes - go to Error handling routine --------------------------	;4894	fa 9a 48 	. . H 
+	jp m,SaveExitError				; yes - go to Error handling routine --------------------------	;4894	fa 9a 48 	. . H 
 	jp DoSaveFile					; continue reusing part of 'SAVEFILE' DOS routine -------------	;4897	c3 79 44 	. y D 
 
 
-SAVE_ExitError:
+SaveExitError:
 ; -- was it canceled by user pressing BREAK?
 	cp 17							; is it Error 17 - BREAK by user 								;489a	fe 11 	. . 
 	jr nz,.exitWithError			; no - exit with other error									;489c	20 18 	  . 
@@ -1975,11 +1978,11 @@ SAVE_ExitError:
 ;***************************************************************************************************
 ; Restore BASIC Program addresses from Stack and go o DOS Error handler
 ; IN: a - Error code
-BS_ExitError:
+RestoreExitError:
 	pop de							; restore de - start of program									;48b7	d1 	. 
-	ld (SYS_BASIC_START_PTR),de		; store to start of current BASIC Program variable				;48b8	ed 53 a4 78 	. S . x 
+	ld (SysBASPrgStartPtr),de		; store to start of current BASIC Program variable				;48b8	ed 53 a4 78 	. S . x 
 	pop de							; restore de - end of program									;48bc	d1 	. 
-	ld (SYS_BASIC_END_PTR),de		; store to end of current BASIC Program variable				;48bd	ed 53 f9 78 	. S . x 
+	ld (SysBASPrgEndPtr),de			; store to end of current BASIC Program variable				;48bd	ed 53 f9 78 	. S . x 
 	jp ERROR						; got Error handling routine ----------------------------------	;48c1	c3 41 42 	. A B 
 
 
@@ -2005,9 +2008,9 @@ DCmdBLOAD:
 
 ; -- save current Program start and end addresses 
 	pop hl							; restore hl - parse point										;48d0	e1 	. 
-	ld de,(SYS_BASIC_END_PTR)		; de - end of current Program 									;48d1	ed 5b f9 78 	. [ . x 
+	ld de,(SysBASPrgEndPtr)			; de - end of current Program 									;48d1	ed 5b f9 78 	. [ . x 
 	push de							; save de - end of current Program								;48d5	d5 	. 
-	ld de,(SYS_BASIC_START_PTR)		; de - start of current Program 								;48d6	ed 5b a4 78 	. [ . x 
+	ld de,(SysBASPrgStartPtr)		; de - start of current Program 								;48d6	ed 5b a4 78 	. [ . x 
 	push de							; save de - start of current Program							;48da	d5 	. 
 	push hl							; save hl - parse point											;48db	e5 	. 
 
@@ -2017,9 +2020,9 @@ DCmdBLOAD:
 ; -- restore current Program start and end addresses
 	pop hl							; restore hl - parse point										;48df	e1 	. 
 	pop de							; restore de - saved start of current Program					;48e0	d1 	. 
-	ld (SYS_BASIC_START_PTR),de		; set as Start of current Program 								;48e1	ed 53 a4 78 	. S . x 
+	ld (SysBASPrgStartPtr),de		; set as Start of current Program 								;48e1	ed 53 a4 78 	. S . x 
 	pop de							; restore de - saved end of current Program						;48e5	d1 	. 
-	ld (SYS_BASIC_END_PTR),de		; set as End of current Program 								;48e6	ed 53 f9 78 	. S . x 
+	ld (SysBASPrgEndPtr),de			; set as End of current Program 								;48e6	ed 53 f9 78 	. S . x 
 ; -- now check if was any Error 
 	or a							; was any Error?												;48ea	b7 	. 
 	jp nz,ERROR						; yes - go to Error handling routine --------------------------	;48eb	c2 41 42 	. A B 
@@ -2049,7 +2052,7 @@ DCmdBRUN:
 	jp nz,ERROR						; yes - go to Error handling routine --------------------------	; Error handling routine	;48ff	c2 41 42 	. A B 
 
 ; -- execute loaded code from 1st byte
-	ld hl,(SYS_BASIC_START_PTR)		; hl - start of loaded Program 									;4902	2a a4 78 	* . x 
+	ld hl,(SysBASPrgStartPtr)		; hl - start of loaded Program 									;4902	2a a4 78 	* . x 
 	jp (hl)							; execute loaded Program --------------------------------------	;4905	e9 	. 
 
 
@@ -3026,7 +3029,7 @@ DCmdIN#:
 
 .readyToRead:
 	ld b,199						; b - max length of string to read from disk 					;4de2	06 c7 	. . 
-	ld hl,(BasicLineBufPtr)			; hl - address of BASIC Line buffer								;4de4	2a a7 78 	* . x 
+	ld hl,(SysBASICLineBufPtr)		; hl - address of BASIC Line buffer								;4de4	2a a7 78 	* . x 
 .nextChar:
 	call .getCharFromFile			; read char from file											;4de7	cd f9 4d 	. . M 
 	ld (hl),a						; store char into BASIC line buffer								;4dea	77 	w 
@@ -3037,7 +3040,7 @@ DCmdIN#:
 
 .evalExprToVariable:
 	xor a							; a - Source flag for BASIC DATA/INPUT command					;4df2	af 	. 
-	ld (CmdINPUTSrcFlag),a			; set BASIC Source flag as stream								;4df3	32 a9 78 	2 . x 
+	ld (SysINPUTSrcFlag),a			; set BASIC Source flag as stream								;4df3	32 a9 78 	2 . x 
 	jp SysExecINPUTProc				; Execute part of BASIC INPUT cmd to evaluate Variable value	;4df6	c3 bd 21 	. . ! 
 
 
@@ -3512,7 +3515,7 @@ FlushSectorData:
 ; Filename may have no more than 8 characters
 DCmdDCOPY:
 ; -- check if invoked as direct command
-	ld de,(BasicLineNumber)			; de - current line number (ffff if direct command)				;4ffb	ed 5b a2 78 	. [ . x 
+	ld de,(SysBASICLineNo)			; de - current line number (ffff if direct command)				;4ffb	ed 5b a2 78 	. [ . x 
 	inc de							; de - 0 if direct command, non zero if BASIC program			;4fff	13 	. 
 	ld a,d							; a - LSB of result												;5000	7a 	z 
 	or e							; is de 0000? (direct command)?									;5001	b3 	. 
@@ -3593,7 +3596,7 @@ DCmdDCOPY:
 ; -- allocate memory area for buffer + 58 extra bytes
 	ld hl,-58						; hl - 58 bytes to reserve on stack								;505e	21 c6 ff 	! . . 
 	add hl,sp						; allocate 58 bytes on CPU stack								;5061	39 	9 
-	ld de,SYS_BASIC_PRG				; address of first byte of BASIC program 						;5062	11 e9 7a 	. . z 
+	ld de,SysBASICStartMem			; address of first byte of BASIC program 						;5062	11 e9 7a 	. . z 
 	or a							; clear Carry flag												;5065	b7 	. 
 	sbc hl,de						; hl - number of bytes free above program and below CPU Stack	;5066	ed 52 	. R 
 ; -- allocate memory buffer for X tracks
@@ -3611,8 +3614,8 @@ DCmdDCOPY:
 	call AskUserForSrcAndDst		; Ask user to choose source and destination disk number			;5080	cd 68 51 	. h Q 
 
 .readTracks:
-	ld de,SYS_BASIC_PRG				; de - address first byte of free memory (Buffer) 				;5083	11 e9 7a 	. . z 
-	ld (SYS_BASIC_START_PTR),de		; set as current pointer 										;5086	ed 53 a4 78 	. S . x 
+	ld de,SysBASICStartMem			; de - address first byte of free memory (Buffer) 				;5083	11 e9 7a 	. . z 
+	ld (SysBASPrgStartPtr),de		; set as current pointer 										;5086	ed 53 a4 78 	. S . x 
 
 ; -- select source drive (ask user if the same as destination)
 	call SelectSrcDrive				; select source drive											;508a	cd 19 52 	. . R 
@@ -3628,12 +3631,12 @@ DCmdDCOPY:
 ; -- copy sector buffer to copy buffer
 	ld l,(iy+DBFR)					; hl - address of Sector Buffer (source)						;5098	fd 6e 31 	. n 1 
 	ld h,(iy+DBFR+1)																				;509b	fd 66 32 	. f 2 
-	ld de,(SYS_BASIC_START_PTR)		; de - address in allocated Track buffer (destination) 			;509e	ed 5b a4 78 	. [ . x 
+	ld de,(SysBASPrgStartPtr)		; de - address in allocated Track buffer (destination) 			;509e	ed 5b a4 78 	. [ . x 
 	ld bc,128						; bc - 128 bytes to copy (sector data)							;50a2	01 80 00 	. . . 
 	ldir							; copy data														;50a5	ed b0 	. . 
 
 ; -- advance destination pointer and sector number
-	ld (SYS_BASIC_START_PTR),de		; update current pointer in Track Buffer 						;50a7	ed 53 a4 78 	. S . x 
+	ld (SysBASPrgStartPtr),de		; update current pointer in Track Buffer 						;50a7	ed 53 a4 78 	. S . x 
 	inc (iy+SCTR)					; increment Sector Number by 1									;50ab	fd 34 11 	. 4 . 
 	ld a,(iy+SCTR)					; a - next Sector Number										;50ae	fd 7e 11 	. ~ . 
 	cp 16							; is it 16? (all 16 sectors loaded into memory)					;50b1	fe 10 	. . 
@@ -3677,19 +3680,19 @@ DCmdDCOPY:
 	jp m,ClearAndError				; yes - Clear BASIC Program and raise Error						;50e8	fa 62 51 	. b Q 
 
 ; -- reset buffer pointer
-	ld hl,SYS_BASIC_PRG				; hl - address of first byte of free memory (buffer) 			;50eb	21 e9 7a 	! . z 
-	ld (SYS_BASIC_START_PTR),hl		; set as current pointer 										;50ee	22 a4 78 	" . x 
+	ld hl,SysBASICStartMem			; hl - address of first byte of free memory (buffer) 			;50eb	21 e9 7a 	! . z 
+	ld (SysBASPrgStartPtr),hl		; set as current pointer 										;50ee	22 a4 78 	" . x 
 
 .writeNextSector:
 ; -- copy sector data from Tracks Buffer (memory) to Sector Buffer
-	ld hl,(SYS_BASIC_START_PTR)		; hl - address in allocated Track buffer (source)	 			;50f1	2a a4 78 	* . x 
+	ld hl,(SysBASPrgStartPtr)		; hl - address in allocated Track buffer (source)	 			;50f1	2a a4 78 	* . x 
 	ld e,(iy+DBFR)					; de - address of Sector BUffer (destination)					;50f4	fd 5e 31 	. ^ 1 
 	ld d,(iy+DBFR+1)																				;50f7	fd 56 32 	. V 2 
 	ld bc,128						; bc - 128 bytes to copy (sector data)							;50fa	01 80 00 	. . . 
 	ldir							; copy data														;50fd	ed b0 	. . 
 
 ; -- advance source pointer
-	ld (SYS_BASIC_START_PTR),hl		; update current pointer in Track Buffer 						;50ff	22 a4 78 	" . x 
+	ld (SysBASPrgStartPtr),hl		; update current pointer in Track Buffer 						;50ff	22 a4 78 	" . x 
 ; -- write sector 
 	call WRITE						; Write a sector to disk										;5102	cd a1 59 	. . Y 
 	or a							; was any error?												;5105	b7 	. 
@@ -3736,17 +3739,17 @@ DCmdDCOPY:
 ; Clear BASIC Program and select D1 drive
 ClearBASIC:
 ; -- clear BASIC program
-	ld hl,SYS_BASIC_PRG				; address of first byte of BASIC program 						;5144	21 e9 7a 	! . z 
-	ld (SYS_BASIC_START_PTR),hl		; store it as start of current BASIC Program 					;5147	22 a4 78 	" . x 
+	ld hl,SysBASICStartMem			; address of first byte of BASIC program 						;5144	21 e9 7a 	! . z 
+	ld (SysBASPrgStartPtr),hl		; store it as start of current BASIC Program 					;5147	22 a4 78 	" . x 
 ; -- store two 00 bytes as "end of BASIC" sequence
 	ld (hl),0						; 0 as low byte of address										;514a	36 00 	6 . 
 	inc hl							; next address in memory										;514c	23 	# 
 	ld (hl),0						; store 0000 as address of next BASIC line						;514d	36 00 	6 . 
 	inc hl							; next addres after BASIC Program								;514f	23 	# 
 ; -- set end of BASIC area (including 0 bytes allocated for DIM variables)
-	ld (SYS_BASIC_END_PTR),hl		; store it as end of current BASIC Program 						;5150	22 f9 78 	" . x 
-	ld (SYS_ARR_START_PTR),hl		; store it as start of area for BASIC arrays					;5153	22 fb 78 	" . x 
-	ld (SYS_ARR_END_PTR),hl			; store it as end of area for BASIC arrays						;5156	22 fd 78 	" . x 
+	ld (SysBASPrgEndPtr),hl			; store it as end of current BASIC Program 						;5150	22 f9 78 	" . x 
+	ld (SysArrayStartPtr),hl		; store it as start of area for BASIC arrays					;5153	22 fb 78 	" . x 
+	ld (SysArrayEndPtr),hl			; store it as end of area for BASIC arrays						;5156	22 fd 78 	" . x 
 ; -- select drive D1
 	ld (iy+DK),$10					; set Drive 1 selected											;5159	fd 36 0b 10 	. 6 . . 
 	ld (iy+DCPYF),0					; clear DCOPY flag												;515d	fd 36 39 00 	. 6 9 . 
@@ -3798,7 +3801,7 @@ AskUserForSrcAndDst:
 ; User can press Ctrl+Break to cancel DCOPY command
 ; OUT: c - char pressed by user ('1' or '2') 
 GetDriveNoInput:
-	ld a,(EditBufCounter)			; a - number of characters in Edit Buffer left to process		;5192	3a af 7a 	: . z 
+	ld a,(SysEditBufCnt)			; a - number of characters in Edit Buffer left to process		;5192	3a af 7a 	: . z 
 	or a							; is it 0 (buffer empty)?										;5195	b7 	. 
 	jr nz,GetDriveNoInput			; no - wait until all are processed ---------------------------	;5196	20 fa 	  . 
 
@@ -3810,7 +3813,7 @@ GetDriveNoInput:
 	ld hl,(SysCursorAddr)			; hl - address of Cursor position on Screen 					;519c	2a 20 78 	*   x 
 .waitForINT:
 ; -- wait for interrupt (end of frame)
-	ld a,(SYS_INT_STATE)			; read hardware INT line										;519f	3a 00 68 	: . h 
+	ld a,(SysHwINTState)			; read hardware INT line										;519f	3a 00 68 	: . h 
 	or a							; is INT line 0? (end of video frame)							;51a2	b7 	. 
 	jp m,.waitForINT				; no - wait for INT line low ----------------------------------	;51a3	fa 9f 51 	. . Q 
 
@@ -3825,7 +3828,7 @@ GetDriveNoInput:
 
 .waitForINTEnd:
 ; -- wait for end of interrupt (start new frame)
-	ld a,(SYS_INT_STATE)			; read hardware INT line										;51ae	3a 00 68 	: . h 
+	ld a,(SysHwINTState)			; read hardware INT line										;51ae	3a 00 68 	: . h 
 	or a							; is INT line 1? (start of video frame)							;51b1	b7 	. 
 	jp p,.waitForINTEnd				; no - wait for INT line high ---------------------------------	;51b2	f2 ae 51 	. . Q 
 
@@ -3886,7 +3889,7 @@ WaitUserReady:
 	call SysMsgOut					; print text on screen											;522c	cd a7 28 	. . ( 
 .wait:
 ; -- wait for system Edit Buffer is empty
-	ld a,(EditBufCounter)			; a - number of chars in Edit Buffer left to process			;522f	3a af 7a 	: . z 
+	ld a,(SysEditBufCnt)			; a - number of chars in Edit Buffer left to process			;522f	3a af 7a 	: . z 
 	or a							; is it 0? (buffer empty)										;5232	b7 	. 
 	jr nz,.wait						; no - wait for all characters in Edit Buffer be processed		;5233	20 fa 	  . 
 
@@ -3899,7 +3902,7 @@ WaitUserReady:
 
 .waitForINT:
 ; -- wait for interrupt (end of frame)
-	ld a,(SYS_INT_STATE)			; read hardware INT line										;523c	3a 00 68 	: . h 
+	ld a,(SysHwINTState)			; read hardware INT line										;523c	3a 00 68 	: . h 
 	or a							; is INT line 0? (end of video frame)							;523f	b7 	. 
 	jp m,.waitForINT						; no - wait for INT line low ----------------------------------	;5240	fa 3c 52 	. < R 
 ; -- check frame counter for Cursor blink
@@ -3912,7 +3915,7 @@ WaitUserReady:
 	ld (hl),a						; put modified char on screen									;524a	77 	w 
 
 .waitForINTEnd:
-	ld a,(SYS_INT_STATE)			; read hardware INT line										;524b	3a 00 68 	: . h 
+	ld a,(SysHwINTState)			; read hardware INT line										;524b	3a 00 68 	: . h 
 	or a							; is INT line 1? (start of video frame)							;524e	b7 	. 
 	jp p,.waitForINTEnd				; no - wait for INT line high ---------------------------------	;524f	f2 4b 52 	. K R 
 
@@ -3970,6 +3973,8 @@ TXT_INSERTDSTDISK:
 ; For Example: 
 ;  	624 RECORDS FREE
 ;  	78.0K BYTES FREE
+; Disk allocation Map contains 78 bytes where every bit is set when coresponding sector is used.
+; Only sectors from tracks 1..39 are tracked.
 DCmdSTATUS:
 ; -- save parser point and disable interrupt
 	push hl							; save hl - address of next BASIC char							;52d5	e5 	. 
@@ -3992,58 +3997,70 @@ DCmdSTATUS:
 ; -- turn disk power off
 	call PWROFF						; Disk power OFF												;52f1	cd 52 5f 	. R _ 
 
-; -- 
+; -- calculate number of free sectors on disk
 	ld l,(iy+DBFR)					; hl - address of sector buffer									;52f4	fd 6e 31 	. n 1 
 	ld h,(iy+DBFR+1)																				;52f7	fd 66 32 	. f 2 
-	ld e,000h		;52fa	1e 00 	. . 
-	ld d,000h		;52fc	16 00 	. . 
-	ld c,04eh		;52fe	0e 4e 	. N 
-l5300h:
-	ld b,008h		;5300	06 08 	. . 
-l5302h:
-	ld a,(hl)			;5302	7e 	~ 
-l5303h:
-	rrc a		;5303	cb 0f 	. . 
-	jr c,l5308h		;5305	38 01 	8 . 
-	inc de			;5307	13 	. 
-l5308h:
-	djnz l5303h		;5308	10 f9 	. . 
-	inc hl			;530a	23 	# 
-	dec c			;530b	0d 	. 
-	jr nz,l5300h		;530c	20 f2 	  . 
-	ld l,e			;530e	6b 	k 
-	ld h,d			;530f	62 	b 
-l5310h:
-	push hl			;5310	e5 	. 
-	call 00fafh		;5311	cd af 0f 	. . . 
-	ld hl,MSG_RecordsFree		;5314	21 4a 53 	! J S 
-	call SysMsgOut		;5317	cd a7 28 	. . ( 
-	pop hl			;531a	e1 	. 
-	push hl			;531b	e5 	. 
-	srl h		;531c	cb 3c 	. < 
-	rr l		;531e	cb 1d 	. . 
-	srl h		;5320	cb 3c 	. < 
-	rr l		;5322	cb 1d 	. . 
-	srl h		;5324	cb 3c 	. < 
-	rr l		;5326	cb 1d 	. . 
-	call 00fafh		;5328	cd af 0f 	. . . 
-	ld a,02eh		;532b	3e 2e 	> . 
-	call SysPrintChar		;532d	cd 2a 03 	. * . 
-	pop hl			;5330	e1 	. 
-	ld a,007h		;5331	3e 07 	> . 
-	and l			;5333	a5 	. 
-	inc a			;5334	3c 	< 
-	ld b,a			;5335	47 	G 
-	ld hl,0ff83h		;5336	21 83 ff 	! . . 
-	ld de,0007dh		;5339	11 7d 00 	. } . 
-l533ch:
-	add hl,de			;533c	19 	. 
-	djnz l533ch		;533d	10 fd 	. . 
-	call 00fafh		;533f	cd af 0f 	. . . 
-	ld hl,MSG_KBytesFree		;5342	21 59 53 	! Y S 
-	call SysMsgOut		;5345	cd a7 28 	. . ( 
-	pop hl			;5348	e1 	. 
-	ret			;5349	c9 	. 
+	ld e,0							; de - number of free sectors on disk							;52fa	1e 00 	. . 
+	ld d,0																							;52fc	16 00 	. . 
+	ld c,78							; c - 78 bytes to check											;52fe	0e 4e 	. N 
+.nextByte:
+	ld b,8							; b - 8 bits (sectors) in every byte of alloaction Map			;5300	06 08 	. . 
+	ld a,(hl)						; a - byte from disk allocation map								;5302	7e 	~ 
+.nextBit:
+	rrc a							; Carry - LSBit of byte											;5303	cb 0f 	. . 
+	jr c,.skip						; skip if Carry = 1 (sector used)								;5305	38 01 	8 . 
+	inc de							; Carry = 0 - add 1 to free sectors counter						;5307	13 	. 
+.skip:
+	djnz .nextBit					; check all 8 bits of Map byte --------------------------------	;5308	10 f9 	. . 
+; -- advance to next byte from allocation Map
+	inc hl							; hl - address of next byte										;530a	23 	# 
+	dec c							; decrement number of bytes to analyze - all done?				;530b	0d 	. 
+	jr nz,.nextByte					; no - check all 78 bytes -------------------------------------	;530c	20 f2 	  . 
+
+; -- save number of free sectors for future use
+	ld l,e							; hl - number of free sectors on disk							;530e	6b 	k 
+	ld h,d																							;530f	62 	b 
+	push hl							; save hl - number of free sectors								;5310	e5 	. 
+
+; -- display status on screen
+	call SysPrintNum				; print integer from reg hl on screen							;5311	cd af 0f 	. . . 
+	ld hl,MSG_RecordsFree			; hl - text " RECORDS FREE"										;5314	21 4a 53 	! J S 
+	call SysMsgOut					; print text on screen											;5317	cd a7 28 	. . ( 
+
+; -- calculate number of kilobytes - 128 bytes x free sectors / 1024 = free sectors / 8 
+	pop hl							; restore hl - number of free sectors							;531a	e1 	. 
+
+; -- print integer part of equation = free sectors / 8 
+	push hl							; save hl - number of free sectors								;531b	e5 	. 
+	srl h							; h = h / 2 													;531c	cb 3c 	. < 
+	rr l							; hl = hl / 2	(free sectors / 2)								;531e	cb 1d 	. . 
+	srl h							; h = h / 2														;5320	cb 3c 	. < 
+	rr l							; hl = hl / 2   (free sectors / 4)								;5322	cb 1d 	. . 
+	srl h							; h = h / 2														;5324	cb 3c 	. < 
+	rr l							; hl = hl / 2   (free sectors / 8)		 						;5326	cb 1d 	. . 
+	call SysPrintNum				; print integer from reg hl on screen							;5328	cd af 0f 	. . . 
+
+; -- print decimal point
+	ld a,'.'						; a - decimal dot '.'											;532b	3e 2e 	> . 
+	call SysPrintChar				; print char on screen											;532d	cd 2a 03 	. * . 
+
+; -- print fractional part  
+	pop hl							; restore hl - number of free sectors							;5330	e1 	. 
+	ld a,%00000111					; reminder from division / 8 will be 0..7						;5331	3e 07 	> . 
+	and l							; a - calculated reminder from free sectors / 8					;5333	a5 	. 
+	inc a							; preincrement - move to range 1..8								;5334	3c 	< 
+	ld b,a							; b - loop counter												;5335	47 	G 
+	ld hl,-125						; hl - startup value (-1/8 of 1000)								;5336	21 83 ff 	! . . 
+	ld de,125						; de - value to add (1/8 of 1000)								;5339	11 7d 00 	. } . 
+.add:
+	add hl,de						; hl - 125 x reminder from division								;533c	19 	. 
+	djnz .add						; add de to hl b times ----------------------------------------	;533d	10 fd 	. . 
+	call SysPrintNum				; print integer from reg hl on screen							;533f	cd af 0f 	. . . 
+	ld hl,MSG_KBytesFree			; hl - text "K BYTES FREE"										;5342	21 59 53 	! Y S 
+	call SysMsgOut					; print text on screen											;5345	cd a7 28 	. . ( 
+; -- restore parser point and exit
+	pop hl							; save hl - address of next BASIC char							;5348	e1 	. 
+	ret								; ---------------------- End of Proc --------------------------	;5349	c9 	. 
 
 MSG_RecordsFree:
 	db " RECORDS FREE",CR,0		;534a	20 52 45 43 4f 52 44 53 20 46 52 45 45 0d 00 
