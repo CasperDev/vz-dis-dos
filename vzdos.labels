@@ -339,9 +339,9 @@ DCmdDIR.printFilename: EQU 0x0000493E
 DCmdDIR.exit: EQU 0x0000498F
 DCmdDIR.printDirEntry: EQU 0x0000492E
 DCmdDIR.nextSector: EQU 0x0000491B
-SAVE_ExitError.exitWithError: EQU 0x000048B6
+SaveExitError.exitWithError: EQU 0x000048B6
 DCmdBSAVE.continue: EQU 0x00004874
-BS_ExitError: EQU 0x000048B7
+RestoreExitError: EQU 0x000048B7
 DCmdCLOSE.fromBasicProg: EQU 0x000047F7
 FCBHandlesFile.returnNotOpen: EQU 0x000047D7
 FCBHandlesFile.nextChar: EQU 0x000047C6
@@ -369,7 +369,7 @@ DoSaveFile.writeLastSector: EQU 0x0000453A
 DoSaveFile.checkOtherError: EQU 0x000044E2
 DoSaveFile.finalizeSave: EQU 0x0000457C
 DoSaveFile.writeNextChunk: EQU 0x000044B3
-SAVE_ExitError: EQU 0x0000489A
+SaveExitError: EQU 0x0000489A
 DoSaveFile: EQU 0x00004479
 LoadProgramData.loadLastChunk: EQU 0x00004430
 LoadProgramData.exitError: EQU 0x00004441

@@ -1170,7 +1170,7 @@
 1106  4490 FD 36 11 0F  	ld (iy+SCTR),15					; Sector 15 (on track 0) contains Disk Map						;4490	fd 36 11 0f 	. 6 . .
 1107  4494 CD 27 5B     	call READ						; Read Disk Map into Sector Buffer from disk					;4494	cd 27 5b 	. ' [
 1108  4497 B7           	or a							; was any Error?												;4497	b7 	.
-1109  4498 C2 9A 48     	jp nz,SAVE_ExitError			; yes -  exit with Error --------------------------------------	;4498	c2 9a 48 	. . H
+1109  4498 C2 9A 48     	jp nz,SaveExitError			; yes -  exit with Error --------------------------------------	;4498	c2 9a 48 	. . H
 1110  449B
 1111  449B              ; -- no error - copy Disk Map from Sector Buffer to Map Buffer
 1112  449B FD 5E 34     	ld e,(iy+MAPADR)																				;449b	fd 5e 34 	. ^ 4
@@ -1182,7 +1182,7 @@
 1118  44AC              ; -- create Directory Entry for file
 1119  44AC CD 7B 58     	call CREATE						; Create an entry in directory									;44ac	cd 7b 58 	. { X
 1120  44AF B7           	or a							; was any Error?												;44af	b7 	.
-1121  44B0 C2 9A 48     	jp nz,SAVE_ExitError			; yes -  exit with Error --------------------------------------	;44b0	c2 9a 48 	. . H
+1121  44B0 C2 9A 48     	jp nz,SaveExitError			; yes -  exit with Error --------------------------------------	;44b0	c2 9a 48 	. . H
 1122  44B3
 1123  44B3              ; -- Directory Entry was created for this file
 1124  44B3              ; NTRK and NSCT contains values for sector alloacated for chunk of file data
@@ -1207,7 +1207,7 @@
 1143  44C9 CD 13 59     	call SEARCH						; Search for file in directory									;44c9	cd 13 59 	. . Y
 1144  44CC FE 02        	cp 2							; is Error 02 - FILE ALREADY EXISTS?							;44cc	fe 02 	. .
 1145  44CE 3E 06        	ld a,6							; a - Error 6 - DISK I/O ERROR									;44ce	3e 06 	> .
-1146  44D0 C2 9A 48     	jp nz,SAVE_ExitError			; no - exit with Error 06 -------------------------------------	;44d0	c2 9a 48 	. . H
+1146  44D0 C2 9A 48     	jp nz,SaveExitError			; no - exit with Error 06 -------------------------------------	;44d0	c2 9a 48 	. . H
 1147  44D3
 1148  44D3              ; -- disk full but file exists on Disk - mark it as deleted
 1149  44D3 EB           	ex de,hl						; hl - address in Directory Entry (after filename)				;44d3	eb 	.
@@ -1216,11 +1216,11 @@
 1152  44D8 36 01        	ld (hl),1						; set FileType as deleted										;44d8	36 01 	6 .
 1153  44DA CD A1 59     	call WRITE						; Write a sector with Directory to disk							;44da	cd a1 59 	. . Y
 1154  44DD 3E 07        	ld a,7							; a - Error 07 - DISK FULL										;44dd	3e 07 	> .
-1155  44DF C3 9A 48     	jp SAVE_ExitError				; exit with Error 07 ------------------------------------------	;44df	c3 9a 48 	. . H
+1155  44DF C3 9A 48     	jp SaveExitError				; exit with Error 07 ------------------------------------------	;44df	c3 9a 48 	. . H
 1156  44E2
 1157  44E2              .checkOtherError:
 1158  44E2 B7           	or a							; was any Error (after Find Empty Sector)?						;44e2	b7 	.
-1159  44E3 C2 9A 48     	jp nz,SAVE_ExitError			; yes - exit with Error ---------------------------------------	;44e3	c2 9a 48 	. . H
+1159  44E3 C2 9A 48     	jp nz,SaveExitError			; yes - exit with Error ---------------------------------------	;44e3	c2 9a 48 	. . H
 1160  44E6
 1161  44E6              ; -- setup destination sector to write file chunk
 1162  44E6 FD 72 12     	ld (iy+TRCK),d					; set Track Number												;44e6	fd 72 12 	. r .
@@ -1275,7 +1275,7 @@
 1211  4530              .flushSector:
 1212  4530 CD A1 59     	call WRITE						; Write a sector to disk										;4530	cd a1 59 	. . Y
 1213  4533 B7           	or a							; was any Error?												;4533	b7 	.
-1214  4534 C2 9A 48     	jp nz,SAVE_ExitError			; yes - exit with Error ---------------------------------------	;4534	c2 9a 48 	. . H
+1214  4534 C2 9A 48     	jp nz,SaveExitError			; yes - exit with Error ---------------------------------------	;4534	c2 9a 48 	. . H
 1215  4537 C3 B3 44     	jp .writeNextChunk				; no - write next chunk of data -------------------------------	;4537	c3 b3 44 	. . D
 1216  453A
 1217  453A
@@ -1333,7 +1333,7 @@
 1269  457C              .finalizeSave:
 1270  457C CD 13 59     	call SEARCH						; Search for file in directory									;457c	cd 13 59 	. . Y
 1271  457F FE 02        	cp 2							; was Error 2 - FILE ALREADY EXISTS								;457f	fe 02 	. .
-1272  4581 C2 9A 48     	jp nz,SAVE_ExitError			; no - exit with Error ----------------------------------------	;4581	c2 9a 48 	. . H
+1272  4581 C2 9A 48     	jp nz,SaveExitError			; no - exit with Error ----------------------------------------	;4581	c2 9a 48 	. . H
 1273  4584
 1274  4584              ; -- file found - update Directory Entry
 1275  4584 13           	inc de							; skip track number	byte 										;4584	13 	.
@@ -1355,7 +1355,7 @@
 1291  4596              ; -- write directory entry to Disk
 1292  4596 CD A1 59     	call WRITE						; Write a sector with Directory to Disk							;4596	cd a1 59 	. . Y
 1293  4599 B7           	or a							; was any Error?												;4599	b7 	.
-1294  459A C2 9A 48     	jp nz,SAVE_ExitError			; yes - exit with Error ---------------------------------------	;459a	c2 9a 48 	. . H
+1294  459A C2 9A 48     	jp nz,SaveExitError			; yes - exit with Error ---------------------------------------	;459a	c2 9a 48 	. . H
 1295  459D
 1296  459D              ; -- update Disk Map sector
 1297  459D
@@ -1967,7 +1967,7 @@
 1903  484E              ; -- convert hex text (4 chars) into 16bit address - start of memory to save
 1904  484E CD B9 53     	call HEX						; de - 16bit address from 4 chars of Hex text					;484e	cd b9 53 	. . S
 1905  4851 3E 01        	ld a,1							; a - Error 01 - SYNTAX ERROR									;4851	3e 01 	> .
-1906  4853 DA B7 48     	jp c,BS_ExitError				; if parse hex error - exit with Error 01 ---------------------	;4853	da b7 48 	. . H
+1906  4853 DA B7 48     	jp c,RestoreExitError			; if parse hex error - exit with Error 01 ---------------------	;4853	da b7 48 	. . H
 1907  4856 ED 53 A4 78  	ld (SysBASPrgStartPtr),de		; no error - save as start of memory to save 					;4856	ed 53 a4 78 	. S . x
 1908  485A
 1909  485A              ; -- expected ',' char
@@ -1977,7 +1977,7 @@
 1913  485C              ; -- convert hex text (4 chars) into 16bit address - end of memory to save
 1914  485C CD B9 53     	call HEX						; de - 16bit address from 4 chars of Hex text					;485c	cd b9 53 	. . S
 1915  485F 3E 01        	ld a,1							; a - Error 01 - SYNTAX ERROR									;485f	3e 01 	> .
-1916  4861 DA B7 48     	jp c,BS_ExitError				; if parse hex error - exit with Error 01 ---------------------	;4861	da b7 48 	. . H
+1916  4861 DA B7 48     	jp c,RestoreExitError			; if parse hex error - exit with Error 01 ---------------------	;4861	da b7 48 	. . H
 1917  4864 13           	inc de							; de - next address after last byte to save						;4864	13 	.
 1918  4865 ED 53 F9 78  	ld (SysBASPrgEndPtr),de			; save end of current BASIC Program 							;4865	ed 53 f9 78 	. S . x
 1919  4869
@@ -1987,7 +1987,7 @@
 1923  486B 28 07        	jr z,.continue					; yes - continue												;486b	28 07 	( .
 1924  486D FE 3A        	cp ':'							; is it ':' (end of expression)?								;486d	fe 3a 	. :
 1925  486F 3E 01        	ld a,1							; a - Error 01 - SYNTAX ERROR									;486f	3e 01 	> .
-1926  4871 C2 B7 48     	jp nz,BS_ExitError				; if not \0 nor ':' - exit with Error 01 ----------------------	;4871	c2 b7 48 	. . H
+1926  4871 C2 B7 48     	jp nz,RestoreExitError			; if not \0 nor ':' - exit with Error 01 ----------------------	;4871	c2 b7 48 	. . H
 1927  4874
 1928  4874              .continue:
 1929  4874              ; -- set type of file as Binary Program ('B')
@@ -1999,7 +1999,7 @@
 1935  487C B7           	or a							; clear Carry flag												;487c	b7 	.
 1936  487D ED 52        	sbc hl,de						; difference - is hl >= de ? 									;487d	ed 52 	. R
 1937  487F 3E 01        	ld a,1							; a - Error 01 - SYNTAX ERROR									;487f	3e 01 	> .
-1938  4881 D2 9A 48     	jp nc,SAVE_ExitError			; if hl >= de - exit with Error 01 ----------------------------	;4881	d2 9a 48 	. . H
+1938  4881 D2 9A 48     	jp nc,SaveExitError			; if hl >= de - exit with Error 01 ----------------------------	;4881	d2 9a 48 	. . H
 1939  4884
 1940  4884              ; -- no error - turn on Disk Drive and wait 2ms
 1941  4884 CD 41 5F     	call PWRON						; Disk power ON													;4884	cd 41 5f 	. A _
@@ -2012,11 +2012,11 @@
 1948  488F DB 13        	in a,(FLWRPROT)					; a - read Write Protected flag from FDC						;488f	db 13 	. .
 1949  4891 B7           	or a							; is bit 7 set? (write protected)								;4891	b7 	.
 1950  4892 3E 04        	ld a,04							; a - Error 04 - DISK WRITE PROTECTED							;4892	3e 04 	> .
-1951  4894 FA 9A 48     	jp m,SAVE_ExitError				; yes - go to Error handling routine --------------------------	;4894	fa 9a 48 	. . H
+1951  4894 FA 9A 48     	jp m,SaveExitError				; yes - go to Error handling routine --------------------------	;4894	fa 9a 48 	. . H
 1952  4897 C3 79 44     	jp DoSaveFile					; continue reusing part of 'SAVEFILE' DOS routine -------------	;4897	c3 79 44 	. y D
 1953  489A
 1954  489A
-1955  489A              SAVE_ExitError:
+1955  489A              SaveExitError:
 1956  489A              ; -- was it canceled by user pressing BREAK?
 1957  489A FE 11        	cp 17							; is it Error 17 - BREAK by user 								;489a	fe 11 	. .
 1958  489C 20 18        	jr nz,.exitWithError			; no - exit with other error									;489c	20 18 	  .
@@ -2042,7 +2042,7 @@
 1978  48B7              ;***************************************************************************************************
 1979  48B7              ; Restore BASIC Program addresses from Stack and go o DOS Error handler
 1980  48B7              ; IN: a - Error code
-1981  48B7              BS_ExitError:
+1981  48B7              RestoreExitError:
 1982  48B7 D1           	pop de							; restore de - start of program									;48b7	d1 	.
 1983  48B8 ED 53 A4 78  	ld (SysBASPrgStartPtr),de		; store to start of current BASIC Program variable				;48b8	ed 53 a4 78 	. S . x
 1984  48BC D1           	pop de							; restore de - end of program									;48bc	d1 	.
@@ -7387,9 +7387,9 @@ Value    Label
 0x498F   DCmdDIR.exit
 0x492E   DCmdDIR.printDirEntry
 0x491B   DCmdDIR.nextSector
-0x48B6   SAVE_ExitError.exitWithError
+0x48B6   SaveExitError.exitWithError
 0x4874   DCmdBSAVE.continue
-0x48B7   BS_ExitError
+0x48B7   RestoreExitError
 0x47F7   DCmdCLOSE.fromBasicProg
 0x47D7   FCBHandlesFile.returnNotOpen
 0x47C6   FCBHandlesFile.nextChar
@@ -7417,7 +7417,7 @@ Value    Label
 0x44E2   DoSaveFile.checkOtherError
 0x457C   DoSaveFile.finalizeSave
 0x44B3   DoSaveFile.writeNextChunk
-0x489A   SAVE_ExitError
+0x489A   SaveExitError
 0x4479   DoSaveFile
 0x4430   LoadProgramData.loadLastChunk
 0x4441   LoadProgramData.exitError

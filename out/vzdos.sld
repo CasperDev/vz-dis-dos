@@ -1241,8 +1241,8 @@ vzdos.asm|1949||0|0|18577|T|
 vzdos.asm|1950||0|0|18578|T|
 vzdos.asm|1951||0|0|18580|T|
 vzdos.asm|1952||0|0|18583|T|
-vzdos.asm|1955||0|0|18586|F|SAVE_ExitError
-vzdos.asm|1955||0|0|18586|L|,SAVE_ExitError,,+used
+vzdos.asm|1955||0|0|18586|F|SaveExitError
+vzdos.asm|1955||0|0|18586|L|,SaveExitError,,+used
 vzdos.asm|1957||0|0|18586|T|
 vzdos.asm|1958||0|0|18588|T|
 vzdos.asm|1961||0|0|18590|T|
@@ -1257,11 +1257,11 @@ vzdos.asm|1971||0|0|18606|T|
 vzdos.asm|1972||0|0|18609|T|
 vzdos.asm|1973||0|0|18610|T|
 vzdos.asm|1974||0|0|18612|T|
-vzdos.asm|1975||0|0|18614|F|SAVE_ExitError.exitWithError
-vzdos.asm|1975||0|0|18614|L|,SAVE_ExitError,exitWithError,+used
+vzdos.asm|1975||0|0|18614|F|SaveExitError.exitWithError
+vzdos.asm|1975||0|0|18614|L|,SaveExitError,exitWithError,+used
 vzdos.asm|1976||0|0|18614|T|
-vzdos.asm|1981||0|0|18615|F|BS_ExitError
-vzdos.asm|1981||0|0|18615|L|,BS_ExitError,,+used
+vzdos.asm|1981||0|0|18615|F|RestoreExitError
+vzdos.asm|1981||0|0|18615|L|,RestoreExitError,,+used
 vzdos.asm|1982||0|0|18615|T|
 vzdos.asm|1983||0|0|18616|T|
 vzdos.asm|1984||0|0|18620|T|

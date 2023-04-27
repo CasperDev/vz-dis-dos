@@ -14,6 +14,10 @@ Laser 310/VZ300 DOS 1.2
 	
  	1st edition by Gerhard Wolf, VogelBook Publishing, 1985
 
+.. note:: 
+
+	Donwload PDF 
+	:download:`Laser DOS for Laser 110, 210, 310 and VZ200 [EN] <_static/Laser DOS for Laser210_310_and_VZ200 [EN].pdf>` 
 
 .. toctree::
    :caption: Table of Contents:
